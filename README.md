@@ -2,7 +2,7 @@ Frontend Instructions:
 
 Setting up the frontend environment:
 
-1. cd into lang2views-frontend directory.
+1. cd into the lang2views-frontend directory.
 2. Type "npm i" into the terminal. This installs the dependencies.
 
 Running the frontend website:
