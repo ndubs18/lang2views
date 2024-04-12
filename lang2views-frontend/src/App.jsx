@@ -1,5 +1,11 @@
+import LoginPage from "./Pages/login";
+
 function App() {
-  return <div className="container">Placeholder</div>;
+  return (
+    <>
+      <LoginPage />
+    </>
+  );
 }
 
 export default App;
