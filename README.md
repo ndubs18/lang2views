@@ -23,4 +23,4 @@ Running the server:
 
 Running tests:
 
-1. Type "npm run test" to run all jest tests inside the /__tests___ folder
+1. Type "npm run test" to run all jest tests inside the test folder
