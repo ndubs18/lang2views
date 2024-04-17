@@ -17,7 +17,7 @@ app.get('/youtube/download/*', async (req,res) => {
     await youtube.downloadVideo(`https://www.youtube.com/${url}`, 'testVideo');
     await youtube.downloadAudio(`https://www.youtube.com/${url}`,'testVideo', async (err) => {
         if(!err){
-            console.log('Download complete...')
+            res.send('Download Complete')
         } else {
             console.log(err);
         }
