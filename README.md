@@ -20,3 +20,7 @@ Running the server:
 
 1. Type "npx tsc" to transpile TypeScript into JavaScript.
 2. Type "node src/app.js to run the server.
+
+Running tests:
+
+1. Type "npm run test" to run all jest tests inside the /__tests___ folder
