@@ -11,7 +11,7 @@ Running the frontend website:
 
 ## Backend Instructions
 
-Setting up the frontend environment:
+Setting up the backend environment:
 
 1. cd into the lang2views-backend directory.
 2. Type "npm i" into the terminal. This installs the dependencies.
