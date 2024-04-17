@@ -4,10 +4,10 @@ import { YouTube } from './youtube';
 const app = express();
 const port = 3000;
 
-// Serve the app
+// Front end is served by vite? -- we may need to revisit the inital server response.
 app.get('/', (req, res) => {
-    let filePath = path.resolve('.', 'lang2views-frontend', 'index.html')
-    res.sendFile(filePath);
+    // let filePath = path.resolve('.', 'lang2views-frontend', 'index.html')
+    // res.sendFile(filePath);
 })
 
 // YouTube download API
