@@ -3,6 +3,7 @@ import path from 'path';
 import { YouTube } from './youtube';
 import { Whisper } from './whisper';
 import { Bing } from './bing';
+import { Users } from './users'
 const app = express();
 const port = 3000;
 
@@ -44,7 +45,7 @@ app.post('/whisper/trancsribe', (req,res) => {
 })
 
 // Bing tranlation API
-app.get('/bing/translate/*', (req,res) => {
+app.get('/bing/translate', (req,res) => {
     let bing = new Bing();
     const text = req.body.translateText
     let response = bing.translateText(text);
@@ -55,6 +56,18 @@ app.get('/bing/translate/*', (req,res) => {
 app.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
+    let users = new Users();
+    let result = users.login(username,password);
+    res.send(result);
+})
+
+app.post('/createUser', (req,res) => {
+    const username = req.body.username;
+    const password = req.body.username;
+    let users = new Users();
+    users.createNewUser(username,password);
+    users.writeUsersToFile();
+    res.send('User Created');
 })
 
 app.listen(port, () => {
