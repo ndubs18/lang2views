@@ -1,8 +1,13 @@
 import express from 'express';
 import path from 'path';
 import { YouTube } from './youtube';
+import { Whisper } from './whisper';
+import { Bing } from './bing';
 const app = express();
 const port = 3000;
+
+// Middleware to parse JSON bodies
+app.use(express.json());
 
 // Front end is served by vite? -- we may need to revisit the inital server response.
 app.get('/', (req, res) => {
@@ -11,11 +16,11 @@ app.get('/', (req, res) => {
 })
 
 // YouTube download API
-app.get('/youtube/download/*', async (req,res) => {
+app.post('/youtube/download', async (req,res) => {
     let youtube = new YouTube();
-    let url = req.url.slice(23,req.url.length);
-    await youtube.downloadVideo(`https://www.youtube.com/${url}`, 'testVideo');
-    await youtube.downloadAudio(`https://www.youtube.com/${url}`,'testVideo', async (err) => {
+    let url = req.body.url;
+    await youtube.downloadVideo(url, 'testVideo');
+    await youtube.downloadAudio(url,'testVideo', async (err) => {
         if(!err){
             res.send('Download Complete')
         } else {
@@ -30,13 +35,26 @@ app.get('/youtube/upload/*', (req,res) => {
 })
 
 // Whisper transcription API
-app.get('/whisper/trancsribe/*', (req,res) => {
-
+app.post('/whisper/trancsribe', (req,res) => {
+    // Need to pass secret key for Whisper API usage
+    let whisper = new Whisper('');
+    const filePath = req.body.filePath;
+    let response = whisper.transcribeAudio(filePath);
+    res.send(response);
 })
 
 // Bing tranlation API
 app.get('/bing/translate/*', (req,res) => {
+    let bing = new Bing();
+    const text = req.body.translateText
+    let response = bing.translateText(text);
+    res.send(response);
+})
 
+// Login API
+app.post('/login', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
 })
 
 app.listen(port, () => {
