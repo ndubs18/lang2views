@@ -45,7 +45,7 @@ app.post('/whisper/trancsribe', (req,res) => {
 })
 
 // Bing tranlation API
-app.get('/bing/translate', (req,res) => {
+app.post('/bing/translate', (req,res) => {
     let bing = new Bing();
     const text = req.body.translateText
     let response = bing.translateText(text);
