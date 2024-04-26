@@ -10,8 +10,8 @@ export class Users {
     private userFile:string = '';
 
     constructor(userFile:string){
-        this.users = this.readUsersFromFile(userFile);
         this.userFile = userFile;
+        this.users = this.readUsersFromFile(userFile);
     }
 
     // Add new user to user list
@@ -84,13 +84,18 @@ export class Users {
     // Function to read users from the JSON file
     private readUsersFromFile(filePath: string): User[] {
         try {
-            // Read the JSON file
-            const fileData = fs.readFileSync(filePath, 'utf-8');
-            
-            // Parse JSON data into an array of User objects
-            const users: User[] = JSON.parse(fileData);
-            
-            return users;
+            if(fs.existsSync(this.userFile)){
+                // Read the JSON file
+                const fileData = fs.readFileSync(filePath, 'utf-8');
+                
+                // Parse JSON data into an array of User objects
+                const users: User[] = JSON.parse(fileData);
+                
+                return users;
+            } else {
+                console.log('file not found: ' + this.userFile)
+                return [];
+            }
         } catch (error) {
             console.error('Error reading users from file:', error);
             return [];
