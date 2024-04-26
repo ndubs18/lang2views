@@ -91,6 +91,7 @@ app.post('/user/removeUser', (req, res) => {
     let result = users.removeUser({username:username, password:password});
     if(result){
         res.send('User removed.')
+        users.writeUsersToFile();
     } else {
         res.send('User not found.')
     }
