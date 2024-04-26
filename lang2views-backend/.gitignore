@@ -3,3 +3,4 @@ node_modules
 coverage
 users.json
 testUsers.json
+package-lock.json
