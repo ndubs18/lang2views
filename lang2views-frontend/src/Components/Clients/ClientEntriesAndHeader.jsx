@@ -47,20 +47,20 @@ function ClientEntriesAndHeader(props) {
             clientEntryDataArray.push(partOfAllOfClientEntryDataContainer);
         }
  
-        const settingsButtonicon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
-        const settingsButton = <button className="client-entry-action-button btn rounded-circle client-entry-settings-button" onClick={ClientSettingsButtonClickProcessor}>{settingsButtonicon}</button>
+        const settingsButtonIcon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
+        const settingsButton = <button className="client-entry-action-button btn rounded-circle client-entry-settings-button" onClick={ClientSettingsButtonClickProcessor}>{settingsButtonIcon}</button>
         clientEntryDataArray.push(settingsButton);
 
-        const planButtonicon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
-        const planButton = <button className="client-entry-action-button btn rounded-circle client-entry-plan-button" onClick={ClientPlanButtonClickProcessor}>{planButtonicon}</button>
+        const planButtonIcon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
+        const planButton = <button className="client-entry-action-button btn rounded-circle client-entry-plan-button" onClick={ClientPlanButtonClickProcessor}>{planButtonIcon}</button>
         clientEntryDataArray.push(planButton);
 
-        const videoListButtonicon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
-        const videoListButton = <button className="client-entry-action-button btn rounded-circle client-entry-video-list-button" onClick={clientVideoListProcessor}>{videoListButtonicon}</button>
+        const videoListButtonIcon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
+        const videoListButton = <button className="client-entry-action-button btn rounded-circle client-entry-video-list-button" onClick={clientVideoListProcessor}>{videoListButtonIcon}</button>
         clientEntryDataArray.push(videoListButton);
 
-        const deleteButtonicon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
-        const deleteButton = <button className="client-entry-action-button btn rounded-circle client-entry-delete-button" onClick={ClientDeleteButtonClickProcessor}>{deleteButtonicon}</button>
+        const deleteButtonIcon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
+        const deleteButton = <button className="client-entry-action-button btn rounded-circle client-entry-delete-button" onClick={ClientDeleteButtonClickProcessor}>{deleteButtonIcon}</button>
         clientEntryDataArray.push(deleteButton);
 
         const clientEntryContainer = <div className="client-entry border border-secondary rounded">{clientEntryDataArray}</div>;
