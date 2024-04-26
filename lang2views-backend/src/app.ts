@@ -56,7 +56,7 @@ app.post('/bing/translate', (req,res) => {
 })
 
 // Login API
-app.post('/login', (req, res) => {
+app.post('/user/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     let users = new Users(userFile);
@@ -64,13 +64,36 @@ app.post('/login', (req, res) => {
     res.send(result);
 })
 
-app.post('/createUser', (req,res) => {
+app.post('/user/createUser', (req,res) => {
     const username = req.body.username;
-    const password = req.body.username;
+    const password = req.body.password;
     let users = new Users(userFile);
-    users.createNewUser({username:username,password:password});
+    let result = users.createNewUser({username:username,password:password});
     users.writeUsersToFile();
-    res.send('User Created');
+    res.send(result);
+})
+
+app.post('/user/updateUser', (req, res) => {
+    const oldUsername = req.body.oldUsername;
+    const oldPassword = req.body.oldPassword;
+    const username = req.body.username;
+    const password = req.body.password;
+    let users = new Users(userFile);
+    let result = users.updateUser({username:oldUsername, password:oldPassword},{username:username,password:password});
+    users.writeUsersToFile();
+    res.send(result);
+})
+
+app.post('/user/removeUser', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    let users = new Users(userFile);
+    let result = users.removeUser({username:username, password:password});
+    if(result){
+        res.send('User removed.')
+    } else {
+        res.send('User not found.')
+    }
 })
 
 app.listen(port, () => {

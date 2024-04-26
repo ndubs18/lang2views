@@ -15,7 +15,7 @@ export class Users {
     }
 
     // Add new user to user list
-    public createNewUser(newUser:User):string{
+    public createNewUser(newUser:User){
         let match = false;
         for(let user of this.users){
             if(user.username === newUser.username){
@@ -54,15 +54,17 @@ export class Users {
             return 'New username already exists.'
         }
     }
-    public removeUser(removeUser:User): void {
+    public removeUser(removeUser:User){
         // Find the index of the user with the specified username
         const index = this.users.findIndex(user => user.username === removeUser.username);
 
         // If the user is found, remove it from the array
         if (index !== -1) {
             this.users.splice(index, 1);
+            return true;
         } else {
             console.log(`User ${removeUser.username} not found.`);
+            return false;
         }
     }
     // Check users for username and password match ( Login )
