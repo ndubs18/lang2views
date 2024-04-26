@@ -57,9 +57,9 @@ app.post('/whisper/transcribe', async (req,res) => {
 // Bing tranlation API
 app.post('/bing/translate', (req,res) => {
     let bing = new Bing();
-    const text = req.body.translateText
+    const text = req.body.translateText;
     let response = bing.translateText(text);
-    res.send('Translate API: Hello world!');
+    res.send(response);
 })
 
 // Login API
