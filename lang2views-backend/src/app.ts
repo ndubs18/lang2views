@@ -42,8 +42,10 @@ app.get('/youtube/upload/*', (req,res) => {
 // Whisper transcription API
 app.post('/whisper/trancsribe', (req,res) => {
     // Need to pass secret key for Whisper API usage
-    let whisper = new Whisper('');
     const filePath = req.body.filePath;
+    const whisperKey = req.body.whisperKey;
+    const decodedKey = Buffer.from(whisperKey, 'base64').toString('utf-8');
+    let whisper = new Whisper(decodedKey);
     let response = whisper.transcribeAudio(filePath);
     res.send(response);
 })
