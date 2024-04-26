@@ -48,7 +48,7 @@ app.post('/whisper/transcribe', async (req,res) => {
     let whisper = new Whisper(decodedKey);
     try{
         let response = await whisper.transcribeAudio(filePath);
-        res.send(response.data.text);
+        res.send(response);
     } catch(e){
         res.send(e);
     }
