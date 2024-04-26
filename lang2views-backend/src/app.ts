@@ -1,9 +1,9 @@
 import express from 'express';
 import path from 'path';
-import { YouTube } from './youtube';
-import { Whisper } from './whisper';
-import { Bing } from './bing';
-import { Users } from './users'
+import { YouTube } from './youtube.js';
+import { Whisper } from './whisper.js';
+import { Bing } from './bing.js';
+import { Users } from './users.js'
 const app = express();
 const port = 3000;
 
@@ -55,10 +55,10 @@ app.post('/whisper/transcribe', async (req,res) => {
 })
 
 // Bing tranlation API
-app.post('/bing/translate', (req,res) => {
+app.post('/bing/translate', async (req,res) => {
     let bing = new Bing();
     const text = req.body.translateText;
-    let response = bing.translateText(text);
+    let response = await bing.translateText(text);
     res.send(response);
 })
 
