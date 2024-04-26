@@ -40,14 +40,14 @@ app.get('/youtube/upload/*', (req,res) => {
 })
 
 // Whisper transcription API
-app.post('/whisper/transcribe', (req,res) => {
+app.post('/whisper/transcribe', async (req,res) => {
     // Need to pass secret key for Whisper API usage
     const filePath = req.body.filePath;
     const whisperKey = req.body.whisperKey;
     const decodedKey = Buffer.from(whisperKey, 'base64').toString('utf-8');
     let whisper = new Whisper(decodedKey);
-    let response = whisper.transcribeAudio(filePath);
-    res.send(response);
+    let response = await whisper.transcribeAudio(filePath);
+    res.send(response.data.text);
 })
 
 // Bing tranlation API
