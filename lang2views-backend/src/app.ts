@@ -7,6 +7,8 @@ import { Users } from './users'
 const app = express();
 const port = 3000;
 
+const userFile = 'users.json';
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 
@@ -20,8 +22,9 @@ app.get('/', (req, res) => {
 app.post('/youtube/download', async (req,res) => {
     let youtube = new YouTube();
     let url = req.body.url;
-    await youtube.downloadVideo(url, 'testVideo');
-    await youtube.downloadAudio(url,'testVideo', async (err) => {
+    let videoName = req.body.videoName;
+    await youtube.downloadVideo(url, videoName);
+    await youtube.downloadAudio(url, videoName, async (err) => {
         if(!err){
             res.send('Download Complete')
         } else {
@@ -56,16 +59,16 @@ app.post('/bing/translate', (req,res) => {
 app.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    let users = new Users();
-    let result = users.login(username,password);
+    let users = new Users(userFile);
+    let result = users.authenticate({username:username,password:password});
     res.send(result);
 })
 
 app.post('/createUser', (req,res) => {
     const username = req.body.username;
     const password = req.body.username;
-    let users = new Users();
-    users.createNewUser(username,password);
+    let users = new Users(userFile);
+    users.createNewUser({username:username,password:password});
     users.writeUsersToFile();
     res.send('User Created');
 })
