@@ -1,5 +1,5 @@
 import { Users } from '../users';
-import fs, { readFile } from 'fs';
+import fs from 'fs';
 
 const userFile = 'testUsers.json';
 

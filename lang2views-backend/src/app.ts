@@ -16,6 +16,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
     // let filePath = path.resolve('.', 'lang2views-frontend', 'index.html')
     // res.sendFile(filePath);
+    res.send('Hello World!');
 })
 
 // YouTube download API
