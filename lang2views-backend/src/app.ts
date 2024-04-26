@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { YouTube } from './youtube';
 import { Whisper } from './whisper';
-import { Bing } from './bing';
+// import { Bing } from './bing';
 import { Users } from './users'
 const app = express();
 const port = 3000;
@@ -50,10 +50,10 @@ app.post('/whisper/trancsribe', (req,res) => {
 
 // Bing tranlation API
 app.post('/bing/translate', (req,res) => {
-    let bing = new Bing();
-    const text = req.body.translateText
-    let response = bing.translateText(text);
-    res.send(response);
+    // let bing = new Bing();
+    // const text = req.body.translateText
+    // let response = bing.translateText(text);
+    res.send('Translate API: Hello world!');
 })
 
 // Login API
