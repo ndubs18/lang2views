@@ -40,7 +40,7 @@ app.get('/youtube/upload/*', (req,res) => {
 })
 
 // Whisper transcription API
-app.post('/whisper/trancsribe', (req,res) => {
+app.post('/whisper/transcribe', (req,res) => {
     // Need to pass secret key for Whisper API usage
     const filePath = req.body.filePath;
     const whisperKey = req.body.whisperKey;
