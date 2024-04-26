@@ -1,0 +1,48 @@
+#sidebar {
+    width: 5%;
+    height: 100%;
+    position: fixed;
+}
+
+#app-logo {
+    margin-top: 5vh;
+    margin-left: 25%;
+    width: 4vw;
+    height: auto;
+}
+
+#clients-view-button {
+    margin-left: 25%;
+    width: 3vw;
+    margin-top: 2vh;
+    height: 3vw;
+}
+
+#clients-view-button-icon {
+    width: 95%;
+    height: auto;
+}
+
+#sample-creation-view-button {
+    margin-left: 25%;
+    width: 3vw;
+    margin-top: 2vh;
+    height: 3vw;
+}
+
+#sample-creation-view-button-icon {
+    width: 95%;
+    height: auto;
+}
+
+#logout-button {
+    margin-left: 25%;
+    width: 3vw;
+    margin-top: 60vh;
+    height: 3vw;
+}
+
+#logout-button-icon {
+    width: 95%;
+    height: auto;
+}

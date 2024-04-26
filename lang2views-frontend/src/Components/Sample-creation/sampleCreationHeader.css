@@ -1,0 +1,22 @@
+#sample-creation-view-header {
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 30px;
+    width: 95%;
+}
+
+.account-settings-button {
+    height: 40px;
+}
+
+.account-picture {
+    margin-right: 5%;
+    margin-right: 1%;
+    width: 20px;
+    height: 20px;
+}
+
+.account-name {
+    margin-left: 5%;
+    margin-right: 1%;
+}
