@@ -46,8 +46,12 @@ app.post('/whisper/transcribe', async (req,res) => {
     const whisperKey = req.body.whisperKey;
     const decodedKey = Buffer.from(whisperKey, 'base64').toString('utf-8');
     let whisper = new Whisper(decodedKey);
-    let response = await whisper.transcribeAudio(filePath);
-    res.send(response.data.text);
+    try{
+        let response = await whisper.transcribeAudio(filePath);
+        res.send(response.data.text);
+    } catch(e){
+        res.send(e);
+    }
 })
 
 // Bing tranlation API
