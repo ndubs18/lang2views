@@ -1,4 +1,4 @@
-import ClientAndSampleCreationViews from "./Pages/clientAndSampleCreationViews";
+import ClientAndSampleCreationViews from "./Pages/ClientAndSampleCreationViews";
 import LoginPage from "./Pages/login";
 
 function App() {

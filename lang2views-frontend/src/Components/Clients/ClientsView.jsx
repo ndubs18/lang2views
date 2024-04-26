@@ -70,6 +70,7 @@ function ClientsView(props) {
             clientEntries={clientEntries}
           />
         </div>
+        <div className='popup-and-close-area-container'></div>
       </div>
   );
 }

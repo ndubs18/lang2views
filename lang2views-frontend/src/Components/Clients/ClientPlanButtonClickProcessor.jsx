@@ -1,0 +1,17 @@
+function ClientPlanButtonClickProcessor(props) {
+    if (props === null)
+        throw new Error("props for function ClientPlanButtonClickProcessor is null");
+
+    if (!props.hasOwnProperty("target"))
+        throw new Error("props does not have property target for function ClientPlanButtonClickProcessor");
+
+    if (props.target === null)
+        throw new Error("props.target for function ClientPlanButtonClickProcessor is null");
+
+    if (props.target.id === undefined)
+        throw new Error("props.target does not have property id for function ClientPlanButtonClickProcessor");
+
+    console.log(props.target.id);
+}
+
+export default ClientPlanButtonClickProcessor;
