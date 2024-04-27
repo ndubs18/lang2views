@@ -20,7 +20,12 @@ Running the server:
 
 1. Type "npm run build" to build the app.
 2. Type "npm run start" to run the server.
+2. Type "npm run detached" to run the server in detached mode.
 
 Running tests:
 
 1. Type "npm run test" to run all jest tests inside the test folder
+
+---
+
+To run both the backend and the frontend, make sure you run the backend in detached mode so you can run the frontend afterwards.
