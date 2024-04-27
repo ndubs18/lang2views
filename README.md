@@ -18,8 +18,8 @@ Setting up the backend environment:
 
 Running the server:
 
-1. Type "npx tsc" to transpile TypeScript into JavaScript.
-2. Type "node src/app.js to run the server.
+1. Type "npm run build" to build the app.
+2. Type "npm run start" to run the server.
 
 Running tests:
 
