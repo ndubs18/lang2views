@@ -1,9 +1,9 @@
 import React from "react";
 import "./sampleCreationEntriesAndHeader.css";
 import clientVideoListProcessor from "../Clients/clientVideoListProcessor";
-import clientPlanProcessor from "../Clients/clientPlanProcessor";
-import clientVideoSettingsProcessor from "../Clients/clientVideoSettingsProcessor";
-import clientDeleteProcessor from "../Clients/clientDeleteProcessor";
+import ClientPlanButtonClickProcessor from "../Clients/ClientPlanButtonClickProcessor";
+import ClientSettingsButtonClickProcessor from "../Clients/ClientSettingsButtonClickProcessor";
+import ClientDeleteButtonClickProcessor from "../Clients/ClientDeleteButtonClickProcessor";
 
 function SampleCreationEntriesAndHeader(props) {
     const typeOfClientData = ["client-photo-client-entry-data", "name-client-entry-data", "long-format-client-entry-data", "shorts-client-entry-data", "percentage-done-client-entry-data", "settings-button-client-entry-data", "plan-button-client-entry-data", "video-list-button-client-entry-data", "delete-button-client-entry-data"];
@@ -47,20 +47,20 @@ function SampleCreationEntriesAndHeader(props) {
             clientEntryDataArray.push(partOfAllOfClientEntryDataContainer);
         }
  
-        const settingsButtonicon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
-        const settingsButton = <button className="client-entry-action-button btn rounded-circle client-entry-settings-button" onClick={clientVideoSettingsProcessor}>{settingsButtonicon}</button>
+        const settingsButtonIcon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
+        const settingsButton = <button className="client-entry-action-button btn rounded-circle client-entry-settings-button" onClick={ClientSettingsButtonClickProcessor}>{settingsButtonIcon}</button>
         clientEntryDataArray.push(settingsButton);
 
-        const planButtonicon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
-        const planButton = <button className="client-entry-action-button btn rounded-circle client-entry-plan-button" onClick={clientPlanProcessor}>{planButtonicon}</button>
+        const planButtonIcon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
+        const planButton = <button className="client-entry-action-button btn rounded-circle client-entry-plan-button" onClick={ClientPlanButtonClickProcessor}>{planButtonIcon}</button>
         clientEntryDataArray.push(planButton);
 
-        const videoListButtonicon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
-        const videoListButton = <button className="client-entry-action-button btn rounded-circle client-entry-video-list-button" onClick={clientVideoListProcessor}>{videoListButtonicon}</button>
+        const videoListButtonIcon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
+        const videoListButton = <button className="client-entry-action-button btn rounded-circle client-entry-video-list-button" onClick={clientVideoListProcessor}>{videoListButtonIcon}</button>
         clientEntryDataArray.push(videoListButton);
 
-        const deleteButtonicon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
-        const deleteButton = <button className="client-entry-action-button btn rounded-circle client-entry-delete-button" onClick={clientDeleteProcessor}>{deleteButtonicon}</button>
+        const deleteButtonIcon = <img className="client-entry-action-icon rounded-circle" id={`client-${row + 1}`} src="src/Images/brown.png"></img>;
+        const deleteButton = <button className="client-entry-action-button btn rounded-circle client-entry-delete-button" onClick={ClientDeleteButtonClickProcessor}>{deleteButtonIcon}</button>
         clientEntryDataArray.push(deleteButton);
 
         const clientEntryContainer = <div className="client-entry border border-secondary rounded">{clientEntryDataArray}</div>;
