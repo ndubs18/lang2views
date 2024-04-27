@@ -20,6 +20,9 @@ Running the server:
 
 1. Type "npm run build" to build the app.
 2. Type "npm run start" to run the server.
+
+OR 
+
 2. Type "npm run detached" to run the server in detached mode.
 
 Running tests:
