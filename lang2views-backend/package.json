@@ -5,7 +5,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "build": "tsc",
+    "start": "nodemon src/app.js",
+    "detached": "nodemon src/app.js &"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +17,7 @@
     "bing-translate-api": "^4.0.1",
     "express": "^4.19.2",
     "fluent-ffmpeg": "^2.1.2",
+    "nodemon": "^3.1.0",
     "typescript": "^5.4.5",
     "ytdl-core": "^4.11.5"
   },
