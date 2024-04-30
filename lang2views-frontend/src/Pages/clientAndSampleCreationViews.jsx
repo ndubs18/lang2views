@@ -5,7 +5,7 @@ import "../Components/Utilities/main.css";
 
 function ClientAndSampleCreationViews() {
   return (
-    <div className="d-flex flex-direction-row main">
+    <div className="d-flex flex-row main">
       <Sidebar />
       <div id="view-container">
         <ClientsView currentUser={"Alexander"}/>
