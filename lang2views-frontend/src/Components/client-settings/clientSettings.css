@@ -1,5 +1,7 @@
 .client-settings-popup {
     display: flex;
+    flex-direction: column;
+    align-items: start;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -27,6 +29,7 @@
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 5%;
+    width: 70em;
 }
 
 #toggles-container {
@@ -45,7 +48,70 @@
 }
 
 #processing-amount-slider-container {
+    width: 70em;
+}
+
+#client-settings-buttons-section {
+    display: flex;
+    flex-direction: row;
+    width: 50em;
+    margin-top: 5em;
+}
+
+#client-settings-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    width: 70em;
+    margin-top: 3%;
+}
+
+.not-full-width-horizontal-line {
+    margin-top: 1em;
+    border-bottom: 1px solid grey;
+    height: 2px;
+    width: 70em;
+}
+
+.horizontal-line {
+    margin-top: 10em;
+    position: fixed;
+    border-bottom: 1px solid grey;
+    height: 2px;
+    bottom: 0;
+    margin-bottom: 9em;
+    width: 100em;
+}
+
+#slider-with-labels-container {
+    width: 40em;
+}
+
+.slider-label-spot {
+    border-radius: 20%;
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.text-area {
+    resize: none;
+    height: 20em;
+    width: 50em;
+}
+
+#model-input {
+    width: 35em;
+}
+
+.small-text-area {
+    resize: none;
+    height: 5em;
+    width: 50em;
+}
+
+.pale-green-button {
+    color: white;
+    background-color: #8dda8d;
 }
