@@ -10,7 +10,7 @@ function Plan() {
   return (
     <div>
       <MonthlyPlanTogglesWithLabel />
-      <div id="num-long-formats-and-shorts-container" className="ms-5">
+      <div id="num-long-formats-and-shorts-container" className="ms-5 mb-5">
             <NumLongFormatInput />
             <NumShortsInput />
       </div>
