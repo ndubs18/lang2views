@@ -13,6 +13,13 @@ function ClientSettings(props) {
     throw new Error("No props for ClientSettings");
   }
 
+  const [planButtonActive, setPlanButtonActive] = useState("bold");
+  const [translationButtonActive, setTranslationButtonActive] =
+    useState("normal");
+  const [transcriptionButtonActive, setTranscriptionButtonActive] =
+    useState("normal");
+  const [uploadButtonActive, setUploadButtonActive] = useState("normal");
+
   return (
     <>
       <div
@@ -21,40 +28,79 @@ function ClientSettings(props) {
       ></div>
       <div className="client-settings-popup">
         <div id="client-settings-header" className="ms-4">
-          <ClientSettingsHeader clientName="Alex" />
+          <ClientSettingsHeader clientName="ClientName" />
         </div>
         <div className="client-settings-button-section">
           <button
             id="client-settings-plan-button"
-            className="me-4 fs-2 ms-5 btn btn-link text-decoration-none text-reset"
-            onClick={ClientSettingsPlanButtonClickProcessor}
+            className={
+              planButtonActive +
+              " me-4 fs-2 ms-5 btn btn-link text-decoration-none text-reset rounded-0"
+            }
+            onClick={() => {
+              ClientSettingsPlanButtonClickProcessor();
+              setPlanButtonActive("active-step-button");
+              setTranscriptionButtonActive("normal");
+              setTranslationButtonActive("normal");
+              setUploadButtonActive("normal");
+            }}
           >
             Plan
           </button>
           <button
             id="client-settings-transcription-button"
-            className="mx-5 fs-2 btn btn-link text-decoration-none text-reset"
-            onClick={ClientSettingsTranscriptionButtonClickProcessor}
+            className={
+              transcriptionButtonActive +
+              " mx-3 fs-2 btn btn-link text-decoration-none text-reset rounded-0"
+            }
+            onClick={() => {
+              ClientSettingsTranscriptionButtonClickProcessor();
+              setPlanButtonActive("normal");
+              setTranscriptionButtonActive("active-step-button");
+              setTranslationButtonActive("normal");
+              setUploadButtonActive("normal");
+            }}
           >
             Transcription
           </button>
           <button
             id="client-settings-translation-button"
-            className="mx-5 fs-2 btn btn-link text-decoration-none text-reset"
-            onClick={ClientSettingsTranslationButtonClickProcessor}
+            className={
+              translationButtonActive +
+              " mx-3 fs-2 btn btn-link text-decoration-none text-reset rounded-0"
+            }
+            onClick={() => {
+              ClientSettingsTranslationButtonClickProcessor();
+              setPlanButtonActive("normal");
+              setTranscriptionButtonActive("normal");
+              setTranslationButtonActive("active-step-button");
+              setUploadButtonActive("normal");
+            }}
           >
             Translation
           </button>
           <button
             id="client-settings-upload-button"
-            className="mx-5 fs-2 btn btn-link text-decoration-none text-reset"
-            onClick={ClientSettingsUploadButtonClickProcessor}
+            className={
+              uploadButtonActive +
+              " mx-3 fs-2 btn btn-link text-decoration-none text-reset rounded-0"
+            }
+            onClick={() => {
+              ClientSettingsUploadButtonClickProcessor();
+              setPlanButtonActive("normal");
+              setTranscriptionButtonActive("normal");
+              setTranslationButtonActive("normal");
+              setUploadButtonActive("active-step-button");
+            }}
           >
             Upload
           </button>
         </div>
         <div className="not-full-width-horizontal-line ms-5"></div>
-        <p className="mt-5 mb-3 fs-4 ms-5">Alex</p>
+        <p className="mt-5 mb-3 fs-4 ms-5">
+          <img className="me-3" src="../brown.png" />
+          ChannelName
+        </p>
         <div className="not-full-width-horizontal-line ms-5"></div>
         <div className="popup-menus-step-area">
           <Plan />

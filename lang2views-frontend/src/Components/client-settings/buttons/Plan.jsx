@@ -4,7 +4,7 @@ import NumLongFormatInput from "./NumLongFormatInput";
 import NumShortsInput from "./NumShortsInput";
 import ProcessingAmountSlider from "./ProcessingAmountSlider";
 import "../clientSettings.css";
-import Save from "./Save";
+import Save from "./PlanStepSave";
 
 function Plan() {
   return (
@@ -17,7 +17,7 @@ function Plan() {
       <ProcessingAmountSlider />
       <EstimatedPriceInput />
       <div className="horizontal-line"></div>
-      <Save component="client-settings-plan" />
+      <Save />
     </div>
   );
 }
