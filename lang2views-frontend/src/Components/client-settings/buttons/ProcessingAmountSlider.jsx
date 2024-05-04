@@ -21,7 +21,7 @@ function ProcessingAmountSlider() {
         <input
             aria-label="Level of Post-Production"
             type="range"
-            className="py-0 w-100"
+            className="py-0 w-100 slider"
             min={1}
             max={3}
         ></input>

@@ -1,5 +1,5 @@
 import "../clientSettings.css";
-import Save from "./Save";
+import Save from "./TranslationStepSave";
 
 function Model() {
   return (
@@ -36,7 +36,7 @@ function Translation(props) {
       <Model />
       <Dictionary />
       <div className="horizontal-line"></div>
-      <Save component="client-settings-translation" />
+      <Save />
     </div>
   );
 }

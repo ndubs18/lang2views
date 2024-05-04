@@ -9,6 +9,7 @@ function EstimatedPriceInput() {
         className="form-control form-control-lg"
         id="estimated-price-input"
         readOnly=""
+        placeholder="$"
       ></input>
     </div>
   );

@@ -1,5 +1,5 @@
 import "../clientSettings.css";
-import Save from "./Save";
+import Save from "./TranscriptionStepSave";
 
 function Model() {
   return (
@@ -25,7 +25,7 @@ function Transcription(props) {
       <br />
       <Model />
       <div className="horizontal-line"></div>
-      <Save component="client-settings-transcription" />
+      <Save />
     </div>
   );
 }
