@@ -38,6 +38,7 @@ function login() {
           <form onSubmit={handleSubmit}>
             <div className="inputs">
               <input
+                className="input"
                 type="email"
                 placeholder="Email"
                 id="email"
@@ -47,6 +48,7 @@ function login() {
                 required
               />
               <input
+                className="input"
                 type="password"
                 placeholder="Password"
                 id="password"
