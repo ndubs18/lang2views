@@ -13,7 +13,7 @@ function ClientSettings(props) {
     throw new Error("No props for ClientSettings");
   }
 
-  const [planButtonActive, setPlanButtonActive] = useState("bold");
+  const [planButtonActive, setPlanButtonActive] = useState("active-step-button");
   const [translationButtonActive, setTranslationButtonActive] =
     useState("normal");
   const [transcriptionButtonActive, setTranscriptionButtonActive] =

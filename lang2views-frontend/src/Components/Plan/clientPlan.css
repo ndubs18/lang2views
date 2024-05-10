@@ -1,0 +1,65 @@
+.client-plan-popup {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #FFF;
+    margin-left: 50%;
+}
+
+.client-plan-close-area {
+    display: flex;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 45%;
+    height: 100%;
+    background-color: transparent;
+    margin-left: 5%;
+}
+
+#client-plan-buttons-section {
+    display: flex;
+    flex-direction: row;
+    width: 50em;
+    margin-top: 5em;
+}
+
+#client-plan-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 70em;
+    margin-top: 3%;
+}
+
+.not-full-width-horizontal-line {
+    margin-top: 1em;
+    border-bottom: 1px solid grey;
+    height: 2px;
+    width: 70em;
+}
+
+.horizontal-line {
+    position: fixed;
+    border-bottom: 1px solid grey;
+    height: 2px;
+    bottom: 0;
+    margin-bottom: 6em;
+    width: 100em;
+}
+
+.active-step-button {
+    font-weight: bold;
+    border-bottom: blue solid 1px;
+}
+
+.active-step-button:hover {
+    border-bottom: blue solid 1px;
+}
