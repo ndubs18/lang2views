@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./login.css";
 import Lang2ViewsLogo from "../Images/lang2views_logo.jpeg";
+import axios from "axios";
 
 function login() {
   const [email, setEmail] = useState("");
@@ -15,9 +16,19 @@ function login() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Login attempted!");
+    console.log(email);
+    console.log(password);
+
+    const formData = new FormData();
+    formData.append("username", email);
+    formData.append("password", password);
+
+    fetch("http://localhost:3000/user/login", {
+      method: "POST",
+      body: formData,
+    }).then((response) => console.log(response));
   };
 
   const handleForgotPassword = () => {
@@ -39,13 +50,12 @@ function login() {
             <div className="inputs">
               <input
                 className="input"
-                type="email"
+                type="text"
                 placeholder="Email"
                 id="email"
                 name="email"
                 value={email}
                 onChange={handleInputChange}
-                required
               />
               <input
                 className="input"
