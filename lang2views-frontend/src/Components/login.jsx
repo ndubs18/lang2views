@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./login.css";
 import Lang2ViewsLogo from "../Images/lang2views_logo.jpeg";
 import axios from "axios";
@@ -6,6 +6,7 @@ import axios from "axios";
 function login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginResponse, setLoginResponse] = useState("");
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -28,7 +29,7 @@ function login() {
     fetch("http://localhost:3000/user/login", {
       method: "POST",
       body: formData,
-    }).then((response) => console.log(response));
+    }).then((response) => response.text().then((value) => setLoginResponse(value)));
   };
 
   const handleForgotPassword = () => {
@@ -79,6 +80,7 @@ function login() {
               >
                 <p className="forgot-button-text">Forgot password?</p>
               </button>
+              <p>{loginResponse}</p>
             </div>
           </form>
         </div>
