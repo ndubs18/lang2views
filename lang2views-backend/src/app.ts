@@ -44,6 +44,8 @@ app.get('/youtube/upload/*', (req,res) => {
 
 })
 
+
+// Remove client api
 app.post('/client/remove', async (req, res) => {
     const clientId = req.body.clientId;
     if(clientId){
@@ -52,11 +54,13 @@ app.post('/client/remove', async (req, res) => {
     }
 })
 
+// Get all clients API
 app.post('/client/getAll', async (req, res) => {
     let clients = new Clients(clientFile);
     res.send(JSON.stringify(clients.clients));
 })
 
+// Add client API
 app.post('/client/add', async (req, res) => {
     const url = req.body.url;
     if(url){
