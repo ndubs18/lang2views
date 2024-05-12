@@ -50,7 +50,8 @@ app.post('/client/remove', async (req, res) => {
     const clientId = req.body.clientId;
     if(clientId){
         let clients = new Clients(clientFile);
-        clients.removeClient(clientId)
+        clients.removeClient(clientId);
+        await clients.writeClientsToFile();
     }
 })
 
@@ -96,7 +97,7 @@ app.post('/client/add', async (req, res) => {
                     description: result[0].snippet.description,
                     clientSettings: null,
                 })
-                clients.writeClientsToFile();
+                await clients.writeClientsToFile();
                 res.send('Client created: ' + JSON.stringify(result));
             } else {
                 res.send('Channel not found.')
