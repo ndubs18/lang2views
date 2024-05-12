@@ -18,16 +18,23 @@ Setting up the backend environment:
 
 Running the server:
 
-1. Type "npm run build" to build the app.
-2. Type "npm run start" to run the server.
+1. cd into the lang2views-backend directory.
+2. Type "npm run build" to build the app.
+3. Type "npm run start" to run the server.
 
 OR 
 
-2. Type "npm run detached" to run the server in detached mode.
+3. Type "npm run detached" to run the server in detached mode.
 
 Running tests:
 
-1. Type "npm run test" to run all jest tests inside the test folder
+1. cd into the lang2views-backend directory.
+2. Type "npm run test" to run all jest tests inside the test folder
+
+Stopping the server when run in detached mode:
+
+1. cd into the lang2views-backend directory.
+2. Type "pkill -f src/app.js" to kill all processing running the server
 
 ---
 
