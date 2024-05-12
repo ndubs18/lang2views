@@ -2,11 +2,13 @@ import express from 'express';
 import { YouTube } from './youtube.js';
 import { Whisper } from './whisper.js';
 import { Bing } from './bing.js';
-import { Users } from './users.js'
+import { Users } from './users.js';
+import { Clients } from './clients.js';
 const app = express();
 const port = 3000;
 
 const userFile = 'users.json';
+const clientFile = 'clients.json';
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -40,6 +42,66 @@ app.post('/youtube/download', async (req,res) => {
 // YouTube upload API
 app.get('/youtube/upload/*', (req,res) => {
 
+})
+
+app.post('/client/remove', async (req, res) => {
+    const clientId = req.body.clientId;
+    if(clientId){
+        let clients = new Clients(clientFile);
+        clients.removeClient(clientId)
+    }
+})
+
+app.post('/client/getAll', async (req, res) => {
+    let clients = new Clients(clientFile);
+    res.send(JSON.stringify(clients.clients));
+})
+
+app.post('/client/add', async (req, res) => {
+    const url = req.body.url;
+    if(url){
+        let youtube = new YouTube();
+        let clients = new Clients(clientFile);
+        if(url.includes('/channel/')){
+            let channelId = getChannelIdFromUrl(url);
+            let result = await youtube.getChannelFromId('AIzaSyCCWblK-SdjvIRO6xBSQHHoKyLCxwJcnEU', channelId);
+            if(result[0]){
+                console.log(result[0].id);
+                await clients.addClient({
+                    channelUrl: url,
+                    channelName: result[0].snippet.title,
+                    channelId: result[0].id,
+                    description: result[0].snippet.description,
+                    clientSettings: null,
+                })
+                await clients.writeClientsToFile();
+                res.send('Client created: ' + JSON.stringify(result));
+            } else {
+                res.send('Channel not found.')
+            }
+            res.send(JSON.stringify(result));
+        } else {
+            let channel = getChannelUsernameFromUrl(url);
+            let channelId = await youtube.getChannelFromUsername('AIzaSyCCWblK-SdjvIRO6xBSQHHoKyLCxwJcnEU',channel);
+            let result = await youtube.getChannelFromId('AIzaSyCCWblK-SdjvIRO6xBSQHHoKyLCxwJcnEU', channelId);
+            if(result[0]){
+                await clients.addClient({
+                    channelUrl: url,
+                    channelName: result[0].snippet.title,
+                    channelId: result[0].id,
+                    description: result[0].snippet.description,
+                    clientSettings: null,
+                })
+                clients.writeClientsToFile();
+                res.send('Client created: ' + JSON.stringify(result));
+            } else {
+                res.send('Channel not found.')
+            }
+
+        }
+    } else {
+        res.send('Please send channel URL.')
+    }
 })
 
 // Whisper transcription API
@@ -134,3 +196,13 @@ app.post('/user/removeUser', (req, res) => {
 app.listen(port, () => {
     console.log(`lang2views listening on port ${port}`)
 })
+
+function getChannelUsernameFromUrl(url) {
+    const match = url.match(/\/@([^\/?#]+)/);
+    return match ? match[1] : null;
+}
+
+function getChannelIdFromUrl(url) {
+    const match = url.match(/(?:\/channel\/|\/c\/|\/user\/|\/@)([A-Za-z0-9_-]{1,})/);
+    return match ? match[1] : null;
+}
