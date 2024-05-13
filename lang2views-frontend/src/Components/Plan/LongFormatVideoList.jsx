@@ -1,30 +1,154 @@
 import React from "react";
 import LongFormatVideo from "./LongFormatVideo";
 import Save from "./LongFormatStepSave";
+import "./clientPlan.css";
 
 function LongFormatVideoList() {
   const props = {
     longFormatVideos: [
       {
-        thumbnailSrc: "",
+        thumbnailSrc: ".",
         title: "A",
         duration: "10",
         views: "100",
         viewsPerMinute: "100",
+        done: true,
       },
       {
-        thumbnailSrc: "",
+        thumbnailSrc: ".",
         title: "A",
         duration: "10",
         views: "100",
         viewsPerMinute: "100",
+        done: false,
       },
       {
-        thumbnailSrc: "",
+        thumbnailSrc: ".",
         title: "A",
         duration: "10",
         views: "100",
         viewsPerMinute: "100",
+        done: false,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: true,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: true,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: true,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: true,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: true,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false,
       },
     ],
   };
@@ -34,21 +158,41 @@ function LongFormatVideoList() {
   if (props.longFormatVideos === null)
     throw new Error("Need to have LongFormatVideos to display");
 
-  for (let i = 0; i < props.longFormatVideos.length; i++) {
-    const videoDetails = props.longFormatVideos[i];
+  for (
+    let numVideo = 0;
+    numVideo < props.longFormatVideos.length;
+    numVideo = numVideo + 3
+  ) {
+    const videoRow = [];
+    const firstVideoInRowDetails = props.longFormatVideos[numVideo];
+    videoRow.push(<LongFormatVideo videoDetails={firstVideoInRowDetails} />);
 
-    videos.push(<LongFormatVideo videoDetails={videoDetails}/>);
+    const secondVideoInRowDetails = props.longFormatVideos[numVideo + 1];
+    videoRow.push(
+      secondVideoInRowDetails ? (
+        <LongFormatVideo videoDetails={secondVideoInRowDetails} />
+      ) : null
+    );
+
+    const thirdVideoInRowDetails = props.longFormatVideos[numVideo + 2];
+    videoRow.push(
+      thirdVideoInRowDetails ? (
+        <LongFormatVideo videoDetails={thirdVideoInRowDetails} />
+      ) : null
+    );
+
+    const videoRowContainer = React.createElement(
+      "div",
+      { className: "d-flex flex-row" },
+      videoRow
+    );
+
+    videos.push(videoRowContainer);
   }
-
-  const videosContainer = React.createElement(
-    "div",
-    { className: "d-flex flex-row" },
-    videos
-  );
 
   return (
     <>
-      {videosContainer}
+      <div className="scrollable-video-list">{videos}</div>
       <div className="horizontal-line"></div>
       <Save />
     </>

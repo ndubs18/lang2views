@@ -12,14 +12,20 @@ function LongFormatVideo(props) {
   return (
     <div className="d-flex flex-column video-seperation">
       <div>
-        <img src={props.videoDetails.thumbnailSrc}></img>
-        <button className="rounded rounded-circle"></button>
+        <img
+          src={props.videoDetails.thumbnailSrc}
+          className="long-format-video-thumbnail"
+        >
+        </img>
+        <button className="rounded rounded-circle long-format-video-select-button"></button>
       </div>
       <p>{props.videoDetails.title}</p>
       <div className="d-flex flex-row">
-        <p className="me-2 text-secondary">{props.videoDetails.duration}</p>
-        <p className="me-2 text-secondary">{props.videoDetails.views}</p>
-        <p className="me-2 text-secondary">{props.videoDetails.viewsPerMinute}</p>
+        <p className="me-2 text-secondary">{props.videoDetails.duration} Min</p>
+        <p className="me-2 text-secondary">{props.videoDetails.views} Views</p>
+        <p className="me-2 text-secondary">
+          {props.videoDetails.viewsPerMinute} Views/Min
+        </p>
       </div>
     </div>
   );

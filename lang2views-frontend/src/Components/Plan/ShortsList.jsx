@@ -1,54 +1,319 @@
 import React from "react";
 import Short from "./Short";
 import Save from "./ShortsStepSave";
+import "./clientPlan.css";
 
 function ShortsList() {
   const props = {
-    longFormatVideos: [
+    shorts: [
       {
-        thumbnailSrc: "",
+        thumbnailSrc: ".",
         title: "A",
         duration: "10",
         views: "100",
         viewsPerMinute: "100",
+        done: true
       },
       {
-        thumbnailSrc: "",
+        thumbnailSrc: ".",
         title: "A",
         duration: "10",
         views: "100",
         viewsPerMinute: "100",
+        done: false
       },
       {
-        thumbnailSrc: "",
+        thumbnailSrc: ".",
         title: "A",
         duration: "10",
         views: "100",
         viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: true
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: true
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: true
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: true
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: true
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: true
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: false
+      },
+      {
+        thumbnailSrc: ".",
+        title: "A",
+        duration: "10",
+        views: "100",
+        viewsPerMinute: "100",
+        done: true
       },
     ],
   };
 
   const videos = [];
 
-  if (props.longFormatVideos === null)
-    throw new Error("Need to have shorts to display");
+  if (props.shorts === null) throw new Error("Need to have shorts to display");
 
-  for (let i = 0; i < props.longFormatVideos.length; i++) {
-    const videoDetails = props.longFormatVideos[i];
+  for (
+    let numVideo = 0;
+    numVideo < props.shorts.length;
+    numVideo = numVideo + 5
+  ) {
+    const videoRow = [];
+    const firstVideoInRowDetails = props.shorts[numVideo];
+    videoRow.push(<Short videoDetails={firstVideoInRowDetails} />);
 
-    videos.push(<Short videoDetails={videoDetails} />);
+    const secondVideoInRowDetails = props.shorts[numVideo + 1];
+    videoRow.push(
+      secondVideoInRowDetails ? (
+        <Short videoDetails={secondVideoInRowDetails} />
+      ) : null
+    );
+
+    const thirdVideoInRowDetails = props.shorts[numVideo + 2];
+    videoRow.push(
+      thirdVideoInRowDetails ? (
+        <Short videoDetails={thirdVideoInRowDetails} />
+      ) : null
+    );
+
+    const fourthVideoInRowDetails = props.shorts[numVideo + 3];
+    videoRow.push(
+      fourthVideoInRowDetails ? (
+        <Short videoDetails={fourthVideoInRowDetails} />
+      ) : null
+    );
+
+    const fifthVideoInRowDetails = props.shorts[numVideo + 4];
+    videoRow.push(
+      fifthVideoInRowDetails ? (
+        <Short videoDetails={fifthVideoInRowDetails} />
+      ) : null
+    );
+
+    const videoRowContainer = React.createElement("div", {className: "d-flex flex-row"}, videoRow);
+
+    videos.push(videoRowContainer);
   }
-
-  const videosContainer = React.createElement(
-    "div",
-    { className: "d-flex flex-row" },
-    videos
-  );
 
   return (
     <>
-      {videosContainer}
+      <div className="scrollable-video-list">{videos}</div>
       <div className="horizontal-line"></div>
       <Save />
     </>

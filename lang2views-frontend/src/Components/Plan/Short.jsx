@@ -1,6 +1,7 @@
 import "./videos.css";
 
 function Short(props) {
+  console.log(props + "\n");
   if (props === null)
     throw new Error("props is null in plan -> Short component");
 
@@ -15,9 +16,7 @@ function Short(props) {
       </div>
       <p>{props.videoDetails.title}</p>
       <div className="d-flex flex-row">
-        <p className="me-2 text-secondary">{props.videoDetails.duration}</p>
-        <p className="me-2 text-secondary">{props.videoDetails.views}</p>
-        <p className="me-2 text-secondary">{props.videoDetails.viewsPerMinute}</p>
+        <p className="fs-4 me-2 text-secondary">{props.videoDetails.views} Views</p>
       </div>
     </div>
   );

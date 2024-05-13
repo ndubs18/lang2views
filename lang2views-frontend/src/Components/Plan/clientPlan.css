@@ -63,3 +63,12 @@
 .active-step-button:hover {
     border-bottom: blue solid 1px;
 }
+
+.scrollable-video-list {
+    display: flex;
+    overflow-y: auto;
+    position: relative;
+    height: 55vh;
+    flex-direction: column;
+    width: 100%;
+}
