@@ -13,18 +13,27 @@ export class YouTube {
         try{
             const response = await youtube.search.list({
                 // type: ['video'],
-                part: ['snippet'],
+                part: ['snippet', 'id'],
                 channelId: channelId,
                 maxResults: 50, // Adjust as needed
                 pageToken: pageToken // Pass pageToken if it exists
             });
 
-            // Extract video names from the response
-            let videoNames = response.data.items.map(item => item.snippet.title);
-            console.log('Video Names:', videoNames);
+            console.log(response);
+
+            // Extract videos
+            let videos = [];
+            for(let item of response.data.items){
+                videos.push({
+                    vidoeName: item.snippet.title,
+                    id:item.id.videoId,
+                    url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+                    thumbnail:item.snippet.thumbnails.default
+                })
+            }
 
             return { 
-                videos: videoNames,
+                videos: videos,
                 nextPageToken: response.data.nextPageToken,
                 prevPageToken: response.data.prevPageToken
             };

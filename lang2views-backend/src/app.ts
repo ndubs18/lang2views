@@ -141,7 +141,7 @@ app.post('/user/login', (req, res) => {
         let result = users.authenticate({username:email,password:password});
         res.send(result);
     } else {
-        res.send('Invalid request body: Please send username and password');
+        res.send('Invalid request body: Please send email and password');
     }
 })
 
@@ -159,7 +159,7 @@ app.post('/user/createUser', (req,res) => {
         users.writeUsersToFile();
         res.send(result);
     } else {
-        res.send('Invalid request body: Please send username and password');
+        res.send('Invalid request body: Please send email and password');
     }
 })
 
@@ -180,7 +180,7 @@ app.post('/user/updateUser', (req, res) => {
         users.writeUsersToFile();
         res.send(result);
     } else {
-        res.send('Invalid request body: Please send username and password');
+        res.send('Invalid request body: Please send email and password');
     }
 })
 
@@ -202,7 +202,7 @@ app.post('/user/removeUser', (req, res) => {
             res.send('User not found.')
         }
     } else {
-        res.send('Invalid request body: Please send username and password');
+        res.send('Invalid request body: Please send email and password');
     }
 })
 
