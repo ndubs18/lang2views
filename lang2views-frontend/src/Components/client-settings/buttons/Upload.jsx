@@ -108,9 +108,9 @@ function GrantYoutubeAccessToggles() {
 
 function UseSameDescriptionToggles() {
   const [notUseSameDescriptionActive, setNotUseSameDescriptionActive] =
-    useState("upload-step-toggle-not-active");
+    useState("upload-step-toggle-active");
   const [useSameDescriptionActive, setUseSameDescriptionActive] = useState(
-    "upload-step-toggle-active"
+    "upload-step-toggle-not-active"
   );
 
   return (
@@ -147,10 +147,10 @@ function UseSameDescriptionToggles() {
 
 function UseSameTagsToggles() {
   const [notUseSameTagsActive, setNotUseSameTagsActive] = useState(
-    "upload-step-toggle-not-active"
+    "upload-step-toggle-active"
   );
   const [useSameTagsActive, setUseSameTagsActive] = useState(
-    "upload-step-toggle-active"
+    "upload-step-toggle-not-active"
   );
 
   return (
