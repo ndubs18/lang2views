@@ -20,10 +20,8 @@ app.use(cors({
     optionsSuccessStatus: 200 // Some legacy browsers choke on 204
 }));
 
-// Front end is served by vite? -- we may need to revisit the inital server response.
+// Hello World!
 app.get('/', (req, res) => {
-    // let filePath = path.resolve('.', 'lang2views-frontend', 'index.html')
-    // res.sendFile(filePath);
     res.send('Hello World!');
 })
 
@@ -86,7 +84,7 @@ app.post('/client/add', async (req, res) => {
     const url = req.body.url;
     // const apiKey = req.body.apiKey;
     const apiKey = 'AIzaSyCCWblK-SdjvIRO6xBSQHHoKyLCxwJcnEU'
-    if(url && apiKey){
+    if(url /* && apiKey */){
         let youtube = new YouTube();
         let clients = new Clients(clientFile);
         if(url.includes('/channel/')){
