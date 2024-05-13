@@ -39,14 +39,14 @@
     align-items: center;
 }
 
-input {
+.input {
     border-radius: 6%;
     border-color: grey;
     margin-bottom: 5%;
     padding: 5%;
 }
 
-input::placeholder {
+.input::placeholder {
     color: grey;
 }
 
