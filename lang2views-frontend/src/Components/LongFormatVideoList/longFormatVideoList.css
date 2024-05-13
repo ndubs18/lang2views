@@ -97,6 +97,7 @@
     margin-left: 50px;
     margin-right: 50px;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .check-box {
@@ -112,4 +113,10 @@
 .thumbnail-header {
     margin-left: 400px;
     margin-bottom: 0;
+}
+
+.all-videos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

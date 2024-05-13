@@ -1,6 +1,7 @@
 import "./longFormatVideoList.css";
 import { useState } from "react";
 import placeholderIcon from "../../Images/brown.png";
+import IndividualVideo from "./IndividualVideo/IndividualVideo";
 
 function longFormatVideoList() {
   const [checkbox, setCheckbox] = useState(false);
@@ -45,7 +46,24 @@ function longFormatVideoList() {
         />
         <p className="name-header">NAME</p>
         <p className="thumbnail-header">THUMBNAIL</p>
-        {/* Make a component for an individual video and loop through that component here*/}
+      </div>
+      {/* Make a component for an individual video and loop through that component here*/}
+      <div className="all-videos">
+        <IndividualVideo
+          videoNumber="001."
+          videoName="Video 01"
+          thumbnailImage={placeholderIcon}
+        />
+        <IndividualVideo
+          videoNumber="002."
+          videoName="Video 02"
+          thumbnailImage={placeholderIcon}
+        />
+        <IndividualVideo
+          videoNumber="003."
+          videoName="Video 03"
+          thumbnailImage={placeholderIcon}
+        />
       </div>
     </div>
   );

@@ -5,9 +5,9 @@ import LoginPage from "./Pages/login";
 function App() {
   return (
     <>
-      <LoginPage />
+      {/*<LoginPage />*/}
       {/*<ClientAndSampleCreationViews />*/}
-      {/*<LongFormatVideoList />*/}
+      <LongFormatVideoList />
     </>
   );
 }
