@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { YouTube } from './youtube.js';
 import { Whisper } from './whisper.js';
 import { Bing } from './bing.js';
@@ -12,6 +13,12 @@ const clientFile = 'clients.json';
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+// Allow requests from the frontend on a different port (e.g., http://localhost:3000)
+app.use(cors({
+    origin: 'http://localhost:5173',
+    optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+}));
 
 // Front end is served by vite? -- we may need to revisit the inital server response.
 app.get('/', (req, res) => {
