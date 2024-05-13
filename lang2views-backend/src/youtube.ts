@@ -3,8 +3,36 @@ import ffmpeg from 'fluent-ffmpeg';
 import fs from 'fs';
 import { google } from 'googleapis';
 
-
 export class YouTube {
+    async getVideoList(apiKey:string, channelId: string, pageToken:string|null){
+        const youtube = google.youtube({
+            version: 'v3',
+            auth: apiKey, // Your API key
+        });
+
+        try{
+            const response = await youtube.search.list({
+                // type: ['video'],
+                part: ['snippet'],
+                channelId: channelId,
+                maxResults: 50, // Adjust as needed
+                pageToken: pageToken // Pass pageToken if it exists
+            });
+
+            // Extract video names from the response
+            let videoNames = response.data.items.map(item => item.snippet.title);
+            console.log('Video Names:', videoNames);
+
+            return { 
+                videoNames: videoNames,
+                nextPageToken: response.data.nextPageToken,
+                prevPageToken: response.data.prevPageToken
+            };
+        }catch(e){
+            console.error(e);
+        }
+    }
+
     async downloadAudio(videoURL:string, videoName:string, callback:Function){
         let stream = ytdl(videoURL, {
             quality:'highestaudio'
