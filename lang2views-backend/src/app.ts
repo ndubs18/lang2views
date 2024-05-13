@@ -9,13 +9,6 @@ const port = 3000;
 
 const userFile = 'users.json';
 
-const allowedOrigins = ["http://localhost:5174"];
-const options: cors.CorsOptions = {
-    origin: allowedOrigins
-}
-
-app.use(cors(options));
-
 // Middleware to parse JSON bodies
 app.use(express.json());
 
