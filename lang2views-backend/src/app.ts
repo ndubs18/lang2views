@@ -3,7 +3,6 @@ import { YouTube } from './youtube.js';
 import { Whisper } from './whisper.js';
 import { Bing } from './bing.js';
 import { Users } from './users.js'
-import cors from "cors"
 const app = express();
 const port = 3000;
 
