@@ -24,7 +24,7 @@ export class YouTube {
             console.log('Video Names:', videoNames);
 
             return { 
-                videoNames: videoNames,
+                videos: videoNames,
                 nextPageToken: response.data.nextPageToken,
                 prevPageToken: response.data.prevPageToken
             };
