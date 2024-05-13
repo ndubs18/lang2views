@@ -11,11 +11,6 @@ const port = 3000;
 const userFile = 'users.json';
 const clientFile = 'clients.json';
 
-// Josh's test google api key
-// 'AIzaSyCCWblK-SdjvIRO6xBSQHHoKyLCxwJcnEU'
-// Josh's test whisper api key
-// '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'
-
 // Middleware to parse JSON bodies
 app.use(express.json());
 
