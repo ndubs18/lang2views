@@ -22,14 +22,18 @@ function login() {
     console.log(email);
     console.log(password);
 
-    const formData = new FormData();
-    formData.append("username", email);
-    formData.append("password", password);
-
     fetch("http://localhost:3000/user/login", {
       method: "POST",
-      body: formData,
-    }).then((response) => response.text().then((value) => setLoginResponse(value)));
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) =>
+      response.text().then((value) => setLoginResponse(value))
+    );
   };
 
   const handleForgotPassword = () => {
