@@ -7,7 +7,7 @@ function ShortsList() {
   const props = {
     shorts: [
       {
-        thumbnailSrc: ".",
+        thumbnailSrc: "./src/Images/brown.png",
         title: "A",
         duration: "10",
         views: "100",
@@ -15,24 +15,24 @@ function ShortsList() {
         done: true
       },
       {
-        thumbnailSrc: ".",
-        title: "A",
+        thumbnailSrc: "./src/Images/brown.png",
+        title: "B",
         duration: "10",
         views: "100",
         viewsPerMinute: "100",
         done: false
       },
       {
-        thumbnailSrc: ".",
-        title: "A",
+        thumbnailSrc: "./src/Images/brown.png",
+        title: "C",
         duration: "10",
         views: "100",
         viewsPerMinute: "100",
         done: false
       },
       {
-        thumbnailSrc: ".",
-        title: "A",
+        thumbnailSrc: "./src/Images/brown.png",
+        title: "D",
         duration: "10",
         views: "100",
         viewsPerMinute: "100",
@@ -315,6 +315,7 @@ function ShortsList() {
     <>
       <div className="scrollable-video-list">{videos}</div>
       <div className="horizontal-line"></div>
+      <input id="current-number-to-process" hidden type="number" value={0} />
       <Save />
     </>
   );

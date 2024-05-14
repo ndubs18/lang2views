@@ -7,7 +7,7 @@ function LongFormatVideoList() {
   const props = {
     longFormatVideos: [
       {
-        thumbnailSrc: ".",
+        thumbnailSrc: "./src/Images/brown.png",
         title: "A",
         duration: "10",
         views: "100",
@@ -16,7 +16,7 @@ function LongFormatVideoList() {
       },
       {
         thumbnailSrc: ".",
-        title: "A",
+        title: "B",
         duration: "10",
         views: "100",
         viewsPerMinute: "100",
@@ -24,7 +24,7 @@ function LongFormatVideoList() {
       },
       {
         thumbnailSrc: ".",
-        title: "A",
+        title: "C",
         duration: "10",
         views: "100",
         viewsPerMinute: "100",
@@ -32,7 +32,7 @@ function LongFormatVideoList() {
       },
       {
         thumbnailSrc: ".",
-        title: "A",
+        title: "D",
         duration: "10",
         views: "100",
         viewsPerMinute: "100",
@@ -194,6 +194,7 @@ function LongFormatVideoList() {
     <>
       <div className="scrollable-video-list">{videos}</div>
       <div className="horizontal-line"></div>
+      <input id="current-number-to-process" hidden type="number" value={0} />
       <Save />
     </>
   );
