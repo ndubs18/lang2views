@@ -4,3 +4,4 @@ coverage
 users.json
 testUsers.json
 package-lock.json
+clients.json

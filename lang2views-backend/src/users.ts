@@ -23,10 +23,10 @@ export class Users {
             }
         }
         if(match === false){
-            const encodedPassword = Buffer.from(newUser.password).toString('base64');
+            // const encodedPassword = Buffer.from(newUser.password).toString('base64');
             this.users.push({
                 username:newUser.username,
-                password:encodedPassword
+                password:newUser.password
             });
             return 'User created';
         } else {
@@ -42,11 +42,11 @@ export class Users {
             }
         }
         if(!match){
-            const encodedPassword = Buffer.from(newUser.password).toString('base64');
+            // const encodedPassword = Buffer.from(newUser.password).toString('base64');
             for(let user of this.users){
                 if(user.username === oldUser.username){
                     user.username = newUser.username;
-                    user.password = encodedPassword;
+                    user.password = newUser.password;
                     return 'User edited.';
                 }
             }
@@ -71,8 +71,8 @@ export class Users {
     public authenticate(loginUser:User):boolean{
         for(let user of this.users){
             if(user.username === loginUser.username){
-                const encodedPassword = Buffer.from(loginUser.password).toString('base64');
-                if(user.password == encodedPassword){
+                // const encodedPassword = Buffer.from(loginUser.password).toString('base64');
+                if(user.password == loginUser.password){
                     return true;
                 } else {
                     return false;

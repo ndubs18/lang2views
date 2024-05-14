@@ -9,17 +9,22 @@ function handleSubmit() {
   const slider = document.querySelector(".slider");
   const estimatedPriceInput = document.querySelector("#estimated-price-input");
 
-  console.log(monthlyPlan.textContent);
+  let monthlyPlanInput = monthlyPlan.textContent;
+
+  if (monthlyPlan.textContent === "")
+    monthlyPlanInput = "enable monthly plan";
+  
+  console.log(monthlyPlanInput);
   console.log(numLongFormatInput.value);
   console.log(numShortsInput.value);
 
-  if (slider.value === 1) {
+  if (slider.value === "1") {
     sliderValue = "no processing";
   }
-  else if (slider.value === 2) {
+  else if (slider.value === "2") {
     sliderValue = "medium processing";
   }
-  if (slider.value === 3) {
+  else if (slider.value === "3") {
     sliderValue = "high processing";
   }
 

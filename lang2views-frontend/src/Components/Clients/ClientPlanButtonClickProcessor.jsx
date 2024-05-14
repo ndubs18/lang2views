@@ -1,17 +1,16 @@
+import ClientPlan from "../Plan/ClientPlan";
+import { createRoot } from "react-dom/client";
+import React from "react";
+
 function ClientPlanButtonClickProcessor(props) {
     if (props === null)
         throw new Error("props for function ClientPlanButtonClickProcessor is null");
 
-    if (!props.hasOwnProperty("target"))
-        throw new Error("props does not have property target for function ClientPlanButtonClickProcessor");
+    const popupAndCloseAreaContainer = document.querySelector(".popup-and-close-area-container");
 
-    if (props.target === null)
-        throw new Error("props.target for function ClientPlanButtonClickProcessor is null");
-
-    if (props.target.id === undefined)
-        throw new Error("props.target does not have property id for function ClientPlanButtonClickProcessor");
-
-    console.log(props.target.id);
+    const clientsViewHook = createRoot(popupAndCloseAreaContainer);
+    
+    clientsViewHook.render(<ClientPlan channelName={props.channelName} />);
 }
 
 export default ClientPlanButtonClickProcessor;

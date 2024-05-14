@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./login.css";
 import Lang2ViewsLogo from "../Images/lang2views_logo.jpeg";
+import axios from "axios";
 
 function login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginResponse, setLoginResponse] = useState("");
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -15,9 +17,23 @@ function login() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Login attempted!");
+    console.log(email);
+    console.log(password);
+
+    fetch("http://localhost:3000/user/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) =>
+      response.text().then((value) => setLoginResponse(value))
+    );
   };
 
   const handleForgotPassword = () => {
@@ -38,15 +54,16 @@ function login() {
           <form onSubmit={handleSubmit}>
             <div className="inputs">
               <input
-                type="email"
+                className="input"
+                type="text"
                 placeholder="Email"
                 id="email"
                 name="email"
                 value={email}
                 onChange={handleInputChange}
-                required
               />
               <input
+                className="input"
                 type="password"
                 placeholder="Password"
                 id="password"
@@ -67,6 +84,7 @@ function login() {
               >
                 <p className="forgot-button-text">Forgot password?</p>
               </button>
+              <p>{loginResponse}</p>
             </div>
           </form>
         </div>

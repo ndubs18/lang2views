@@ -1,0 +1,18 @@
+.video-seperation {
+    margin-left: 5em;
+}
+
+.long-format-video-thumbnail {
+    width: 18em;
+    height: 10em;
+    position: relative;
+}
+
+.long-format-video-select-button {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    margin-right: 2em;
+}
