@@ -72,3 +72,12 @@
     flex-direction: column;
     width: 100%;
 }
+
+.filter-button-inactive {
+    background-color: white;
+    border: grey solid 1px;
+}
+
+.filter-button-active {
+    background-color: #8dda8d;
+}
