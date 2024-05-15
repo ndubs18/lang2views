@@ -4,12 +4,14 @@ import { YouTube } from './youtube.js';
 import { Whisper } from './whisper.js';
 import { Bing } from './bing.js';
 import { Users } from './users.js';
+import { Videos } from './video.js';
 import { Clients } from './clients.js';
 const app = express();
 const port = 3000;
 
 const userFile = 'users.json';
 const clientFile = 'clients.json';
+const videoFile = 'videos.json';
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -25,13 +27,68 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 })
 
+// WIP
+// API to update client settings from client settings page
+app.post('/client/updateSettings', (req, res) => {
+    res.send('Hello World!');
+})
+
+// WIP
+// Organize step after video has been added
+// This transcribes the video and adds it to the google doc
+// Translates video and adds it to google doc
+// updates trello ticket
+// adds all video files to dropbox (transcription and tranlsation test files, mp4, mp3)
+app.post('/client/oragnizeVideo', async (req,res) => {
+    const channelId = req.body.channelId;
+    const videoId = req.body.videoId;
+
+    if(channelId){
+        let clients = new Clients(clientFile);
+
+        let videos = JSON.stringify(await clients.getClientVideos(channelId));
+        console.log(videos);
+        await clients.downloadClientVideo(channelId,videoId);
+
+        res.send(videos);
+
+    } else {
+        res.send('Invalid request body.');
+    }
+})
+
+// WIP
+// When user adds video from first screen to be shown on second video screen
+// Needs to also generate:
+// - the dropbox folder path for specific video
+// - The trello ticket
+// - the empty google doc (for transcription)
+app.post('/client/addVideo', async (req,res) => {
+    const channelId = req.body.channelId;
+    const name = req.body.name;
+    const url = req.body.url;
+    const id = req.body.id;
+
+    let clients = new Clients(clientFile);
+    if(channelId && name && url && id){
+        await clients.addClientVideo(channelId,{
+            name:name,
+            id:id,
+            url:url
+        })
+        res.send('video added.');
+    } else {
+        res.send('Invalid request body.')
+    }
+})
+
 /*
 * YouTube video list
 * apiKey & channelId are required
 * Send up to 50 videos at a time to front end. 
 * Also sends next and prev page tokens to navigate back or forwards 50 videos
 */
-app.post('/youtube/getVideoList', async (req,res) => {
+app.post('/client/getVideoPage', async (req,res) => {
     // const apiKey = req.body.apiKey;
     const apiKey = 'AIzaSyCCWblK-SdjvIRO6xBSQHHoKyLCxwJcnEU'
     const channelId = req.body.channelId;
@@ -55,12 +112,12 @@ app.post('/youtube/getVideoList', async (req,res) => {
 * Removes client from server and from JSON file.
 */
 app.post('/client/remove', async (req, res) => {
-    const clientId = req.body.clientId;
-    if(
-        clientId){
+    const channelId = req.body.channelId;
+    if(channelId){
         let clients = new Clients(clientFile);
-        clients.removeClient(clientId);
+        clients.removeClient(channelId);
         await clients.writeClientsToFile();
+        res.send('client removed');
     } else {
         res.send('Invalid request body: Please send clientId.')
     }
@@ -72,7 +129,7 @@ app.post('/client/remove', async (req, res) => {
 */
 app.post('/client/getAll', async (req, res) => {
     let clients = new Clients(clientFile);
-    res.send(JSON.stringify(clients.clients));
+    res.send(JSON.stringify(clients.getClients()));
 })
 
 /*
@@ -97,6 +154,7 @@ app.post('/client/add', async (req, res) => {
                     channelId: result[0].id,
                     description: result[0].snippet.description,
                     clientSettings: null,
+                    videos:null
                 })
                 await clients.writeClientsToFile();
                 res.send('Client created: ' + JSON.stringify(result));
@@ -115,6 +173,7 @@ app.post('/client/add', async (req, res) => {
                     channelId: result[0].id,
                     description: result[0].snippet.description,
                     clientSettings: null,
+                    videos:null
                 })
                 await clients.writeClientsToFile();
                 res.send('Client created: ' + JSON.stringify(result));
