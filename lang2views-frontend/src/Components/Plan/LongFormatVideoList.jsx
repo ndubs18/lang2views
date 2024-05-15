@@ -314,8 +314,9 @@ function LongFormatVideoList() {
 
   return (
     <>
-      <div>
-        <button className={durationFilterActive}
+      <div className="d-flex flex-row ms-5 mb-5 filter-buttons-container">
+        <p className="align-middle fs-4 mt-2 me-4">Filters:</p>
+        <button className={durationFilterActive + " btn"}
           value={durationFilterStatus}
           onClick={(event) => {
             if (event.target.value === "clicked") {
@@ -344,7 +345,7 @@ function LongFormatVideoList() {
           Duration
         </button>
         <button
-          className={viewsFilterActive}
+          className={viewsFilterActive + " btn"}
           value={viewsFilterStatus}
           onClick={(event) => {
             if (event.target.value === "clicked") {
@@ -373,7 +374,7 @@ function LongFormatVideoList() {
           Views
         </button>
         <button
-          className={viewsPerMinuteFilterActive}
+          className={viewsPerMinuteFilterActive + " btn"}
           value={viewsPerMinuteFilterStatus}
           onClick={(event) => {
             if (event.target.value === "clicked") {
