@@ -72,3 +72,29 @@
     flex-direction: column;
     width: 100%;
 }
+
+.filter-button-inactive {
+    background-color: white;
+    border: grey solid 1px;
+    width: 15%;
+}
+
+.filter-button-inactive:hover {
+    background-color: white;
+    border: grey solid 1px;
+    width: 15%;
+}
+
+.filter-button-active {
+    background-color: #8dda8d;
+    width: 15%;
+}
+
+.filter-button-active:hover {
+    background-color: #8dda8d;
+    width: 15%;
+}
+
+.filter-buttons-container {
+    margin-top: -5%;
+}
