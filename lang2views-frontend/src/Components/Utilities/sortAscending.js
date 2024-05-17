@@ -1,8 +1,8 @@
 function sortViewsMostToLeast(videos) {
     videos.sort((currentVideo, nextVideo) => {
-        if (currentVideo.numViews < nextVideo.numViews)
+        if (Number.parseInt(currentVideo.views) < Number.parseInt(nextVideo.views))
             return 1;
-        else if (currentVideo.numViews > nextVideo.numViews)
+        else if (Number.parseInt(currentVideo.views) > Number.parseInt(nextVideo.views))
             return -1;
         else
             return 0;
@@ -11,9 +11,9 @@ function sortViewsMostToLeast(videos) {
 
 function sortViewsPerMinuteMostToLeast(videos) {
     videos.sort((currentVideo, nextVideo) => {
-        if (currentVideo.numViewsPerMinute < nextVideo.numViewsPerMinute)
+        if (Number.parseInt(currentVideo.viewsPerMinute) < Number.parseInt(nextVideo.viewsPerMinute))
             return 1;
-        else if (currentVideo.numViewsPerMinute > nextVideo.numViewsPerMinute)
+        else if (Number.parseInt(currentVideo.viewsPerMinute) > Number.parseInt(nextVideo.viewsPerMinute))
             return -1;
         else
             return 0;
@@ -22,9 +22,9 @@ function sortViewsPerMinuteMostToLeast(videos) {
 
 function sortDurationMostToLeast(videos) {
     videos.sort((currentVideo, nextVideo) => {
-        if (currentVideo.duration < nextVideo.duration)
+        if (Number.parseInt(currentVideo.duration) < Number.parseInt(nextVideo.duration))
             return 1;
-        else if (currentVideo.duration > nextVideo.duration)
+        else if (Number.parseInt(currentVideo.duration) > Number.parseInt(nextVideo.duration))
             return -1;
         else
             return 0;
