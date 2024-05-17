@@ -25,21 +25,21 @@ export interface Client {
 }
 
 export class Clients {
-    private clients: Client[]
+    private _clients: Client[]
     private clientFile: string
 
     constructor(clientFile:string){
         this.clientFile = clientFile;
-        this.clients = this.readClientsFromFile(clientFile);
+        this._clients = this.readClientsFromFile(clientFile);
     }
 
     public getClientVideo(channelId:string, videoId:string):Video{
         let match = false;
-        for(let client of this.clients){
+        for(let client of this._clients){
             if(client.channelId == channelId){
                 if(client.videos == null){
-                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
-                    for(let video of client.videos.getVideos()){
+                    client.videos = new Videos('_clients/'+client.channelId+'/videos.json');
+                    for(let video of client.videos.videos){
                         if(video.id == videoId){
                             match = true;
                             return video;
@@ -52,7 +52,7 @@ export class Clients {
 
     public getClient(channelId:string):Client{
         let match = false;
-        for(let client of this.clients){
+        for(let client of this._clients){
             if(client.channelId == channelId){
                 match = true;
                 return client;
@@ -62,7 +62,7 @@ export class Clients {
 
     public updateClientSettings(channelId:string, settings:ClientSettings){
         let match = false;
-        for(let client of this.clients){
+        for(let client of this._clients){
             if(client.channelId == channelId){
                 match = true;
                 client.clientSettings = settings;
@@ -76,16 +76,16 @@ export class Clients {
     }
 
     public addClientVideo(channelId:string, video:Video){
-        for(let client of this.clients){
+        for(let client of this._clients){
             if(client.channelId == channelId){
-                if(!fs.existsSync('clients')){
-                    fs.mkdirSync('clients');
+                if(!fs.existsSync('_clients')){
+                    fs.mkdirSync('_clients');
                 }
-                if(!fs.existsSync('clients/'+client.channelId)){
-                    fs.mkdirSync('clients/'+client.channelId);
+                if(!fs.existsSync('_clients/'+client.channelId)){
+                    fs.mkdirSync('_clients/'+client.channelId);
                 }
                 if(client.videos == null){
-                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
+                    client.videos = new Videos('_clients/'+client.channelId+'/videos.json');
                     client.videos.addVideo(video);
                 } else {
                     client.videos.addVideo(video);
@@ -96,67 +96,67 @@ export class Clients {
     }
 
     public getClientVideos(channelId:string){
-        for(let client of this.clients){
+        for(let client of this._clients){
             if(client.channelId === channelId){
                 if(client.videos == null){
-                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
-                    return client.videos.getVideos();
+                    client.videos = new Videos('_clients/'+client.channelId+'/videos.json');
+                    return client.videos.videos;
                 } else {
-                    return client.videos.getVideos();
+                    return client.videos.videos;
                 }
             }
         }
     }
 
     public async downloadClientVideo(channelId:string,videoId:string){
-        for(let client of this.clients){
+        for(let client of this._clients){
             if(client.channelId === channelId){
                 if(client.videos == null){
-                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
-                    await client.videos.downloadVideo(videoId,'clients/'+client.channelId)
+                    client.videos = new Videos('_clients/'+client.channelId+'/videos.json');
+                    await client.videos.downloadVideo(videoId,'_clients/'+client.channelId)
                 } else {
-                    await client.videos.downloadVideo(videoId,'clients/'+client.channelId)
+                    await client.videos.downloadVideo(videoId,'_clients/'+client.channelId)
                 }
             }
         }
     }
 
     public async downloadClientVideos(channelId:string){
-        for(let client of this.clients){
+        for(let client of this._clients){
             if(client.channelId == channelId){
                 if(client.videos == null){
-                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
-                    await client.videos.downloadVideos('clients/'+client.channelId)
+                    client.videos = new Videos('_clients/'+client.channelId+'/videos.json');
+                    await client.videos.downloadVideos('_clients/'+client.channelId)
                 }else {
-                    await client.videos.downloadVideos('clients/'+client.channelId)
+                    await client.videos.downloadVideos('_clients/'+client.channelId)
                 }
             }
         }
     }
 
-    public getClients(){
-        return this.clients;
+    get clients():Client[]{
+        return this._clients;
     }
 
     public addClient(newClient: Client){
-        for(let client of this.clients){
+        for(let client of this._clients){
             if(client.channelId === newClient.channelId){
                 return 'Client already exists.';
             }
         }
-        fs.mkdirSync('clients/'+newClient.channelId);
-        this.clients.push(newClient);
+        fs.mkdirSync('_clients/'+newClient.channelId);
+        this._clients.push(newClient);
         return 'Client created.';
     }
     public removeClient(channelId: string){
         // Find the index of the user with the specified username
-        const index = this.clients.findIndex(client => client.channelId === channelId);
+        const index = this._clients.findIndex(client => client.channelId === channelId);
 
         // If the user is found, remove it from the array
         if (index !== -1) {
-            let client = this.clients[index];
-            this.deleteFolderRecursive('clients/'+client.channelId);
-            this.clients.splice(index, 1);
+            let client = this._clients[index];
+            this.deleteFolderRecursive('_clients/'+client.channelId);
+            this._clients.splice(index, 1);
             return true;
         } else {
             console.log(`User ${channelId} not found.`);
@@ -179,7 +179,7 @@ export class Clients {
                 return [];
             }
         } catch (error) {
-            console.error('Error reading clients from file:', error);
+            console.error('Error reading _clients from file:', error);
             return [];
         }
     }
@@ -187,14 +187,14 @@ export class Clients {
     public writeClientsToFile(): void {
         try {
             // Convert users array to JSON string
-            const jsonData = JSON.stringify(this.clients, null, 2); // null and 2 for formatting
+            const jsonData = JSON.stringify(this._clients, null, 2); // null and 2 for formatting
             
             // Write JSON string to the file
             fs.writeFileSync(this.clientFile, jsonData, 'utf-8');
             
             console.log('Users data has been written to the file successfully.');
         } catch (error) {
-            console.error('Error writing clients to file:', error);
+            console.error('Error writing _clients to file:', error);
         }
     }
     private deleteFolderRecursive(folderPath) {

@@ -9,55 +9,55 @@ export interface Video {
 }
 
 export class Videos {
-    private videos:Video[];
+    private _videos:Video[];
     private videoFile:string;
 
     constructor(videoFile:string){
         this.videoFile = videoFile;
         let vidoes = this.readVideosFromFile(this.videoFile);
-        this.videos = vidoes;
+        this._videos = vidoes;
     }
 
-    public getVideos(){
-        return this.videos;
+    get videos():Video[]{
+        return this._videos;
     }
 
     public addVideo(newVideo:Video){
         let match = false;
-        for(let video of this.videos){
+        for(let video of this._videos){
             if(video.id === newVideo.id){
                 match = true;
                 break;
             }
         }
         if(!match){
-            this.videos.push(newVideo);
+            this._videos.push(newVideo);
         }
     }
 
     public addVideos(newVideos:Video[]){
         for(let newVideo of newVideos){
-            //this.videos.push(video);
+            //this._videos.push(video);
             let match = false;
-            for(let video of this.videos){
+            for(let video of this._videos){
                 if(video.id === newVideo.id){
                     match = true;
                     break;
                 }
             }
             if(!match){
-                this.videos.push(newVideo);
+                this._videos.push(newVideo);
             }
         }
     }
 
-    public resetVideos(videos:Video[]){
+    public resetVideos(_videos:Video[]){
     }
 
     public downloadVideo(videoId:string,filePath:string){
         return new Promise(async (resolve, reject) => {
             let youtube = new YouTube();
-            for(let video of this.videos){
+            for(let video of this._videos){
                 if(video.id == videoId){
                     await youtube.downloadVideoAndAudio(video.url,filePath+'/'+video.name.trim(), (err) => {
                         if(!err){
@@ -78,11 +78,11 @@ export class Videos {
 
             let started = 0;
             let completed = 0;
-            for(let i = 0; i < this.videos.length; ++i){
+            for(let i = 0; i < this._videos.length; ++i){
                 started++;
-                await youtube.downloadVideoAndAudio(this.videos[i].url,filePath+'/'+this.videos[i].name.trim(), (err) => {
+                await youtube.downloadVideoAndAudio(this._videos[i].url,filePath+'/'+this._videos[i].name.trim(), (err) => {
                     if(!err){
-                        console.log(this.videos[i].name + ' download complete.');
+                        console.log(this._videos[i].name + ' download complete.');
                         completed++;
 
                         if(started == completed){
@@ -120,14 +120,14 @@ export class Videos {
     public writeVideosToFile(): void {
         try {
             // Convert users array to JSON string
-            const jsonData = JSON.stringify(this.videos, null, 2); // null and 2 for formatting
+            const jsonData = JSON.stringify(this._videos, null, 2); // null and 2 for formatting
             
             // Write JSON string to the file
             fs.writeFileSync(this.videoFile, jsonData, 'utf-8');
             
             console.log('Video data has been written to the file successfully.');
         } catch (error) {
-            console.error('Error writing videos to file:', error);
+            console.error('Error writing _videos to file:', error);
         }
     }
 }

@@ -148,7 +148,7 @@ app.post('/client/remove', async (req, res) => {
 */
 app.post('/client/getAll', async (req, res) => {
     let clients = new Clients(clientFile);
-    res.send(JSON.stringify(clients.getClients()));
+    res.send(JSON.stringify(clients.clients));
 })
 
 /*
