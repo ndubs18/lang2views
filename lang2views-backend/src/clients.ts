@@ -2,15 +2,26 @@ import fs from 'fs';
 import path from 'path';
 import { Videos, Video } from './video.js';
 
+export interface ClientSettings {
+    youtubeAccessSectionValue: null | string,
+    useSameDescriptionSectionValue: null | boolean,
+    useSameTagsSectionValue: null | boolean,
+    description: null | string,
+    tags: null | string,
+    monthlyPlanInput: null | boolean,
+    numLongFormatInput: null | number,
+    numShortsInput: null | number,
+    levelOfPostProcessing: null | string,
+    estimatedPriceInput: null | string
+}
+
 export interface Client {
     channelUrl: string,
     channelName: string,
     channelId: string,
     description: string,
     videos: Videos | null,
-    clientSettings: null | {
-
-    }
+    clientSettings: null | ClientSettings
 }
 
 export class Clients {
@@ -20,6 +31,48 @@ export class Clients {
     constructor(clientFile:string){
         this.clientFile = clientFile;
         this.clients = this.readClientsFromFile(clientFile);
+    }
+
+    public getClientVideo(channelId:string, videoId:string):Video{
+        let match = false;
+        for(let client of this.clients){
+            if(client.channelId == channelId){
+                if(client.videos == null){
+                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
+                    for(let video of client.videos.getVideos()){
+                        if(video.id == videoId){
+                            match = true;
+                            return video;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public getClient(channelId:string):Client{
+        let match = false;
+        for(let client of this.clients){
+            if(client.channelId == channelId){
+                match = true;
+                return client;
+            }
+        }
+    }
+
+    public updateClientSettings(channelId:string, settings:ClientSettings){
+        let match = false;
+        for(let client of this.clients){
+            if(client.channelId == channelId){
+                match = true;
+                client.clientSettings = settings;
+            }
+        }
+        if(!match){
+            return 'Client not found.';
+        } else {
+            return 'Client updated.';
+        }
     }
 
     public addClientVideo(channelId:string, video:Video){

@@ -4,14 +4,12 @@ import { YouTube } from './youtube.js';
 import { Whisper } from './whisper.js';
 import { Bing } from './bing.js';
 import { Users } from './users.js';
-import { Videos } from './video.js';
-import { Clients } from './clients.js';
+import { Clients, ClientSettings } from './clients.js';
 const app = express();
 const port = 3000;
 
 const userFile = 'users.json';
 const clientFile = 'clients.json';
-const videoFile = 'videos.json';
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -30,8 +28,29 @@ app.get('/', (req, res) => {
 // WIP
 // API to update client settings from client settings page
 app.post('/client/updateSettings', (req, res) => {
-    res.send('Hello World!');
-})
+    /*
+    export interface ClientSettings {
+    youtubeAccessSectionValue: null | string,
+    useSameDescriptionSectionValue: null | boolean,
+    useSameTagsSectionValue: null | boolean,
+    description: null | string,
+    tags: null | string,
+    monthlyPlanInput: null | boolean,
+    numLongFormatInput: null | number,
+    numShortsInput: null | number,
+    levelOfPostProcessing: null | string,
+    estimatedPriceInput: null | string
+    */
+    const settings:ClientSettings = req.body.settings;
+    const channelId:string = req.body.channelId;
+
+    if(settings && channelId){
+        let clients = new Clients(clientFile);
+        clients.updateClientSettings(channelId, settings)
+    } else {
+        res.send('Invalid request body. Please send client settings and channelId');
+    }
+});
 
 // WIP
 // Organize step after video has been added
