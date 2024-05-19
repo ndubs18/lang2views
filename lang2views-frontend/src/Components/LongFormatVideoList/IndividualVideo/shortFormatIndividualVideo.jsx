@@ -1,4 +1,4 @@
-import "./IndividualVideo.css";
+import "./shortFormatIndividualVideo.css";
 import PlaceholderIcon from "../../../Images/brown.png";
 import BlankCheckbox from "../../../Icons/blank_check_box.svg";
 import BlackCheckbox from "../../../Icons/check_box.svg";
@@ -8,7 +8,11 @@ import YouTubeIcon from "../../../Icons/youtube.svg";
 import TrashIcon from "../../../Icons/trash.svg";
 import { useState } from "react";
 
-function IndividualVideo({ videoNumber, videoName, thumbnailImage }) {
+function shortFormatIndividualVideo({
+  videoNumber,
+  videoName,
+  thumbnailImage,
+}) {
   const [checkbox, setCheckbox] = useState(false);
   const [thumbnail, setThumbnail] = useState("");
   return (
@@ -25,7 +29,7 @@ function IndividualVideo({ videoNumber, videoName, thumbnailImage }) {
       <div className="thumbnail">
         <img
           className="thumbnail-image"
-          src={!thumbnail ? PlaceholderIcon : thumbnail}
+          src={thumbnailImage ? thumbnailImage : PlaceholderIcon}
           alt="thumbnail image"
         />
       </div>
@@ -55,4 +59,4 @@ function IndividualVideo({ videoNumber, videoName, thumbnailImage }) {
   );
 }
 
-export default IndividualVideo;
+export default shortFormatIndividualVideo;

@@ -5,8 +5,7 @@
 }
 
 .thumbnail-image {
-    height: 40px;
-    width: 70px;
+    display: none;
 }
 
 .widget-buttons {

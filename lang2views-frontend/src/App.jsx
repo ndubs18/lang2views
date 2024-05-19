@@ -1,5 +1,6 @@
 import ClientAndSampleCreationViews from "./Pages/clientAndSampleCreationViews";
 import LongFormatVideoList from "./Components/LongFormatVideoList/longFormatVideoList";
+import ShortFormatVideoList from "./Components/LongFormatVideoList/shortFormatVideoList";
 import LoginPage from "./Pages/login";
 
 function App() {
@@ -7,7 +8,8 @@ function App() {
     <>
       {/*<LoginPage />*/}
       {/*<ClientAndSampleCreationViews />*/}
-      <LongFormatVideoList />
+      {/*<LongFormatVideoList />*/}
+      <ShortFormatVideoList />
     </>
   );
 }
