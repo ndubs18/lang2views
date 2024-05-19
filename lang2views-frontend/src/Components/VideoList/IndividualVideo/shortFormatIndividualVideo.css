@@ -4,9 +4,7 @@
     box-sizing: border-box;
 }
 
-.thumbnail-image {
-    height: 40px;
-    width: 70px;
+.thumbnail-image-in-short-format {
     display: none;
 }
 

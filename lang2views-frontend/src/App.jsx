@@ -1,7 +1,8 @@
 import ClientAndSampleCreationViews from "./Pages/clientAndSampleCreationViews";
-import LongFormatVideoList from "./Components/LongFormatVideoList/longFormatVideoList";
-import ShortFormatVideoList from "./Components/LongFormatVideoList/shortFormatVideoList";
+import LongFormatVideoList from "./Components/VideoList/LongFormatVideoList/longFormatVideoList";
+import ShortFormatVideoList from "./Components/VideoList/ShortFormatVideoList/shortFormatVideoList";
 import LoginPage from "./Pages/login";
+import Organize from "./Components/VideoList/Organize/Organize";
 
 function App() {
   return (
@@ -9,7 +10,8 @@ function App() {
       {/*<LoginPage />*/}
       {/*<ClientAndSampleCreationViews />*/}
       {/*<LongFormatVideoList />*/}
-      <ShortFormatVideoList />
+      {/*<ShortFormatVideoList />*/}
+      <Organize />
     </>
   );
 }

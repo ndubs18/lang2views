@@ -1,13 +1,13 @@
-import "./longFormatVideoList.css";
+import "./shortFormatVideoList.css";
 import { useState } from "react";
-import placeholderIcon from "../../Images/brown.png";
-import LongFormatIndividualVideo from "./IndividualVideo/longFormatIndividualVideo";
-import DefaultChannelIcon from "../../Icons/profile.svg";
-import SearchIcon from "../../Icons/search.svg";
-import BlankCheckbox from "../../Icons/blank_check_box.svg";
-import BlackCheckbox from "../../Icons/check_box.svg";
+import placeholderIcon from "../../../Images/brown.png";
+import ShortFormatIndividualVideo from "../IndividualVideo/shortFormatIndividualVideo";
+import DefaultChannelIcon from "../../../Icons/profile.svg";
+import SearchIcon from "../../../Icons/search.svg";
+import BlankCheckbox from "../../../Icons/blank_check_box.svg";
+import BlackCheckbox from "../../../Icons/check_box.svg";
 
-function longFormatVideoList() {
+function shortFormatVideoList() {
   const [checkbox, setCheckbox] = useState(false);
 
   return (
@@ -17,8 +17,8 @@ function longFormatVideoList() {
         <p className="video-list-header"></p>
       </div>
       <div className="video-list-tabs">
-        <p className="long-format">Long Format</p>
-        <p className="short-format">Short</p>
+        <p className="long-format-in-short-format">Long Format</p>
+        <p className="short-format-in-short-format">Short</p>
       </div>
       <hr />
       <div className="icon-with-channel-name-content">
@@ -49,24 +49,12 @@ function longFormatVideoList() {
       </div>
       {/* Make a component for an individual video and loop through that component here*/}
       <div className="all-videos">
-        <LongFormatIndividualVideo
-          videoNumber="001."
-          videoName="Video 01"
-          thumbnailImage={placeholderIcon}
-        />
-        <LongFormatIndividualVideo
-          videoNumber="002."
-          videoName="Video 02"
-          thumbnailImage={placeholderIcon}
-        />
-        <LongFormatIndividualVideo
-          videoNumber="003."
-          videoName="Video 03"
-          thumbnailImage={placeholderIcon}
-        />
+        <ShortFormatIndividualVideo videoNumber="001." videoName="Video 01" />
+        <ShortFormatIndividualVideo videoNumber="002." videoName="Video 02" />
+        <ShortFormatIndividualVideo videoNumber="003." videoName="Video 03" />
       </div>
     </div>
   );
 }
 
-export default longFormatVideoList;
+export default shortFormatVideoList;

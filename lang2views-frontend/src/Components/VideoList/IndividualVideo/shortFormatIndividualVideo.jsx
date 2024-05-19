@@ -28,7 +28,7 @@ function shortFormatIndividualVideo({
       </div>
       <div className="thumbnail">
         <img
-          className="thumbnail-image"
+          className="thumbnail-image-in-short-format"
           src={thumbnailImage ? thumbnailImage : PlaceholderIcon}
           alt="thumbnail image"
         />
