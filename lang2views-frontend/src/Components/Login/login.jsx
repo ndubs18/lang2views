@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./login.css";
-import Lang2ViewsLogo from "../Images/lang2views_logo.jpeg";
+import Lang2ViewsLogo from "../../Images/lang2views_logo.jpeg";
 import axios from "axios";
 
 function login() {
@@ -75,7 +75,7 @@ function login() {
             </div>
             <div className="buttons">
               <button className="login-button" type="submit">
-                <p className="login-button-text">Log In ￫</p>
+                <p className="login-button-text">Log In</p>
               </button>
               <button
                 className="forgot-button"
