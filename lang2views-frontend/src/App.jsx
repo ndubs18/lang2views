@@ -3,6 +3,7 @@ import LongFormatVideoList from "./Components/VideoList/LongFormatVideoList/long
 import ShortFormatVideoList from "./Components/VideoList/ShortFormatVideoList/shortFormatVideoList";
 import LoginPage from "./Pages/login";
 import Organize from "./Components/VideoList/Organize/Organize";
+import PostProduction from "./Components/VideoList/PostProduction/PostProduction";
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
       {/*<ClientAndSampleCreationViews />*/}
       {/*<LongFormatVideoList />*/}
       {/*<ShortFormatVideoList />*/}
-      <Organize />
+      {/*<Organize />*/}
+      <PostProduction />
     </>
   );
 }

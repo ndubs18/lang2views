@@ -1,12 +1,10 @@
 import DefaultChannelIcon from "../../../Icons/profile.svg";
 import ArrowDiagonal from "../../../Icons/arrowdiagonal.svg";
-import "./Organize.css";
+import "./PostProduction.css";
 import { useState } from "react";
 
-function Organize() {
-  const [dropboxLocation, setDropboxLocation] = useState("");
-  const [scriptLink, setScriptLink] = useState("");
-  const [trelloTicket, setTrelloTicket] = useState("");
+function PostProduction() {
+  const [projectLink, setProjectLink] = useState("");
 
   return (
     <div className="long-format-video-list">
@@ -34,34 +32,15 @@ function Organize() {
         <input
           className="widget-input"
           type="text"
-          placeholder={dropboxLocation}
-          value={dropboxLocation}
+          placeholder={projectLink}
+          value={projectLink}
+          readOnly
         />
         <button className="arrow-diagonal">↗</button>
       </div>
-      <div className="text-with-input-information">
-        <p className="widget-text">Script Link</p>
-        <input
-          className="widget-input"
-          type="text"
-          placeholder={scriptLink}
-          value={scriptLink}
-        />
-        <button className="arrow-diagonal">↗</button>
-      </div>
-      <div className="text-with-input-information">
-        <p className="widget-text">Trello Ticket</p>
-        <input
-          className="widget-input"
-          type="text"
-          placeholder={trelloTicket}
-          value={trelloTicket}
-        />
-        <button className="arrow-diagonal">↗</button>
-      </div>
-      <button className="organize-button">ORGANIZE</button>
+      <button className="post-production-button">POST-PRODUCE</button>
     </div>
   );
 }
 
-export default Organize;
+export default PostProduction;
