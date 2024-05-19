@@ -28,7 +28,7 @@ function PostProduction() {
       </div>
       <hr />
       <div className="text-with-input-information">
-        <p className="widget-text">Dropbox Location</p>
+        <p className="widget-text">Link To Project</p>
         <input
           className="widget-input"
           type="text"

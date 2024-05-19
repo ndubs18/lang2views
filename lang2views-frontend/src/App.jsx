@@ -14,8 +14,8 @@ function App() {
       {/*<LongFormatVideoList />*/}
       {/*<ShortFormatVideoList />*/}
       {/*<Organize />*/}
-      {/*<PostProduction />*/}
-      <Upload />
+      <PostProduction />
+      {/*<Upload />*/}
     </>
   );
 }
