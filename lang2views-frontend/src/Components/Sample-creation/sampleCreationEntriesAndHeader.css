@@ -1,11 +1,11 @@
-.client-entries {
+.sample-creation-entries {
     display: block;
     position: relative;
-    height: 90vh;
+    height: 75vh;
     overflow-y: auto;
 }
 
-.header {
+.sample-creation-table-header {
     display: flex;
     flex-direction: row;
     justify-content: start;
@@ -14,7 +14,7 @@
     padding-right: 1%;
 }
 
-.client-entry {
+.sample-creation-entry {
     display: flex;
     flex-direction: row;
     justify-content: start;
@@ -26,42 +26,44 @@
     height: 50px;
 }
 
-#client-entries-and-header {
+#sample-creation-entries-and-header {
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin-top: 30px;
 }
 
-.client-entry-and-header-individual-pieces-of-data-divs {
+.sample-creation-header-parts {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.client-photo-client-entry-data {
-    width: 2vw;
-    height: auto;
+.sample-creation-entry-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.name-client-entry-data {
+.sample-creation-name-in-table-header {
     margin-left: 1%;
-    width: 35%;
+    width: 39%;
 }
 
-.long-format-client-entry-data {
-    width: 12%;
+.sample-creation-name-text-container {
+    margin-left: 1%;
+    width: 40%;
 }
 
-.shorts-client-entry-data {
-    width: 14%;
+.sample-creation-video-type {
+    width: 10%;
 }
 
-.percentage-done-client-entry-data {
-    width: 25%;
+.sample-creation-entry-thumbnail-container {
+    width: 40%;
 }
 
-.client-entry-action-button {
+.sample-creation-entry-action-button {
     display: flex;
     flex-direction: row;
     align-self: center;
@@ -69,7 +71,17 @@
     height: 2vw;
 }
 
-.client-entry-action-icon {
+.sample-creation-entry-action-icon {
     width: 1vw;
     height: auto;
+}
+
+.sample-creation-entry-thumbnail-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.thumbnail {
+    width: 100px;
 }
