@@ -8,7 +8,7 @@ import {
   sortViewsPerMinuteMostToLeast,
 } from "../Utilities/sortAscending";
 
-function LongFormatVideoList() {
+function longFormatVideoList() {
   const [sortByDurationHidden, setSortByDurationHidden] = useState(true);
   const [noSortHidden, setNoSortHidden] = useState(false);
   const [sortByViewsHidden, setSortByViewsHidden] = useState(true);
@@ -33,7 +33,7 @@ function LongFormatVideoList() {
         done: true,
       },
       {
-        thumbnailSrc: ".",
+        thumbnailSrc: "./src/Images/brown.png",
         title: "B",
         duration: "9",
         views: "56",
@@ -418,4 +418,4 @@ function LongFormatVideoList() {
   );
 }
 
-export default LongFormatVideoList;
+export default longFormatVideoList;

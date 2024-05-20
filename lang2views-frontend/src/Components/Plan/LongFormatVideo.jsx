@@ -43,6 +43,7 @@ function LongFormatVideo(props) {
     <div className="d-flex flex-column video-seperation">
       <div style={{ width: "100%", height: "100%", backgroundImage: `url(${props.videoDetails.thumbnailSrc})`}}>
         <button className="rounded rounded-circle long-format-video-select-button" onClick={handleSelectButton} id={props.videoDetails.title} disabled={props.videoDetails.done}></button>
+        <div id={props.videoDetails.title + "-thumbnail"}>{props.videoDetails.thumbnailSrc}</div>
       </div>
       <p>{props.videoDetails.title}</p>
       <div className="d-flex flex-row">
