@@ -29,7 +29,7 @@ function renderClientsView() {
 
 function ClientsViewButton() {
   const accountPicture = (
-    <img id="clients-view-button-icon" src="src/Images/"></img>
+        <img id="clients-view-button-icon" src="src/Images/client.png"></img>
   );
 
   return (

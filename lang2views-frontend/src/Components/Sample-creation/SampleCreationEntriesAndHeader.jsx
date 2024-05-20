@@ -112,7 +112,7 @@ function SampleCreationEntriesAndHeader(props) {
       <img
         className="sample-creation-entry-action-icon rounded-circle"
         id={`sample-creation-entry-${row + 1}`}
-        src="src/Images/brown.png"
+        src="src/Images/organize.png"
       ></img>
     );
     const organizeButton = (
@@ -129,7 +129,7 @@ function SampleCreationEntriesAndHeader(props) {
       <img
         className="sample-creation-entry-action-icon rounded-circle"
         id={`sample-creation-entry-${row + 1}`}
-        src="src/Images/brown.png"
+        src="src/Images/postProduction.png"
       ></img>
     );
     const postProductionButton = (
@@ -146,7 +146,7 @@ function SampleCreationEntriesAndHeader(props) {
       <img
         className="sample-creation-entry-action-icon rounded-circle"
         id={`sample-creation-entry-${row + 1}`}
-        src="src/Images/brown.png"
+        src="src/Images/upload.png"
       ></img>
     );
     const uploadButton = (

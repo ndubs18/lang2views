@@ -26,7 +26,7 @@ function renderSampleCreationView() {
 }
 
 function SampleCreationViewButton() {
-    const sampleCreationViewLogo = <img id="sample-creation-view-button-icon" src="src/Images/"></img>;
+    const sampleCreationViewLogo = <img id="sample-creation-view-button-icon" src="src/Images/sample.png"></img>;
 
     return <button onClick={renderSampleCreationView} className="btn" id="sample-creation-view-button">{sampleCreationViewLogo}</button>;
 }
