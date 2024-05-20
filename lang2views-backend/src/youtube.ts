@@ -25,7 +25,7 @@ export class YouTube {
             let videos = [];
             for(let item of response.data.items){
                 videos.push({
-                    vidoeName: item.snippet.title,
+                    name: item.snippet.title,
                     id:item.id.videoId,
                     url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
                     thumbnail:item.snippet.thumbnails.default
@@ -42,25 +42,24 @@ export class YouTube {
         }
     }
 
-    async downloadAudio(videoURL:string, videoName:string, callback:Function){
-        let stream = ytdl(videoURL, {
-            quality:'highestaudio'
-        })
-        await ffmpeg(stream).audioBitrate(128).save(`${videoName}.mp3`).on('end', async () => {
-            console.log('complete');
-            callback();
+    async downloadVideoAndAudio(videoURL:string, videoName:string, callback:Function){
+        await ytdl(videoURL, {quality: 'highest'}).pipe(await fs.createWriteStream(`${videoName}.mp4`)).on('finish', async () => {
+            let stream = ytdl(videoURL, {
+                quality:'highestaudio'
+            })
+            await ffmpeg(stream).audioBitrate(128).output(videoName+'.mp3').on('end', async () => {
+                console.log('complete');
+                callback();
+            }).on('error', (err) => {
+                console.log(err);
+                callback(err);
+            }).on('progress', (p) => {
+                console.log(p);
+            }).run();
         }).on('error', (err) => {
-            console.log(err);
+            console.error(err);
             callback(err);
-        }).on('progress', (p) => {
-            console.log(p);
         });
-    }
-
-    async downloadVideo(videoURL:string, videoName:string):Promise<ytdl.videoInfo>{
-        let videoInfo = await ytdl.getInfo(videoURL);
-        await ytdl(videoURL).pipe(fs.createWriteStream(`${videoName}.mp4`));
-        return videoInfo;
     }
 
     async getChannelFromId(apiKey: string, channelId: string) {
