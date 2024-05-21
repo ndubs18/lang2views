@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import Plan from "./Plan";
 import "../../Utilities/popup.css";
 
-function ClientSettingsPlanButtonClickProcessor() {
+function ClientSettingsPlanButtonClickProcessor(props) {
     const popupsMenusStepAArea = document.querySelector(".popup-menus-step-area");
     const clientSettingsPlanButtonRoot = createRoot(popupsMenusStepAArea);
 

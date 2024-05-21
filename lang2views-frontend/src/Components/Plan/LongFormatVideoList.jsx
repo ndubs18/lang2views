@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LongFormatVideo from "./LongFormatVideo";
 import Save from "./LongFormatStepSave";
 import "./clientPlan.css";
@@ -8,7 +8,37 @@ import {
   sortViewsPerMinuteMostToLeast,
 } from "../Utilities/sortAscending";
 
-function longFormatVideoList() {
+function LongFormatVideoList(props) {
+  const [pageOf50Node, setPageOf50Node] = useState({});
+  const [previousButtonClicked, setPreviousButtonClicked] = useState("");
+  const [nextButtonClicked, setNextButtonClicked] = useState("");
+  const [tokenForPageToGet, setTokenForPageToGet] = useState("");
+
+  useEffect(() => {
+    if (previousButtonClicked === "false") return;
+    else if (nextButtonClicked === "false") return;
+
+    fetch("http://localhost:3000/client/getVideoPage", {
+      method: "GET",
+      body: {
+        channelId: props.clientId,
+        pageToken: tokenForPageToGet === "" ? null : tokenForPageToGet,
+      },
+    })
+      .then((response) =>
+        response.json().then((value) => setPageOf50Node(value))
+      )
+      .catch((err) => {
+        throw new Error(err);
+      });
+
+    if (previousButtonClicked === "true") {
+      setPreviousButtonClicked("false");
+    } else if (nextButtonClicked === "true") {
+      setNextButtonClicked("false");
+    }
+  }, [previousButtonClicked, nextButtonClicked]);
+
   const [sortByDurationHidden, setSortByDurationHidden] = useState(true);
   const [noSortHidden, setNoSortHidden] = useState(false);
   const [sortByViewsHidden, setSortByViewsHidden] = useState(true);
@@ -18,11 +48,17 @@ function longFormatVideoList() {
   const [viewsFilterStatus, setViewsFilterStatus] = useState("");
   const [viewsPerMinuteFilterStatus, setViewsPerMinuteFilterStatus] =
     useState("");
-    const [durationFilterActive, setDurationFilterActive] = useState("filter-button-inactive");
-    const [viewsFilterActive, setViewsFilterActive] = useState("filter-button-inactive");
-    const [viewsPerMinuteFilterActive, setViewsPerMinuteFilterActive] = useState("filter-button-inactive");
+  const [durationFilterActive, setDurationFilterActive] = useState(
+    "filter-button-inactive"
+  );
+  const [viewsFilterActive, setViewsFilterActive] = useState(
+    "filter-button-inactive"
+  );
+  const [viewsPerMinuteFilterActive, setViewsPerMinuteFilterActive] = useState(
+    "filter-button-inactive"
+  );
 
-  const props = {
+  /* const props = {
     longFormatVideos: [
       {
         thumbnailSrc: "./src/Images/brown.png",
@@ -169,29 +205,26 @@ function longFormatVideoList() {
         done: false,
       },
     ],
-  };
+  }; */
 
-  if (props.longFormatVideos === null)
-    throw new Error("Need to have LongFormatVideos to display");
-
-  const videos = [];
+  const videosUnsorted = [];
   for (
     let numVideo = 0;
-    numVideo < props.longFormatVideos.length;
+    numVideo < pageOf50Node.videos.length;
     numVideo = numVideo + 3
   ) {
     const videoRow = [];
-    const firstVideoInRowDetails = props.longFormatVideos[numVideo];
+    const firstVideoInRowDetails = pageOf50Node.videos[numVideo];
     videoRow.push(<LongFormatVideo videoDetails={firstVideoInRowDetails} />);
 
-    const secondVideoInRowDetails = props.longFormatVideos[numVideo + 1];
+    const secondVideoInRowDetails = pageOf50Node.videos[numVideo + 1];
     videoRow.push(
       secondVideoInRowDetails ? (
         <LongFormatVideo videoDetails={secondVideoInRowDetails} />
       ) : null
     );
 
-    const thirdVideoInRowDetails = props.longFormatVideos[numVideo + 2];
+    const thirdVideoInRowDetails = pageOf50Node.videos[numVideo + 2];
     videoRow.push(
       thirdVideoInRowDetails ? (
         <LongFormatVideo videoDetails={thirdVideoInRowDetails} />
@@ -204,10 +237,10 @@ function longFormatVideoList() {
       videoRow
     );
 
-    videos.push(videoRowContainer);
+    videosUnsorted.push(videoRowContainer);
   }
 
-  let videosByDuration = props.longFormatVideos;
+  let videosByDuration = pageOf50Node.videos;
   sortDurationMostToLeast(videosByDuration);
   const videosMostToLeastDuration = [];
   for (
@@ -242,7 +275,7 @@ function longFormatVideoList() {
     videosMostToLeastDuration.push(videoRowContainer);
   }
 
-  let videosByViews = props.longFormatVideos;
+  let videosByViews = pageOf50Node.videos;
   sortViewsMostToLeast(videosByViews);
   const videosMostToLeastViews = [];
   for (
@@ -277,12 +310,12 @@ function longFormatVideoList() {
     videosMostToLeastViews.push(videoRowContainer);
   }
 
-  let videosByViewsPerMinute = props.longFormatVideos;
+  let videosByViewsPerMinute = pageOf50Node.videos;
   sortViewsPerMinuteMostToLeast(videosByViewsPerMinute);
   const videosMostToLeastViewsPerMinute = [];
   for (
     let numVideo = 0;
-    numVideo < props.longFormatVideos.length;
+    numVideo < pageOf50Node.videos.length;
     numVideo = numVideo + 3
   ) {
     const videoRow = [];
@@ -316,7 +349,8 @@ function longFormatVideoList() {
     <>
       <div className="d-flex flex-row ms-5 mb-5 filter-buttons-container">
         <p className="align-middle fs-4 mt-2 me-4">Filters:</p>
-        <button className={durationFilterActive + " btn"}
+        <button
+          className={durationFilterActive + " btn"}
           value={durationFilterStatus}
           onClick={(event) => {
             if (event.target.value === "clicked") {
@@ -404,12 +438,29 @@ function longFormatVideoList() {
         </button>
       </div>
       <div className="scrollable-video-list">
-        <div hidden={noSortHidden}>{videos}</div>
+        <div hidden={noSortHidden}>{videosUnsorted}</div>
         <div hidden={sortByDurationHidden}>{videosMostToLeastDuration}</div>
         <div hidden={sortByViewsHidden}>{videosMostToLeastViews}</div>
         <div hidden={sortByViewsPerMinuteHidden}>
           {videosMostToLeastViewsPerMinute}
         </div>
+      </div>
+      <div
+        className="d-flex flex-row justify-content-center"
+        id="previous-next-videos-buttons-container"
+      >
+        <button
+          className="btn btn-primary"
+          onClick={() => {setPreviousButtonClicked("true"); setTokenForPageToGet(pageOf50Node.prevPageToken)}}
+        >
+          Previous 50 videos
+        </button>
+        <button
+          className="btn btn-primary"
+          onClick={() => {setNextButtonClicked("true"); setTokenForPageToGet(pageOf50Node.nextPageToken)}}
+        >
+          Next 50 videos
+        </button>
       </div>
       <div className="horizontal-line"></div>
       <input id="current-number-to-process" hidden type="number" value={0} />
@@ -418,4 +469,4 @@ function longFormatVideoList() {
   );
 }
 
-export default longFormatVideoList;
+export default LongFormatVideoList;

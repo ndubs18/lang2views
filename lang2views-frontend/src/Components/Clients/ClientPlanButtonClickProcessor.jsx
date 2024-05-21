@@ -10,7 +10,7 @@ function ClientPlanButtonClickProcessor(props) {
 
     const clientsViewHook = createRoot(popupAndCloseAreaContainer);
     
-    clientsViewHook.render(<ClientPlan channelName={props.channelName} />);
+    clientsViewHook.render(<ClientPlan channelName={props.channelName} clientId={props.clientId}/>);
 }
 
 export default ClientPlanButtonClickProcessor;

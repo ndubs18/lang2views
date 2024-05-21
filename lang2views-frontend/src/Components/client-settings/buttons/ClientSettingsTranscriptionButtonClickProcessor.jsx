@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import "../../Utilities/popup.css";
 import Transcription from "./Transcription";
 
-function ClientSettingsTranscriptionButtonClickProcessor() {
+function ClientSettingsTranscriptionButtonClickProcessor(props) {
     const popupsMenusStepAArea = document.querySelector(".popup-menus-step-area");
     const clientSettingsPlanButtonRoot = createRoot(popupsMenusStepAArea);
 

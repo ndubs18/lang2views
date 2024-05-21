@@ -129,7 +129,10 @@ function ClientEntriesAndHeader(props) {
     const settingsButton = (
       <button
         className="client-entry-action-button btn rounded-circle client-entry-settings-button"
-        onClick={ClientSettingsButtonClickProcessor}
+        onClick={() => {
+          ClientSettingsButtonClickProcessor({clientId: dataForCurrentClientEntry.clientId}
+          );
+        }}
       >
         {settingsButtonIcon}
       </button>
@@ -146,7 +149,9 @@ function ClientEntriesAndHeader(props) {
     const planButton = (
       <button
         className="client-entry-action-button btn rounded-circle client-entry-plan-button"
-        onClick={ClientPlanButtonClickProcessor}
+        onClick={() => {
+          ClientPlanButtonClickProcessor({clientId: dataForCurrentClientEntry.clientId});
+        }}
       >
         {planButtonIcon}
       </button>
@@ -163,7 +168,9 @@ function ClientEntriesAndHeader(props) {
     const videoListButton = (
       <button
         className="client-entry-action-button btn rounded-circle client-entry-video-list-button"
-        onClick={ClientVideoListProcessor}
+        onClick={() => {
+          ClientVideoListProcessor({clientId: dataForCurrentClientEntry.clientId});
+        }}
       >
         {videoListButtonIcon}
       </button>
@@ -180,17 +187,14 @@ function ClientEntriesAndHeader(props) {
     const deleteButton = (
       <button
         className="client-entry-action-button btn rounded-circle client-entry-delete-button"
-        onClick={ClientDeleteButtonClickProcessor}
+        onClick={() => {
+          ClientDeleteButtonClickProcessor({clientId: dataForCurrentClientEntry.clientId});
+        }}
       >
         {deleteButtonIcon}
       </button>
     );
     clientEntryDataArray.push(deleteButton);
-
-    const clientIdContainer = (
-      <div hidden={true}>{dataForCurrentClientEntry.clientId}</div>
-    );
-    clientEntryDataArray.push(clientIdContainer);
 
     const clientEntryContainer = (
       <div className="client-entry border border-secondary rounded">
@@ -198,11 +202,19 @@ function ClientEntriesAndHeader(props) {
       </div>
     );
     clientEntriesArray.push(clientEntryContainer);
+
+    const clientIdContainer = (
+      <div id={"client-id-" + Number.parseInt(row + 1)} hidden={true}>
+        {dataForCurrentClientEntry.clientId}
+      </div>
+    );
+    clientEntriesArray.push(clientIdContainer);
   }
 
   const clientEntriesContainer = (
     <div className="client-entries">{clientEntriesArray}</div>
   );
+
   const clientEntriesAndHeaderContainer = (
     <div id="client-entries-and-header">
       {headerContainer}

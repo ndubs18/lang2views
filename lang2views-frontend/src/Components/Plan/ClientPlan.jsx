@@ -6,7 +6,7 @@ import LongFormatVideoList from "./LongFormatVideoList";
 import ClientPlanShortsButtonClickProcessor from "./ClientPlanShortsButtonClickProcessor";
 import ClientPlanLongFormatButtonClickProcessor from "./ClientPlanLongFormatButtonClickProcessor";
 
-function ClientPlan() {
+function ClientPlan(props) {
   const [longFormatButtonActive, setLongFormatButtonActive] =
     useState("active-step-button");
   const [shortsButtonActive, setShortsButtonActive] = useState("normal");
@@ -18,7 +18,6 @@ function ClientPlan() {
         onClick={CloseClientPlanPopup}
       ></div>
       <div className="client-plan-popup">
-        {" "}
         <div id="client-plan-header" className="ms-4">
           <ClientPlanHeader clientName="ClientName" />
         </div>
@@ -30,7 +29,7 @@ function ClientPlan() {
               " me-4 fs-2 ms-5 btn btn-link text-decoration-none text-reset rounded-0"
             }
             onClick={() => {
-              ClientPlanLongFormatButtonClickProcessor();
+              ClientPlanLongFormatButtonClickProcessor({clientId: props.clientId});
               setLongFormatButtonActive("active-step-button");
               setShortsButtonActive("normal");
             }}
@@ -44,7 +43,7 @@ function ClientPlan() {
               " mx-3 fs-2 btn btn-link text-decoration-none text-reset rounded-0"
             }
             onClick={() => {
-              ClientPlanShortsButtonClickProcessor();
+              ClientPlanShortsButtonClickProcessor({clientId: props.clientId});
               setLongFormatButtonActive("normal");
               setShortsButtonActive("active-step-button");
             }}

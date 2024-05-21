@@ -1,10 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Short from "./Short";
 import Save from "./ShortsStepSave";
 import "./clientPlan.css";
 import { sortViewsMostToLeast } from "../Utilities/sortAscending";
 
 function ShortsList() {
+  const [videoListOf50, setVideoListOf50] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/client/getVideoPage", {
+      method: "GET",
+      body: {
+        channelId: props.clientId,
+        pageToken: null,
+      },
+    })
+      .then((response) =>
+        response.json().then((value) => setVideoListOf50(value))
+      )
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }, []);
+
   const [noSortHidden, setNoSortHidden] = useState(false);
   const [sortByViewsHidden, setSortByViewsHidden] = useState(true);
   const [viewsFilterStatus, setViewsFilterStatus] = useState("");
@@ -273,39 +291,39 @@ function ShortsList() {
 
   const videos = [];
 
-  if (props.shorts === null) throw new Error("Need to have shorts to display");
+  if (videoListOf50 === null) throw new Error("Need to have shorts to display");
 
   for (
     let numVideo = 0;
-    numVideo < props.shorts.length;
+    numVideo < videoListOf50.length;
     numVideo = numVideo + 5
   ) {
     const videoRow = [];
-    const firstVideoInRowDetails = props.shorts[numVideo];
+    const firstVideoInRowDetails = videoListOf50[numVideo];
     videoRow.push(<Short videoDetails={firstVideoInRowDetails} />);
 
-    const secondVideoInRowDetails = props.shorts[numVideo + 1];
+    const secondVideoInRowDetails = videoListOf50[numVideo + 1];
     videoRow.push(
       secondVideoInRowDetails ? (
         <Short videoDetails={secondVideoInRowDetails} />
       ) : null
     );
 
-    const thirdVideoInRowDetails = props.shorts[numVideo + 2];
+    const thirdVideoInRowDetails = videoListOf50[numVideo + 2];
     videoRow.push(
       thirdVideoInRowDetails ? (
         <Short videoDetails={thirdVideoInRowDetails} />
       ) : null
     );
 
-    const fourthVideoInRowDetails = props.shorts[numVideo + 3];
+    const fourthVideoInRowDetails = videoListOf50[numVideo + 3];
     videoRow.push(
       fourthVideoInRowDetails ? (
         <Short videoDetails={fourthVideoInRowDetails} />
       ) : null
     );
 
-    const fifthVideoInRowDetails = props.shorts[numVideo + 4];
+    const fifthVideoInRowDetails = videoListOf50[numVideo + 4];
     videoRow.push(
       fifthVideoInRowDetails ? (
         <Short videoDetails={fifthVideoInRowDetails} />
@@ -322,7 +340,7 @@ function ShortsList() {
   }
 
   const videosMostToLeastViews = [];
-  let videosByViews = props.shorts;
+  let videosByViews = videoListOf50;
   sortViewsMostToLeast(videosByViews);
   for (
     let numVideo = 0;
@@ -397,6 +415,10 @@ function ShortsList() {
       <div className="scrollable-video-list">
         <div hidden={noSortHidden}>{videos}</div>
         <div hidden={sortByViewsHidden}>{videosMostToLeastViews}</div>
+      </div>
+      <div className="d-flex flex-row justify-content-center" id="previous-next-videos-buttons-container">
+        <button className="btn btn-primary">Previous 50 videos</button>
+        <button className="btn btn-primary">Next 50 videos</button>
       </div>
       <div className="horizontal-line"></div>
       <input id="current-number-to-process" hidden type="number" value={0} />
