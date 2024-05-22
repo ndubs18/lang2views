@@ -5,7 +5,9 @@ export interface Video {
     id:string,
     name:string,
     url:string,
-    // thumbnail:any,
+    thumbnail:any,
+    duration:any,
+    format:string
 }
 
 export class Videos {
@@ -51,7 +53,19 @@ export class Videos {
         }
     }
 
-    public resetVideos(_videos:Video[]){
+    public removeVideo(videoId){
+        // Find the index of the user with the specified username
+        const index = this._videos.findIndex(video => video.id === videoId);
+
+        // If the user is found, remove it from the array
+        if (index !== -1) {
+            let video = this._videos[index];
+            this._videos.splice(index, 1);
+            return true;
+        } else {
+            console.log(`User ${videoId} not found.`);
+            return false;
+        }
     }
 
     public downloadVideo(videoId:string,filePath:string){
@@ -59,12 +73,17 @@ export class Videos {
             let youtube = new YouTube();
             for(let video of this._videos){
                 if(video.id == videoId){
-                    await youtube.downloadVideoAndAudio(video.url,filePath+'/'+video.name.trim(), (err) => {
+                    let folderName = filePath + '/' + video.id.trim().replaceAll(' ', '_');
+                    if(!fs.existsSync(folderName)){
+                        fs.mkdirSync(folderName);
+                    }
+                    await youtube.downloadVideoAndAudio(video.url,folderName+'/'+video.name.trim().replaceAll(' ', '_'), (err) => {
                         if(!err){
                             console.log(video.name + ' download complete.');
                             resolve('Download complete.');
                         } else {
                             console.error(err);
+                            reject(err);
                         }
                     })
                 }
@@ -127,7 +146,7 @@ export class Videos {
             
             console.log('Video data has been written to the file successfully.');
         } catch (error) {
-            console.error('Error writing _videos to file:', error);
+            console.error('Error writing videos to file:', error);
         }
     }
 }

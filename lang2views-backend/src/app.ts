@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { YouTube } from './youtube.js';
+import { YouTube } from './youtube.js'
 import { Whisper } from './whisper.js';
 import { Bing } from './bing.js';
 import { Users } from './users.js';
@@ -24,6 +24,24 @@ app.use(cors({
 app.get('/', (req, res) => {
     res.send('Hello World!');
 })
+
+/*
+* Remove Video API
+* Requires channelId and videoId
+* removes video from client and cleans up any remaining files on server
+*/
+app.post('/client/removeVideo', (req, res) => {
+    const channelId = req.body.channelId;
+    const videoId = req.body.videoId;
+
+    if(channelId && videoId){
+        let clients = new Clients(clientFile);
+        clients.removeClientVideo(channelId,videoId);
+        res.send('Video removed.');
+    } else {
+        res.send('Invalid request body. Please send channelId and videoId');
+    }
+});
 
 // WIP
 // API to update client settings from client settings page
@@ -58,11 +76,11 @@ app.post('/client/updateSettings', (req, res) => {
 // Translates video and adds it to google doc
 // updates trello ticket
 // adds all video files to dropbox (transcription and tranlsation test files, mp4, mp3)
-app.post('/client/oragnizeVideo', async (req,res) => {
+app.post('/client/organizeVideo', async (req,res) => {
     const channelId = req.body.channelId;
     const videoId = req.body.videoId;
 
-    if(channelId){
+    if(channelId && videoId){
         let clients = new Clients(clientFile);
 
         let videos = JSON.stringify(await clients.getClientVideos(channelId));
@@ -84,18 +102,27 @@ app.post('/client/oragnizeVideo', async (req,res) => {
 // - the empty google doc (for transcription)
 app.post('/client/addVideo', async (req,res) => {
     const channelId = req.body.channelId;
-    const name = req.body.name;
-    const url = req.body.url;
-    const id = req.body.id;
+    const video = req.body.video
+    /*
+    * Video {
+        name:string,
+        url:string,
+        id:string,
+        thumbnail:any,
+        duration:any,
+        format:string
+    }
+    */
 
     let clients = new Clients(clientFile);
-    if(channelId && name && url && id){
-        await clients.addClientVideo(channelId,{
-            name:name,
-            id:id,
-            url:url
-        })
-        res.send('video added.');
+    if(channelId && video){
+        if(video.name && video.url && video.id && video.thumbnail && video.duration && video.format){
+            await clients.addClientVideo(channelId,video)
+            res.send('video added.');
+        } else {
+            res.send('Invalid request body. Video format invalid.')
+        }
+
     } else {
         res.send('Invalid request body.')
     }

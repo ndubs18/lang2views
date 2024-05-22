@@ -19,42 +19,65 @@ export class YouTube {
                 pageToken: pageToken // Pass pageToken if it exists
             });
 
-            console.log(response);
+            // Extract video IDs from the search results
+            const videoIds = response.data.items.map(item => item.id.videoId).filter(id => id);
 
-            // Extract videos
             let videos = [];
-            for(let item of response.data.items){
-                videos.push({
-                    name: item.snippet.title,
-                    id:item.id.videoId,
-                    url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
-                    thumbnail:item.snippet.thumbnails.default
-                })
-            }
+            if (videoIds.length > 0) {
+                const videoDetailsResponse = await youtube.videos.list({
+                  part: ['snippet', 'contentDetails'],
+                  id: [ videoIds.join(',') ]
+                  
+                });
+              
+                // Process the video details
+                for(let video of videoDetailsResponse.data.items){
+                    videos.push({
+                        id: video.id,
+                        name: video.snippet.title,
+                        url: `https://www.youtube.com/watch?v=${video.id}`,
+                        thumbnail: video.snippet.thumbnails.default,
+                        duration: parseISODuration(video.contentDetails.duration),
+                        format: classifyVideoDuration(video.contentDetails.duration, 60)
+                    })
+                }
 
-            return { 
-                videos: videos,
-                nextPageToken: response.data.nextPageToken,
-                prevPageToken: response.data.prevPageToken
-            };
+                return { 
+                    videos: videos,
+                    nextPageToken: response.data.nextPageToken,
+                    prevPageToken: response.data.prevPageToken
+                };
+            }
         }catch(e){
             console.error(e);
         }
     }
 
     async downloadVideoAndAudio(videoURL:string, videoName:string, callback:Function){
-        await ytdl(videoURL, {quality: 'highest'}).pipe(await fs.createWriteStream(`${videoName}.mp4`)).on('finish', async () => {
+        await ytdl(videoURL).pipe(await fs.createWriteStream(`${videoName}.mp4`)).on('finish', async () => {
             let stream = ytdl(videoURL, {
                 quality:'highestaudio'
             })
             await ffmpeg(stream).audioBitrate(128).output(videoName+'.mp3').on('end', async () => {
-                console.log('complete');
-                callback();
+                // Merge video and audio using ffmpeg
+                await ffmpeg()
+                .input(videoName+'.mp4')
+                .input(videoName+'.mp3')
+                .outputOptions('-c:v copy')  // Copy the video codec
+                .outputOptions('-c:a aac')   // Ensure the audio is in AAC format
+                .output(`${videoName}_merged.mp4`)
+                .on('end', () => {
+                    console.log('Merging complete');
+                    callback();
+                })
+                .on('error', (err) => {
+                    console.error(err);
+                    callback(err);
+                })
+                .run();
             }).on('error', (err) => {
                 console.log(err);
                 callback(err);
-            }).on('progress', (p) => {
-                console.log(p);
             }).run();
         }).on('error', (err) => {
             console.error(err);
@@ -95,6 +118,47 @@ export class YouTube {
         }
       }
 }
+
+/**
+ * Parses an ISO 8601 duration string and converts it to an object.
+ * @param {string} duration - The ISO 8601 duration string (e.g., "PT9M24S").
+ * @returns {object} An object with days, hours, minutes, and seconds.
+ */
+export function parseISODuration(duration) {
+    const regex = /P(?:([\d.]+)D)?T(?:([\d.]+)H)?(?:([\d.]+)M)?(?:([\d.]+)S)?/;
+    const matches = duration.match(regex);
+    return {
+      days: parseFloat(matches[1]) || 0,
+      hours: parseFloat(matches[2]) || 0,
+      minutes: parseFloat(matches[3]) || 0,
+      seconds: parseFloat(matches[4]) || 0
+    };
+  }
+  
+  /**
+   * Converts a duration object to total seconds.
+   * @param {object} durationObj - An object with days, hours, minutes, and seconds.
+   * @returns {number} The total duration in seconds.
+   */
+  export function durationToSeconds(durationObj) {
+    const { days, hours, minutes, seconds } = durationObj;
+    return ((days * 24 * 60 * 60) +
+            (hours * 60 * 60) +
+            (minutes * 60) +
+            seconds);
+  }
+  
+  /**
+   * Compares a video duration with a given threshold to classify it.
+   * @param {string} isoDuration - The ISO 8601 duration string of the video.
+   * @param {number} thresholdSeconds - The threshold in seconds to classify the video.
+   * @returns {string} "short" if the video is shorter than the threshold, "long" otherwise.
+   */
+  export function classifyVideoDuration(isoDuration, thresholdSeconds) {
+    const parsedDuration = parseISODuration(isoDuration);
+    const totalSeconds = durationToSeconds(parsedDuration);
+    return totalSeconds < thresholdSeconds ? 'short' : 'long';
+  }
 
     
    
