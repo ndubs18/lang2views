@@ -2,8 +2,61 @@ import ytdl from 'ytdl-core';
 import ffmpeg from 'fluent-ffmpeg';
 import fs from 'fs';
 import { google } from 'googleapis';
+import { Clients } from './clients.js';
+import { Videos } from './video.js';
 
+const clientFile = 'clients.json';
+const CLIENT_SECRET_PATH = 'client_secret.json';
 export class YouTube {
+    private oAuth2Client;
+    checkAuth(){
+        if(this.oAuth2Client.credentials){
+            return true
+        }
+        return false;
+    }
+    upload(filePath:string, callback:Function){
+        const youtube = google.youtube({ version: 'v3', auth: this.oAuth2Client });
+        const videoFilePath = filePath;
+        const fileSize = fs.statSync(videoFilePath).size;
+        youtube.videos.insert(
+            {
+            part: ['snippet,status'],
+            requestBody: {
+                snippet: {
+                title: 'Test Video',
+                description: 'This is a test video upload via YouTube Data API',
+                tags: ['youtube', 'api', 'upload'],
+                categoryId: '22', // See https://developers.google.com/youtube/v3/docs/videoCategories/list
+                },
+                status: {
+                privacyStatus: 'private', // 'private', 'public' or 'unlisted'
+                },
+            },
+            media: {
+                body: fs.createReadStream(videoFilePath),
+            },
+            },
+            {
+            onUploadProgress: (evt) => {
+                const progress = (evt.bytesRead / fileSize) * 100;
+                console.log(`${Math.round(progress)}% complete`);
+            },
+            },
+            (err, response) => {
+                callback(err, response)
+            }
+        );
+    }
+
+    loadAuthClient(){
+        // Load client secrets from a local file.
+        let content = fs.readFileSync(CLIENT_SECRET_PATH);
+        const credentials = JSON.parse(content.toString());
+        const { client_id, client_secret, redirect_uris } = credentials.web;
+        this.oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
+        return this.oAuth2Client;
+    }
     async getVideoList(apiKey:string, channelId: string, pageToken:string|null){
         const youtube = google.youtube({
             version: 'v3',
@@ -32,13 +85,26 @@ export class YouTube {
               
                 // Process the video details
                 for(let video of videoDetailsResponse.data.items){
+                    let finalized = false;
+                    if(fs.existsSync(`./clients/${channelId}`)){
+                        let clients = new Clients(clientFile);
+                        let client = clients.getClient(channelId);
+                        if(client.videos){
+                            if(client.videos.isFinished(video.id)){
+                                finalized = true;
+                            }
+                        } else {
+                            client.videos = new Videos('clients/'+client.channelId+'/videos.json');
+                        }
+                    }
                     videos.push({
                         id: video.id,
                         name: video.snippet.title,
                         url: `https://www.youtube.com/watch?v=${video.id}`,
                         thumbnail: video.snippet.thumbnails.default,
                         duration: parseISODuration(video.contentDetails.duration),
-                        format: classifyVideoDuration(video.contentDetails.duration, 60)
+                        format: classifyVideoDuration(video.contentDetails.duration, 60),
+                        finalized: finalized
                     })
                 }
 

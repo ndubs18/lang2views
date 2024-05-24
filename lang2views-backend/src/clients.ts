@@ -33,6 +33,15 @@ export class Clients {
         this._clients = this.readClientsFromFile(clientFile);
     }
 
+    public getClientVideoPath(channelId:string, videoId:string){
+        let clientVideo = this.getClientVideo(channelId,videoId);
+        for(let client of this._clients){
+            if(client.channelId == channelId){
+                return `./clients/${channelId}/${clientVideo.id}/${clientVideo.name.trim().replaceAll(' ', '_')}`
+            }
+        }
+    }
+
     public removeClientVideo(channelId:string, videoId:string){
         let match = false;
         for(let client of this._clients){

@@ -7,7 +7,8 @@ export interface Video {
     url:string,
     thumbnail:any,
     duration:any,
-    format:string
+    format:string,
+    finalized:boolean
 }
 
 export class Videos {
@@ -22,6 +23,14 @@ export class Videos {
 
     get videos():Video[]{
         return this._videos;
+    }
+
+    public isFinished(videoId:string){
+        for(let video of this._videos){
+            if(video.id == videoId){
+                return video.finalized;
+            }
+        }
     }
 
     public addVideo(newVideo:Video){

@@ -5,11 +5,13 @@ import { Whisper } from './whisper.js';
 import { Bing } from './bing.js';
 import { Users } from './users.js';
 import { Clients, ClientSettings } from './clients.js';
+import fs from 'fs';
 const app = express();
 const port = 3000;
 
 const userFile = 'users.json';
 const clientFile = 'clients.json';
+const TOKEN_PATH = 'youtube_token.json';
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -24,6 +26,68 @@ app.use(cors({
 app.get('/', (req, res) => {
     res.send('Hello World!');
 })
+
+/*
+* Client upload API
+* Requires channelId and videoId
+* checks for authorization then trys to upload desired video to authorized channel
+*/
+app.post('/client/upload', async (req,res) => {
+    const channelId = req.body.channelId;
+    const videoId = req.body.videoId;
+    let youtube = new YouTube();
+    let clients = new Clients(clientFile);
+    if(youtube.checkAuth()){
+        let filePath = clients.getClientVideoPath(channelId, videoId);
+        if(filePath){
+            await youtube.upload(filePath, (err, response) => {
+                if(err){
+                    res.send('Error uploading video');
+                } else {
+                    res.send(response);
+                }
+            })
+        } else {
+            res.send('Video path not found');
+        }
+    } else {
+        res.send('Please authorize the youtube channel first.');
+    }
+});
+
+/*
+* YouTube login endpoint
+* Authorizes uploading to client's localized youtube channel
+*/
+app.get('/youtube/auth', (req,res) => {
+    let youtube = new YouTube();
+    const oauth = youtube.loadAuthClient();
+    const authUrl = oauth.generateAuthUrl({
+        access_type: 'offline',
+        scope: ['https://www.googleapis.com/auth/youtube.upload'],
+      });
+    res.redirect(authUrl);
+});
+
+/*
+* YouTube authorization callback
+* After user logs in with client channel it redirects back here to save the token
+* NOT USED BY US
+*/
+app.get('/youtube/oauth2callback', (req, res) => {
+    const code = req.query.code;
+    let youtube = new YouTube();
+    const oauth = youtube.loadAuthClient();
+    oauth.getToken(code, (err, token) => {
+      if (err) return res.status(400).send('Error retrieving access token');
+      oauth.setCredentials(token);
+      fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+        if (err) return console.error(err);
+        console.log('Token stored to', TOKEN_PATH);
+      });
+      res.send('Authentication successful! You can now close this tab.');
+    });
+  });
 
 /*
 * Remove Video API
