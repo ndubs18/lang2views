@@ -1,15 +1,17 @@
 import express from 'express';
 import cors from 'cors';
-import { YouTube } from './youtube.js';
+import { YouTube } from './youtube.js'
 import { Whisper } from './whisper.js';
 import { Bing } from './bing.js';
 import { Users } from './users.js';
 import { Clients, ClientSettings } from './clients.js';
+import fs from 'fs';
 const app = express();
 const port = 3000;
 
 const userFile = 'users.json';
 const clientFile = 'clients.json';
+const TOKEN_PATH = 'youtube_token.json';
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -24,6 +26,86 @@ app.use(cors({
 app.get('/', (req, res) => {
     res.send('Hello World!');
 })
+
+/*
+* Client upload API
+* Requires channelId and videoId
+* checks for authorization then trys to upload desired video to authorized channel
+*/
+app.post('/client/upload', async (req,res) => {
+    const channelId = req.body.channelId;
+    const videoId = req.body.videoId;
+    let youtube = new YouTube();
+    let clients = new Clients(clientFile);
+    if(youtube.checkAuth()){
+        let filePath = clients.getClientVideoPath(channelId, videoId);
+        if(filePath){
+            await youtube.upload(filePath, (err, response) => {
+                if(err){
+                    res.send('Error uploading video');
+                } else {
+                    res.send(response);
+                }
+            })
+        } else {
+            res.send('Video path not found');
+        }
+    } else {
+        res.send('Please authorize the youtube channel first.');
+    }
+});
+
+/*
+* YouTube login endpoint
+* Authorizes uploading to client's localized youtube channel
+*/
+app.get('/youtube/auth', (req,res) => {
+    let youtube = new YouTube();
+    const oauth = youtube.loadAuthClient();
+    const authUrl = oauth.generateAuthUrl({
+        access_type: 'offline',
+        scope: ['https://www.googleapis.com/auth/youtube.upload'],
+      });
+    res.redirect(authUrl);
+});
+
+/*
+* YouTube authorization callback
+* After user logs in with client channel it redirects back here to save the token
+* NOT USED BY US
+*/
+app.get('/youtube/oauth2callback', (req, res) => {
+    const code = req.query.code;
+    let youtube = new YouTube();
+    const oauth = youtube.loadAuthClient();
+    oauth.getToken(code, (err, token) => {
+      if (err) return res.status(400).send('Error retrieving access token');
+      oauth.setCredentials(token);
+      fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+        if (err) return console.error(err);
+        console.log('Token stored to', TOKEN_PATH);
+      });
+      res.send('Authentication successful! You can now close this tab.');
+    });
+  });
+
+/*
+* Remove Video API
+* Requires channelId and videoId
+* removes video from client and cleans up any remaining files on server
+*/
+app.post('/client/removeVideo', (req, res) => {
+    const channelId = req.body.channelId;
+    const videoId = req.body.videoId;
+
+    if(channelId && videoId){
+        let clients = new Clients(clientFile);
+        clients.removeClientVideo(channelId,videoId);
+        res.send('Video removed.');
+    } else {
+        res.send('Invalid request body. Please send channelId and videoId');
+    }
+});
 
 // WIP
 // API to update client settings from client settings page
@@ -58,11 +140,11 @@ app.post('/client/updateSettings', (req, res) => {
 // Translates video and adds it to google doc
 // updates trello ticket
 // adds all video files to dropbox (transcription and tranlsation test files, mp4, mp3)
-app.post('/client/oragnizeVideo', async (req,res) => {
+app.post('/client/organizeVideo', async (req,res) => {
     const channelId = req.body.channelId;
     const videoId = req.body.videoId;
 
-    if(channelId){
+    if(channelId && videoId){
         let clients = new Clients(clientFile);
 
         let videos = JSON.stringify(await clients.getClientVideos(channelId));
@@ -84,18 +166,27 @@ app.post('/client/oragnizeVideo', async (req,res) => {
 // - the empty google doc (for transcription)
 app.post('/client/addVideo', async (req,res) => {
     const channelId = req.body.channelId;
-    const name = req.body.name;
-    const url = req.body.url;
-    const id = req.body.id;
+    const video = req.body.video
+    /*
+    * Video {
+        name:string,
+        url:string,
+        id:string,
+        thumbnail:any,
+        duration:any,
+        format:string
+    }
+    */
 
     let clients = new Clients(clientFile);
-    if(channelId && name && url && id){
-        await clients.addClientVideo(channelId,{
-            name:name,
-            id:id,
-            url:url
-        })
-        res.send('video added.');
+    if(channelId && video){
+        if(video.name && video.url && video.id && video.thumbnail && video.duration && video.format){
+            await clients.addClientVideo(channelId,video)
+            res.send('video added.');
+        } else {
+            res.send('Invalid request body. Video format invalid.')
+        }
+
     } else {
         res.send('Invalid request body.')
     }
