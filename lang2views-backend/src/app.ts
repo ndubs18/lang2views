@@ -6,12 +6,16 @@ import { Bing } from './bing.js';
 import { Users } from './users.js';
 import { Clients, ClientSettings } from './clients.js';
 import fs from 'fs';
+import env from 'dotenv';
 const app = express();
 const port = 3000;
 
 const userFile = 'users.json';
 const clientFile = 'clients.json';
 const TOKEN_PATH = 'youtube_token.json';
+
+// Configure environment from .env
+env.config();
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -44,6 +48,7 @@ app.post('/client/upload', async (req,res) => {
                 if(err){
                     res.send('Error uploading video');
                 } else {
+                    clients.markClientVideoComplete(channelId,videoId);
                     res.send(response);
                 }
             })
@@ -81,10 +86,11 @@ app.get('/youtube/oauth2callback', (req, res) => {
     oauth.getToken(code, (err, token) => {
       if (err) return res.status(400).send('Error retrieving access token');
       oauth.setCredentials(token);
-      fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-        if (err) return console.error(err);
-        console.log('Token stored to', TOKEN_PATH);
-      });
+    //   fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+    //     if (err) return console.error(err);
+    //     console.log('Token stored to', TOKEN_PATH);
+    //   });
+      process.env.CLIENT_TOKEN = token;
       res.send('Authentication successful! You can now close this tab.');
     });
   });
@@ -143,18 +149,29 @@ app.post('/client/updateSettings', (req, res) => {
 app.post('/client/organizeVideo', async (req,res) => {
     const channelId = req.body.channelId;
     const videoId = req.body.videoId;
+    const lang = req.body.lang;
 
-    if(channelId && videoId){
+    if(channelId && videoId && lang){
         let clients = new Clients(clientFile);
+        let whisper = new Whisper();
+        let bing = new Bing();
+        let youtube = new YouTube();
 
-        let videos = JSON.stringify(await clients.getClientVideos(channelId));
-        console.log(videos);
+        let filePath = await clients.getClientVideoPath(channelId, videoId) + '.mp3';
+        let video = await clients.getClientVideo(channelId, videoId);
         await clients.downloadClientVideo(channelId,videoId);
+        let transcription = await whisper.transcribeAudio(filePath, video.name.trim().replaceAll(' ', '_'));
 
-        res.send(videos);
+        // Bing translate
+        // let translation = await bing.translateText(transcription, lang);
+
+        // Google translate
+        let translation = await youtube.translate(transcription, lang);
+
+        res.send(JSON.stringify({ transcription:transcription, translation: translation}));
 
     } else {
-        res.send('Invalid request body.');
+        res.send('Invalid request body. Please send channelId, videoId, and lang (desired translation language).');
     }
 })
 
@@ -200,7 +217,7 @@ app.post('/client/addVideo', async (req,res) => {
 */
 app.post('/client/getVideoPage', async (req,res) => {
     // const apiKey = req.body.apiKey;
-    const apiKey = 'AIzaSyCCWblK-SdjvIRO6xBSQHHoKyLCxwJcnEU'
+    const apiKey = process.env.GOOGLE_KEY;
     const channelId = req.body.channelId;
     const pageToken = req.body.pageToken;
     
@@ -250,7 +267,7 @@ app.post('/client/getAll', async (req, res) => {
 app.post('/client/add', async (req, res) => {
     const url = req.body.url;
     // const apiKey = req.body.apiKey;
-    const apiKey = 'AIzaSyCCWblK-SdjvIRO6xBSQHHoKyLCxwJcnEU'
+    const apiKey = process.env.GOOGLE_KEY;
     if(url /* && apiKey */){
         let youtube = new YouTube();
         let clients = new Clients(clientFile);

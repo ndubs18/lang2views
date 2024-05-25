@@ -33,6 +33,14 @@ export class Videos {
         }
     }
 
+    public markComplete(videoId:string){
+        for(let video of this._videos){
+            if(video.id === videoId){
+                video.finalized = true;
+            }
+        }
+    }
+
     public addVideo(newVideo:Video){
         let match = false;
         for(let video of this._videos){
