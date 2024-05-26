@@ -89,6 +89,7 @@ function SampleCreationView(props) {
             sampleCreationEntries={sampleVideosManual}
           />
         </div>
+      <div className="popup-and-close-area-container"></div>
       </div>
   );
 }

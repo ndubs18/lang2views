@@ -2,7 +2,7 @@ import React from "react";
 import "./sampleCreationEntriesAndHeader.css";
 import UploadButtonClickProcessor from "./UploadButtonClickProcessor";
 import PostProductionButtonClickProcessor from "./PostProductionButtonClickProcessor";
-import SettingsButtonClickProcessor from "./SettingsButtonClickProcessor";
+import SampleSettingsButtonClickProcessor from "./SampleSettingsButtonClickProcessor";
 import DeleteButtonClickProcessor from "./DeleteButtonClickProcessor";
 import OrganizeButtonClickProcessor from "./OrganizeButtonClickProcessor";
 
@@ -101,7 +101,7 @@ function SampleCreationEntriesAndHeader(props) {
     const settingsButton = (
       <button
         className="sample-creation-entry-action-button btn rounded-circle sample-creation-settings-button"
-        onClick={SettingsButtonClickProcessor}
+        onClick={SampleSettingsButtonClickProcessor}
       >
         {settingsButtonIcon}
       </button>
