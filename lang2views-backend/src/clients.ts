@@ -33,12 +33,52 @@ export class Clients {
         this._clients = this.readClientsFromFile(clientFile);
     }
 
+    public getClientVideoPath(channelId:string, videoId:string){
+        let clientVideo = this.getClientVideo(channelId,videoId);
+        for(let client of this._clients){
+            if(client.channelId == channelId){
+                return `./clients/${channelId}/${clientVideo.id}/${clientVideo.name.trim().replaceAll(' ', '_')}`
+            }
+        }
+    }
+
+    public removeClientVideo(channelId:string, videoId:string){
+        let match = false;
+        for(let client of this._clients){
+            if(client.channelId == channelId){
+                if(client.videos){
+                    for(let video of client.videos.videos){
+                        if(video.id == videoId){
+                            match = true;
+                            this.deleteFolderRecursive(`./clients/${client.channelId}/${video.id}`);
+                            client.videos.removeVideo(video.id);
+                            client.videos.writeVideosToFile();
+                        }
+                    }
+                } else {
+                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
+                    for(let video of client.videos.videos){
+                        if(video.id == videoId){
+                            match = true;
+                            this.deleteFolderRecursive(`./clients/${client.channelId}/${video.id}`);
+                            client.videos.removeVideo(video.id);
+                            client.videos.writeVideosToFile();
+                        }
+                    }
+                }
+            }
+        }
+        if(!match){
+            return 'Video not found';
+        }
+    }
+
     public getClientVideo(channelId:string, videoId:string):Video{
         let match = false;
         for(let client of this._clients){
             if(client.channelId == channelId){
                 if(client.videos == null){
-                    client.videos = new Videos('_clients/'+client.channelId+'/videos.json');
+                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
                     for(let video of client.videos.videos){
                         if(video.id == videoId){
                             match = true;
@@ -78,14 +118,14 @@ export class Clients {
     public addClientVideo(channelId:string, video:Video){
         for(let client of this._clients){
             if(client.channelId == channelId){
-                if(!fs.existsSync('_clients')){
-                    fs.mkdirSync('_clients');
+                if(!fs.existsSync('clients')){
+                    fs.mkdirSync('clients');
                 }
-                if(!fs.existsSync('_clients/'+client.channelId)){
-                    fs.mkdirSync('_clients/'+client.channelId);
+                if(!fs.existsSync('clients/'+client.channelId)){
+                    fs.mkdirSync('clients/'+client.channelId);
                 }
                 if(client.videos == null){
-                    client.videos = new Videos('_clients/'+client.channelId+'/videos.json');
+                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
                     client.videos.addVideo(video);
                 } else {
                     client.videos.addVideo(video);
@@ -99,7 +139,7 @@ export class Clients {
         for(let client of this._clients){
             if(client.channelId === channelId){
                 if(client.videos == null){
-                    client.videos = new Videos('_clients/'+client.channelId+'/videos.json');
+                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
                     return client.videos.videos;
                 } else {
                     return client.videos.videos;
@@ -112,10 +152,10 @@ export class Clients {
         for(let client of this._clients){
             if(client.channelId === channelId){
                 if(client.videos == null){
-                    client.videos = new Videos('_clients/'+client.channelId+'/videos.json');
-                    await client.videos.downloadVideo(videoId,'_clients/'+client.channelId)
+                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
+                    await client.videos.downloadVideo(videoId,'clients/'+client.channelId)
                 } else {
-                    await client.videos.downloadVideo(videoId,'_clients/'+client.channelId)
+                    await client.videos.downloadVideo(videoId,'clients/'+client.channelId)
                 }
             }
         }
@@ -125,10 +165,10 @@ export class Clients {
         for(let client of this._clients){
             if(client.channelId == channelId){
                 if(client.videos == null){
-                    client.videos = new Videos('_clients/'+client.channelId+'/videos.json');
-                    await client.videos.downloadVideos('_clients/'+client.channelId)
+                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
+                    await client.videos.downloadVideos('clients/'+client.channelId)
                 }else {
-                    await client.videos.downloadVideos('_clients/'+client.channelId)
+                    await client.videos.downloadVideos('clients/'+client.channelId)
                 }
             }
         }
@@ -144,7 +184,7 @@ export class Clients {
                 return 'Client already exists.';
             }
         }
-        fs.mkdirSync('_clients/'+newClient.channelId);
+        fs.mkdirSync('clients/'+newClient.channelId);
         this._clients.push(newClient);
         return 'Client created.';
     }
@@ -155,7 +195,7 @@ export class Clients {
         // If the user is found, remove it from the array
         if (index !== -1) {
             let client = this._clients[index];
-            this.deleteFolderRecursive('_clients/'+client.channelId);
+            this.deleteFolderRecursive('clients/'+client.channelId);
             this._clients.splice(index, 1);
             return true;
         } else {
@@ -179,7 +219,7 @@ export class Clients {
                 return [];
             }
         } catch (error) {
-            console.error('Error reading _clients from file:', error);
+            console.error('Error reading clients from file:', error);
             return [];
         }
     }
@@ -194,7 +234,7 @@ export class Clients {
             
             console.log('Users data has been written to the file successfully.');
         } catch (error) {
-            console.error('Error writing _clients to file:', error);
+            console.error('Error writing clients to file:', error);
         }
     }
     private deleteFolderRecursive(folderPath) {

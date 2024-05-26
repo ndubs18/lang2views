@@ -9,23 +9,42 @@ import "./sampleCreationHeader.css";
 import "../Utilities/views.css";
 import "./sampleCreationSearchAndAddButton.css";
 import "./otherSampleCreationViewFunctionality.css";
+import { useEffect, useState } from 'react';
 
 function SampleCreationView(props) {
 
+  const [sampleVideos, setSampleVideos] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/client/getAll", {
+    method: "GET",
+  }).then((response) => response.json().then((value) => setSampleVideos(value)));
+  }, [])
+
   const headerData = [
-    '',
-    'NAME',
-    'LONG FORMAT',
-    'SHORTS',
-    'PERCENTAGE DONE',
-    '',
-    '',
-    '',
-    '',
+    "NAME",
+    "VIDEO TYPE",
+    "THUMBNAIL",
+    "",
+    "",
+    "",
+    "",
+    "",
   ];
-  const dataForTableBodyRow1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const dataForTableBodyRow2 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const videoEntries = [
+
+  const dataForTableBodyRow1 = {
+    name: 'A',
+    videoType: "Long format",
+    thumbnailLink: "src/Images/brown.png",
+  }
+
+  const dataForTableBodyRow2 = {
+    name: 'A',
+    videoType: "Short",
+    thumbnailLink: "src/Images/brown.png",
+  }
+
+  const sampleVideosManual = [
     dataForTableBodyRow1,
     dataForTableBodyRow2,
     dataForTableBodyRow2,
@@ -39,6 +58,7 @@ function SampleCreationView(props) {
     dataForTableBodyRow2,
     dataForTableBodyRow2,
   ];
+
   const accountPictureLink = 'src/Images/brown.png';
 
   if (props === null)
@@ -66,7 +86,7 @@ function SampleCreationView(props) {
           </div>
           <SampleCreationEntriesAndHeader
             headerData={headerData}
-            sampleCreationEntries={videoEntries}
+            sampleCreationEntries={sampleVideosManual}
           />
         </div>
       </div>

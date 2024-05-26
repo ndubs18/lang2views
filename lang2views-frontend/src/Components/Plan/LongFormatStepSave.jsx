@@ -1,8 +1,9 @@
 import "./save.css";
 
-class TitleOrderOfPlacementPair {
+class LongFormatVideo {
   title = ""
   placement = 0
+  thumbnailSrc = ""
 }
 
 function sortOrderOfVideos(videos) {
@@ -21,14 +22,17 @@ function handleSubmit() {
 
   const videoProcessingList = [];
 
+  const videoThumbnails = document.querySelectorAll('[id$="thumbnail"]');
+
   for (let i = 0; i < videoSelectButtons.length; i++) {
     if (videoSelectButtons[i].textContent !== "") {
-      const titleOrderOfPlacementPair = new TitleOrderOfPlacementPair();
+      const longFormatVideo = new LongFormatVideo();
 
-      titleOrderOfPlacementPair.title = videoSelectButtons[i].id;
-      titleOrderOfPlacementPair.placement = videoSelectButtons[i].textContent;
+      longFormatVideo.title = videoSelectButtons[i].id;
+      longFormatVideo.placement = videoSelectButtons[i].textContent;
+      longFormatVideo.thumbnailSrc = videoThumbnails[i].textContent;
 
-      videoProcessingList.push(titleOrderOfPlacementPair);
+      videoProcessingList.push(longFormatVideo);
     }
   }
 
