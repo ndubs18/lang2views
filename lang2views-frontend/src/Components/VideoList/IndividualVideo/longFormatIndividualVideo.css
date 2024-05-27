@@ -1,0 +1,54 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.thumbnail-image {
+    height: 40px;
+    width: 70px;
+}
+
+.widget-buttons {
+    height: 22px;
+    width: 22px;
+}
+
+.video-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid grey;
+    border-radius: 2%;
+    padding: 10px;
+}
+
+.check-and-video-name {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: 38px;
+    gap: 20px;
+}
+
+.video-name {
+    margin: 0;
+}
+
+.video-number {
+    margin: 0;
+}
+
+.thumbnail {
+    margin-left: 350px;
+}
+
+.four-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: 550px;
+    gap: 10px;
+}

@@ -16,10 +16,11 @@
     width: 3vw;
     margin-top: 2vh;
     height: 3vw;
+    background-color: white;
 }
 
 #clients-view-button-icon {
-    width: 95%;
+    width: 100%;
     height: auto;
 }
 
@@ -40,9 +41,10 @@
     width: 3vw;
     margin-top: 60vh;
     height: 3vw;
+    background-color: white;
 }
 
 #logout-button-icon {
-    width: 95%;
+    width: 100%;
     height: auto;
 }

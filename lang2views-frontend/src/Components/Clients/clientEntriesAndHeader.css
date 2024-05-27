@@ -1,11 +1,11 @@
 .client-entries {
     display: block;
     position: relative;
-    height: 90vh;
+    height: 75vh;
     overflow-y: auto;
 }
 
-.header {
+.clients-table-header {
     display: flex;
     flex-direction: row;
     justify-content: start;

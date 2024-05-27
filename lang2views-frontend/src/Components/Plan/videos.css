@@ -2,17 +2,28 @@
     margin-left: 5em;
 }
 
-.long-format-video-thumbnail {
-    width: 18em;
-    height: 10em;
-    position: relative;
+.shorts-seperation {
+    margin-left: 2em;
+}
+
+.short-container {
+    width: 12em;
+    height: 20em;
 }
 
 .long-format-video-select-button {
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    margin-right: 2em;
+    width: 10%;
+    height: 10%;
+    margin-left: 90%;
+    margin-bottom: 95%;
+    background-color: white;
+}
+
+.shorts-select-button {
+    width: 14%;
+    height: 14%;
+    margin-left: 85%;
+    margin-bottom: 85%;
+    margin-top: 3%;
+    background-color: white;
 }

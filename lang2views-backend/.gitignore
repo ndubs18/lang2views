@@ -5,3 +5,8 @@ users.json
 testUsers.json
 package-lock.json
 clients.json
+videos.json
+clients
+clients/*
+client_secret.json
+youtube_token.json

@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import "./login.css";
-import Lang2ViewsLogo from "../Images/lang2views_logo.jpeg";
+import Lang2ViewsLogo from "../../Images/lang2views_logo.jpeg";
+import { useGlobalContext } from "../../Context/globalContext";
 import axios from "axios";
 
 function login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginResponse, setLoginResponse] = useState("");
+  //Works just like a useState variable:
+  const { userInfo, setUserInfo } = useGlobalContext();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -22,14 +25,18 @@ function login() {
     console.log(email);
     console.log(password);
 
-    const formData = new FormData();
-    formData.append("username", email);
-    formData.append("password", password);
-
     fetch("http://localhost:3000/user/login", {
       method: "POST",
-      body: formData,
-    }).then((response) => response.text().then((value) => setLoginResponse(value)));
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) =>
+      response.text().then((value) => setLoginResponse(value))
+    );
   };
 
   const handleForgotPassword = () => {
@@ -71,7 +78,7 @@ function login() {
             </div>
             <div className="buttons">
               <button className="login-button" type="submit">
-                <p className="login-button-text">Log In ￫</p>
+                <p className="login-button-text">Log In</p>
               </button>
               <button
                 className="forgot-button"
