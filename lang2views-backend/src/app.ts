@@ -5,6 +5,8 @@ import { Whisper } from './whisper.js';
 import { Bing } from './bing.js';
 import { Users } from './users.js';
 import { Clients } from './clients.js';
+import dotenv from 'dotenv';
+dotenv.config(); // Access .env variables via "process.env.ENVIRONMENT_VARIABLE_HERE"
 const app = express();
 const port = 3000;
 
