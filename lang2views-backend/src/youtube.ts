@@ -4,11 +4,45 @@ import fs from 'fs';
 import { google } from 'googleapis';
 import { Clients } from './clients.js';
 import { Videos } from './video.js';
+import { TranslationServiceClient } from '@google-cloud/translate';
+import { GoogleAuth }  from 'google-auth-library';
+import env from 'dotenv';
 
 const clientFile = 'clients.json';
 const CLIENT_SECRET_PATH = 'client_secret.json';
 export class YouTube {
     private oAuth2Client;
+    async translate(text:string,lang:string){
+        // Set up the Google Auth library with the environment variables
+        const googleServiceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
+        const auth = new GoogleAuth({
+            credentials: {
+            client_email: googleServiceAccount.client_email,
+            private_key: googleServiceAccount.private_key.replace(/\\n/g, '\n'),
+            },
+            projectId: googleServiceAccount.project_id,
+        });
+        const translate = new TranslationServiceClient({ auth });
+        try {
+            const request = {
+              parent: `projects/${googleServiceAccount.project_id}/locations/global`,
+              contents: [text],
+              mimeType: 'text/plain', // mime types: text/plain, text/html
+              targetLanguageCode: lang,
+            };
+        
+            // Translates the text into the target language
+            const [response] = await translate.translateText(request);
+            const translation = response.translations[0].translatedText;
+            console.log(`Text: ${text}`);
+            console.log(`Translation: ${translation}`);
+            return translation;
+        } catch (error) {
+            console.error('ERROR:', error);
+            throw error;
+        }
+
+    }
     checkAuth(){
         if(this.oAuth2Client.credentials){
             return true
@@ -51,8 +85,9 @@ export class YouTube {
 
     loadAuthClient(){
         // Load client secrets from a local file.
-        let content = fs.readFileSync(CLIENT_SECRET_PATH);
-        const credentials = JSON.parse(content.toString());
+        // let content = fs.readFileSync(CLIENT_SECRET_PATH);
+        // const credentials = JSON.parse(content.toString());
+        let credentials = JSON.parse(process.env.CLIENT_SECRET);
         const { client_id, client_secret, redirect_uris } = credentials.web;
         this.oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
         return this.oAuth2Client;

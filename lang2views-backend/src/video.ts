@@ -8,7 +8,9 @@ export interface Video {
     thumbnail:any,
     duration:any,
     format:string,
-    finalized:boolean
+    finalized:boolean,
+    trelloCard:string | null,
+    dropboxURL:string | null
 }
 
 export class Videos {
@@ -31,6 +33,25 @@ export class Videos {
                 return video.finalized;
             }
         }
+    }
+
+    public markComplete(videoId:string){
+        for(let video of this._videos){
+            if(video.id === videoId){
+                video.finalized = true;
+            }
+        }
+    }
+
+    public updateVideo(updateVideo:Video){
+        let match = false;
+        for(let i = 0; i < this._videos.length; ++i){
+            if(this._videos[i].id === updateVideo.id){
+                this._videos[i] = updateVideo;
+                match = true;
+            }
+        }
+        this.writeVideosToFile();
     }
 
     public addVideo(newVideo:Video){

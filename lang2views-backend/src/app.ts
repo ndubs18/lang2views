@@ -82,6 +82,7 @@ app.post('/client/upload', async (req,res) => {
                 if(err){
                     res.send('Error uploading video');
                 } else {
+                    clients.markClientVideoComplete(channelId,videoId);
                     res.send(response);
                 }
             })
@@ -119,10 +120,11 @@ app.get('/youtube/oauth2callback', (req, res) => {
     oauth.getToken(code, (err, token) => {
       if (err) return res.status(400).send('Error retrieving access token');
       oauth.setCredentials(token);
-      fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-        if (err) return console.error(err);
-        console.log('Token stored to', TOKEN_PATH);
-      });
+    //   fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+    //     if (err) return console.error(err);
+    //     console.log('Token stored to', TOKEN_PATH);
+    //   });
+      process.env.CLIENT_TOKEN = token;
       res.send('Authentication successful! You can now close this tab.');
     });
   });
@@ -177,22 +179,57 @@ app.post('/client/updateSettings', (req, res) => {
 // This transcribes the video and adds it to the google doc
 // Translates video and adds it to google doc
 // updates trello ticket
-// adds all video files to dropbox (transcription and tranlsation test files, mp4, mp3)
+// adds all video files to dropbox (transcription and tranlsation text files, mp4, mp3)
 app.post('/client/organizeVideo', async (req,res) => {
     const channelId = req.body.channelId;
     const videoId = req.body.videoId;
+    const lang = req.body.lang;
 
-    if(channelId && videoId){
+    /*
+    * Video {
+        name:string,
+        url:string,
+        id:string,
+        thumbnail:any,
+        duration:any,
+        format:string
+    }
+    TRELLO TICKET
+    params: {
+    key: this.key,
+    token: this.token,
+    idList: cardData.idList,
+    name: cardData.name,
+    desc: cardData.desc,
+    pos: cardData.pos,
+    due: cardData.due,
+    labels: cardData.labels
+    }
+    */
+    if(channelId && videoId && lang){
         let clients = new Clients(clientFile);
+        let whisper = new Whisper();
+        // let bing = new Bing();
+        let youtube = new YouTube();
 
-        let videos = JSON.stringify(await clients.getClientVideos(channelId));
-        console.log(videos);
+        let filePath = await clients.getClientVideoPath(channelId, videoId) + '.mp3';
+        let video = await clients.getClientVideo(channelId, videoId);
         await clients.downloadClientVideo(channelId,videoId);
+        let transcription = await whisper.transcribeAudio(filePath, video.name.trim().replaceAll(' ', '_'));
+        let translation = await youtube.translate(transcription, lang);
+        await fs.writeFileSync(`./clients/${channelId}/${video.id}/transcription.txt`, transcription);
+        await fs.writeFileSync(`./clients/${channelId}/${video.id}/translation.txt`, translation);
+        const cardData: Omit<UpdateCardRequest, 'key' | 'token'> = {
+            id: video.trelloCard,
+            desc: 'Video organized: ' + video.dropboxURL,
+        };
+        const card = await trello.updateCard(cardData);
 
-        res.send(videos);
+
+        res.send(JSON.stringify({ transcription:transcription, translation: translation, trelloCard: card}));
 
     } else {
-        res.send('Invalid request body.');
+        res.send('Invalid request body. Please send channelId, videoId, and lang (desired translation language).');
     }
 })
 
@@ -204,7 +241,7 @@ app.post('/client/organizeVideo', async (req,res) => {
 // - the empty google doc (for transcription)
 app.post('/client/addVideo', async (req,res) => {
     const channelId = req.body.channelId;
-    const video = req.body.video
+    let video = req.body.video
     /*
     * Video {
         name:string,
@@ -214,6 +251,17 @@ app.post('/client/addVideo', async (req,res) => {
         duration:any,
         format:string
     }
+    TRELLO TICKET
+    params: {
+    key: this.key,
+    token: this.token,
+    idList: cardData.idList,
+    name: cardData.name,
+    desc: cardData.desc,
+    pos: cardData.pos,
+    due: cardData.due,
+    labels: cardData.labels
+    }
     */
 
     let clients = new Clients(clientFile);
@@ -221,9 +269,25 @@ app.post('/client/addVideo', async (req,res) => {
         // TODO: add extra error check to ensure we're not re-adding something already added
         if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
             if (await dropbox.isAuthenticated()) {
+                // TODO: Need to get idList from trello board.
+                const today = new Date();
+                let nextWeek = new Date(today.getDate() + 7);
+                const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
+                    idList: '',
+                    name: video.name.trim().replaceAll(' ', '_'),
+                    desc: 'Video added',
+                    pos: 'top',
+                    due: nextWeek.toString(),
+                    labels: ''
+                };
                 let videoNumber = await clients.addClientVideo(channelId, video)
                 let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
+                const card = await trello.createCard(cardData);
+                video.trelloCard = card.id;
+                video.dropboxURL = dropboxUrl;
+                clients.updateClientVideo(channelId,video)
                 res.send({
+                    trelloCard: card,
                     dropboxUrl: dropboxUrl,
                     message: "Video added."
                 });
@@ -248,7 +312,7 @@ app.post('/client/addVideo', async (req,res) => {
 */
 app.post('/client/getVideoPage', async (req,res) => {
     // const apiKey = req.body.apiKey;
-    const apiKey = 'AIzaSyCCWblK-SdjvIRO6xBSQHHoKyLCxwJcnEU'
+    const apiKey = process.env.GOOGLE_KEY;
     const channelId = req.body.channelId;
     const pageToken = req.body.pageToken;
     
@@ -298,7 +362,7 @@ app.get('/client/getAll', async (req, res) => {
 app.post('/client/add', async (req, res) => {
     const url = req.body.url;
     // const apiKey = req.body.apiKey;
-    const apiKey = 'AIzaSyCCWblK-SdjvIRO6xBSQHHoKyLCxwJcnEU'
+    const apiKey = process.env.GOOGLE_KEY;
     if(url /* && apiKey */){
         let youtube = new YouTube();
         let clients = new Clients(clientFile);

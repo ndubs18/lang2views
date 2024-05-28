@@ -33,11 +33,38 @@ export class Clients {
         this._clients = this.readClientsFromFile(clientFile);
     }
 
+    public markClientVideoComplete(channelId:string, videoId:string){
+        for(let client of this._clients){
+            if(client.channelId == channelId){
+                if(client.videos){
+                    client.videos.markComplete(videoId);
+                } else {
+                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
+                    client.videos.markComplete(videoId);
+                }
+                client.videos.writeVideosToFile();
+            }
+        }
+    }
+
     public getClientVideoPath(channelId:string, videoId:string){
         let clientVideo = this.getClientVideo(channelId,videoId);
         for(let client of this._clients){
             if(client.channelId == channelId){
                 return `./clients/${channelId}/${clientVideo.id}/${clientVideo.name.trim().replaceAll(' ', '_')}`
+            }
+        }
+    }
+
+    public updateClientVideo(channelId:string, video:Video){
+        for(let client of this._clients){
+            if(channelId === client.channelId){
+                if(client.videos){
+                    client.videos.updateVideo(video);
+                } else {
+                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
+                    client.videos.updateVideo(video);
+                }
             }
         }
     }
@@ -74,15 +101,19 @@ export class Clients {
     }
 
     public getClientVideo(channelId:string, videoId:string):Video{
-        let match = false;
         for(let client of this._clients){
             if(client.channelId == channelId){
                 if(client.videos == null){
                     client.videos = new Videos('clients/'+client.channelId+'/videos.json');
                     for(let video of client.videos.videos){
                         if(video.id == videoId){
-                            match = true;
                             return video;
+                        }
+                    }
+                } else {
+                    for(let video of client.videos.videos){
+                        if(video.id == videoId){
+                            return video
                         }
                     }
                 }
