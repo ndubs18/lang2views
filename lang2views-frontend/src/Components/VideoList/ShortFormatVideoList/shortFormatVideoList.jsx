@@ -6,6 +6,9 @@ import DefaultChannelIcon from "../../../Icons/profile.svg";
 import SearchIcon from "../../../Icons/search.svg";
 import BlankCheckbox from "../../../Icons/blank_check_box.svg";
 import BlackCheckbox from "../../../Icons/check_box.svg";
+import OrganizePanel from "../Organize/Organize";
+import PostProductionPanel from "../PostProduction/PostProduction";
+import UploadPanel from "../Upload/Upload";
 
 function shortFormatVideoList() {
   const [checkbox, setCheckbox] = useState(false);
@@ -39,6 +42,9 @@ function shortFormatVideoList() {
         </div>
         <button className="modify-plan-button">Modify plan</button>
       </div>
+      <OrganizePanel />
+      <PostProductionPanel />
+      <UploadPanel />
       <div className="header-for-video-list">
         <img
           className="check-box"

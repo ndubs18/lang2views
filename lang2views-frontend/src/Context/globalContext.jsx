@@ -24,9 +24,23 @@ export const GlobalContextProvider = ({ children }) => {
       [key]: value,
     }));
   };
+  const [isOrganizeVisible, setIsOrganizeVisible] = useState(false);
+  const [isPostProductionVisible, setIsPostProductionVisible] = useState(false);
+  const [isUploadVisible, setIsUploadVisible] = useState(false);
 
   return (
-    <GlobalContext.Provider value={{ userInfo, setUserInfo }}>
+    <GlobalContext.Provider
+      value={{
+        userInfo,
+        setUserInfo,
+        isOrganizeVisible,
+        setIsOrganizeVisible,
+        isPostProductionVisible,
+        setIsPostProductionVisible,
+        isUploadVisible,
+        setIsUploadVisible,
+      }}
+    >
       {children}
     </GlobalContext.Provider>
   );

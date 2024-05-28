@@ -3,9 +3,12 @@ import cors from 'cors';
 import { YouTube } from './youtube.js'
 import { Whisper } from './whisper.js';
 import { Bing } from './bing.js';
+import { Trello, CreateCardRequest, UpdateCardRequest } from './trello.js';
 import { Users } from './users.js';
 import { Clients, ClientSettings } from './clients.js';
 import fs from 'fs';
+import dotenv from 'dotenv';
+dotenv.config();
 const app = express();
 const port = 3000;
 
@@ -13,8 +16,38 @@ const userFile = 'users.json';
 const clientFile = 'clients.json';
 const TOKEN_PATH = 'youtube_token.json';
 
+const trello = new Trello(process.env.TRELLO_API_KEY, process.env.TRELLO_TOKEN);
+
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+//Trello API test (Create a new card)
+app.post('/trello/create', async (req, res) => {
+    const cardData: Omit<CreateCardRequest, 'key' | 'token'> = req.body;
+    if (!cardData.idList || !cardData.name) {
+        return res.status(400).json({ error: 'idList and name are required' });
+    }
+    try {
+        const card = await trello.createCard(cardData);
+        res.status(201).json(card);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to create card' });
+    }
+});
+
+// Trello API test (Update an existing card)
+app.put('/trello/update', async (req, res) => {
+    const cardData: Omit<UpdateCardRequest, 'key' | 'token'> = req.body;
+    if (!cardData.id) {
+        return res.status(400).json({ error: 'id is required' });
+    }
+    try {
+        const card = await trello.updateCard(cardData);
+        res.status(200).json(card);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update card' });
+    }
+});
 
 // Allow requests from the frontend on a different port (e.g., http://localhost:3000)
 app.use(cors({

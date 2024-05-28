@@ -12,6 +12,7 @@
 .widget-buttons {
     height: 22px;
     width: 22px;
+    cursor: pointer;
 }
 
 .video-container {
