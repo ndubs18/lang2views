@@ -285,7 +285,7 @@ app.post('/client/remove', async (req, res) => {
 * Get all clients API
 * Used to send all clients to front end when client page loads or the data changes (add client or remove client)
 */
-app.post('/client/getAll', async (req, res) => {
+app.get('/client/getAll', async (req, res) => {
     let clients = new Clients(clientFile);
     res.send(JSON.stringify(clients.clients));
 })
