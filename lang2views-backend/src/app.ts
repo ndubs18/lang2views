@@ -363,46 +363,44 @@ app.post('/client/add', async (req, res) => {
     const url = req.body.url;
     // const apiKey = req.body.apiKey;
     const apiKey = process.env.GOOGLE_KEY;
-    if(url /* && apiKey */){
+    if (url) {
+        if (await dropbox.isAuthenticated()) {
         let youtube = new YouTube();
         let clients = new Clients(clientFile);
-        if(url.includes('/channel/')){
-            let channelId = getChannelIdFromUrl(url);
-            let result = await youtube.getChannelFromId(apiKey, channelId);
-            if(result[0]){
-                await clients.addClient({
-                    channelUrl: url,
-                    channelName: result[0].snippet.title,
-                    channelId: result[0].id,
-                    description: result[0].snippet.description,
-                    clientSettings: null,
-                    videos:null
-                })
-                await clients.writeClientsToFile();
-                res.send('Client created: ' + JSON.stringify(result));
+            let channelId = "";
+            if (url.includes('/channel/')) {
+                channelId = getChannelIdFromUrl(url);
             } else {
                 res.send('Channel not found.')
             }
             res.send(JSON.stringify(result));
         } else {
             let channel = getChannelUsernameFromUrl(url);
-            let channelId = await youtube.getChannelFromUsername(apiKey, channel);
+                channelId = await youtube.getChannelFromUsername(apiKey, channel);
+            }
+
             let result = await youtube.getChannelFromId(apiKey, channelId);
-            if(result[0]){
+            if (result[0]) {
                 await clients.addClient({
                     channelUrl: url,
                     channelName: result[0].snippet.title,
                     channelId: result[0].id,
                     description: result[0].snippet.description,
                     clientSettings: null,
-                    videos:null
+                    videos: null
                 })
                 await clients.writeClientsToFile();
-                res.send('Client created: ' + JSON.stringify(result));
+
+                let dropboxUrl = await dropbox.createClientFolders(channelId);
+                res.send({
+                    dropboxUrl: dropboxUrl,
+                    message: 'Client created: ' + JSON.stringify(result)
+                });
             } else {
                 res.send('Channel not found.')
             }
-
+        } else {
+            res.send('Please authenticate Dropbox first.');
         }
     } else {
         res.send('Invalid request body: Please send url.')
