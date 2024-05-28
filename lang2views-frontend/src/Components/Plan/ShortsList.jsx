@@ -3,332 +3,140 @@ import Short from "./Short";
 import Save from "./ShortsStepSave";
 import "./clientPlan.css";
 import { sortViewsMostToLeast } from "../Utilities/sortAscending";
+import handleNextPageButtonClicked from "./ShortsNextPageButtonClicked";
+import handlePreviousPageButtonClicked from "./ShortsPreviousPageButtonClicked";
 
 function ShortsList() {
-  const [videoListOf50, setVideoListOf50] = useState([]);
+  const [pageOf50Node, setPageOf50Node] = useState({});
+  const [previousButtonClicked, setPreviousButtonClicked] = useState("");
+  const [nextButtonClicked, setNextButtonClicked] = useState("");
+  const [tokenForPageToGet, setTokenForPageToGet] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3000/client/getVideoPage", {
-      method: "GET",
-      body: {
-        channelId: props.clientId,
-        pageToken: null,
-      },
-    })
-      .then((response) =>
-        response.json().then((value) => setVideoListOf50(value))
-      )
-      .catch((err) => {
-        throw new Error(err);
-      });
-  }, []);
+    const currentVideosForProcessingContainer = document.querySelector(
+      "#videos-for-processing-json"
+    );
+    if (nextButtonClicked === "" && previousButtonClicked === "")
+      currentVideosForProcessingContainer.textContent = JSON.stringify([]);
 
-  const [noSortHidden, setNoSortHidden] = useState(false);
-  const [sortByViewsHidden, setSortByViewsHidden] = useState(true);
-  const [viewsFilterStatus, setViewsFilterStatus] = useState("");
-  const [viewsFilterActive, setViewsFilterActive] = useState("filter-button-inactive");
-
-  const props = {
-    shorts: [
+    const videos = [
       {
         thumbnailSrc: "./src/Images/brown.png",
         title: "A",
         duration: "10",
-        views: "50",
+        views: "70",
         viewsPerMinute: "100",
-        done: true,
+        type: "longFormatVideo",
+        done: false,
       },
       {
         thumbnailSrc: "./src/Images/brown.png",
         title: "B",
-        duration: "60",
-        views: "70",
-        viewsPerMinute: "100",
+        duration: "9",
+        views: "56",
+        viewsPerMinute: "5",
+        type: "short",
         done: false,
       },
       {
-        thumbnailSrc: "./src/Images/brown.png",
+        thumbnailSrc: ".",
         title: "C",
-        duration: "3",
-        views: "3",
-        viewsPerMinute: "100",
+        duration: "8",
+        views: "100",
+        viewsPerMinute: "10",
+        type: "short",
         done: false,
       },
       {
-        thumbnailSrc: "./src/Images/brown.png",
+        thumbnailSrc: ".",
         title: "D",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
+        duration: "9",
+        views: "22",
+        viewsPerMinute: "22",
+        type: "longFormatVideo",
         done: true,
       },
       {
         thumbnailSrc: ".",
-        title: "A",
+        title: "E",
         duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: true,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
+        views: "1",
+        viewsPerMinute: "1",
+        type: "longFormatVideo",
         done: false,
       },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: true,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: true,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: true,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: true,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: true,
-      },
-    ],
-  };
+  ];
 
-  const videos = [];
+  setPageOf50Node(videos);
 
-  if (videoListOf50 === null) throw new Error("Need to have shorts to display");
+    /* fetch("http://localhost:3000/client/getVideoPage", {
+      method: "GET",
+      body: {
+        channelId: props.clientId,
+        pageToken: tokenForPageToGet === "" ? null : tokenForPageToGet,
+      },
+    })
+      .then((response) =>
+        response.json().then((value) => setPageOf50Node(value))
+      )
+      .catch((err) => {
+        throw new Error(err);
+      }); */
 
+    if (previousButtonClicked === "true") {
+      setPreviousButtonClicked("false");
+    } else if (nextButtonClicked === "true") {
+      setNextButtonClicked("false");
+    }
+  }, [previousButtonClicked, nextButtonClicked]);
+
+  const currentNumberToProcess = document.querySelector("#current-number-to-process");
+
+  const [noSortHidden, setNoSortHidden] = useState(false);
+  const [sortByViewsHidden, setSortByViewsHidden] = useState(true);
+  const [viewsFilterActive, setViewsFilterActive] = useState(
+    "filter-button-inactive"
+  );
+
+  pageOf50Node.videos.filter((video) => video.type === "short");
+  
+  const videosUnsorted = [];
   for (
     let numVideo = 0;
-    numVideo < videoListOf50.length;
-    numVideo = numVideo + 5
+    numVideo < pageOf50Node.videos.length;
+    numVideo = numVideo + 3
   ) {
     const videoRow = [];
-    const firstVideoInRowDetails = videoListOf50[numVideo];
-    videoRow.push(<Short videoDetails={firstVideoInRowDetails} />);
+    const firstVideoInRowDetails = pageOf50Node.videos[numVideo];
+      videoRow.push(<Short videoDetails={firstVideoInRowDetails} />);
 
-    const secondVideoInRowDetails = videoListOf50[numVideo + 1];
-    videoRow.push(
-      secondVideoInRowDetails ? (
-        <Short videoDetails={secondVideoInRowDetails} />
-      ) : null
-    );
-
-    const thirdVideoInRowDetails = videoListOf50[numVideo + 2];
-    videoRow.push(
-      thirdVideoInRowDetails ? (
-        <Short videoDetails={thirdVideoInRowDetails} />
-      ) : null
-    );
-
-    const fourthVideoInRowDetails = videoListOf50[numVideo + 3];
-    videoRow.push(
-      fourthVideoInRowDetails ? (
-        <Short videoDetails={fourthVideoInRowDetails} />
-      ) : null
-    );
-
-    const fifthVideoInRowDetails = videoListOf50[numVideo + 4];
-    videoRow.push(
-      fifthVideoInRowDetails ? (
-        <Short videoDetails={fifthVideoInRowDetails} />
-      ) : null
-    );
+      const secondVideoInRowDetails = videosByViewsPerMinute[numVideo + 1];
+      videoRow.push(
+        secondVideoInRowDetails ? (
+          <Short videoDetails={secondVideoInRowDetails} />
+        ) : null
+      );
+  
+      const thirdVideoInRowDetails = videosByViewsPerMinute[numVideo + 2];
+      videoRow.push(
+        thirdVideoInRowDetails ? (
+          <Short videoDetails={thirdVideoInRowDetails} />
+        ) : null
+      );
+  
+      const fourthVideoInRowDetails = videosByViewsPerMinute[numVideo + 3];
+      videoRow.push(
+        fourthVideoInRowDetails ? (
+          <Short videoDetails={fourthVideoInRowDetails} />
+        ) : null
+      );
+  
+      const fifthVideoInRowDetails = videosByViewsPerMinute[numVideo + 4];
+      videoRow.push(
+        fifthVideoInRowDetails ? (
+          <Short videoDetails={fifthVideoInRowDetails} />
+        ) : null
+      );
 
     const videoRowContainer = React.createElement(
       "div",
@@ -336,12 +144,12 @@ function ShortsList() {
       videoRow
     );
 
-    videos.push(videoRowContainer);
+    videosUnsorted.push(videoRowContainer);
   }
 
-  const videosMostToLeastViews = [];
-  let videosByViews = videoListOf50;
+  let videosByViews = pageOf50Node.videos;
   sortViewsMostToLeast(videosByViews);
+  const videosMostToLeastViews = [];
   for (
     let numVideo = 0;
     numVideo < videosByViews.length;
@@ -351,28 +159,28 @@ function ShortsList() {
     const firstVideoInRowDetails = videosByViews[numVideo];
     videoRow.push(<Short videoDetails={firstVideoInRowDetails} />);
 
-    const secondVideoInRowDetails = videosByViews[numVideo + 1];
+    const secondVideoInRowDetails = videosByViewsPerMinute[numVideo + 1];
     videoRow.push(
       secondVideoInRowDetails ? (
         <Short videoDetails={secondVideoInRowDetails} />
       ) : null
     );
 
-    const thirdVideoInRowDetails = videosByViews[numVideo + 2];
+    const thirdVideoInRowDetails = videosByViewsPerMinute[numVideo + 2];
     videoRow.push(
       thirdVideoInRowDetails ? (
         <Short videoDetails={thirdVideoInRowDetails} />
       ) : null
     );
 
-    const fourthVideoInRowDetails = videosByViews[numVideo + 3];
+    const fourthVideoInRowDetails = videosByViewsPerMinute[numVideo + 3];
     videoRow.push(
       fourthVideoInRowDetails ? (
         <Short videoDetails={fourthVideoInRowDetails} />
       ) : null
     );
 
-    const fifthVideoInRowDetails = videosByViews[numVideo + 4];
+    const fifthVideoInRowDetails = videosByViewsPerMinute[numVideo + 4];
     videoRow.push(
       fifthVideoInRowDetails ? (
         <Short videoDetails={fifthVideoInRowDetails} />
@@ -397,15 +205,25 @@ function ShortsList() {
           value={viewsFilterStatus}
           onClick={(event) => {
             if (event.target.value === "clicked") {
-              setNoSortHidden(false);
               setSortByViewsHidden(true);
+              setNoSortHidden(false);
+              setSortByDurationHidden(true);
+              setSortByViewsPerMinuteHidden(true);
               setViewsFilterStatus("");
+              setDurationFilterActive("filter-button-inactive");
               setViewsFilterActive("filter-button-inactive");
+              setViewsPerMinuteFilterActive("filter-button-inactive");
             } else {
-              setNoSortHidden(true);
               setSortByViewsHidden(false);
+              setNoSortHidden(true);
+              setSortByDurationHidden(true);
+              setSortByViewsPerMinuteHidden(true);
               setViewsFilterStatus("clicked");
+              setDurationFilterStatus("");
+              setViewsPerMinuteFilterStatus("");
+              setDurationFilterActive("filter-button-inactive");
               setViewsFilterActive("filter-button-active");
+              setViewsPerMinuteFilterActive("filter-button-inactive");
             }
           }}
         >
@@ -413,15 +231,28 @@ function ShortsList() {
         </button>
       </div>
       <div className="scrollable-video-list">
-        <div hidden={noSortHidden}>{videos}</div>
+        <div hidden={noSortHidden}>{videosUnsorted}</div>
         <div hidden={sortByViewsHidden}>{videosMostToLeastViews}</div>
       </div>
-      <div className="d-flex flex-row justify-content-center" id="previous-next-videos-buttons-container">
-        <button className="btn btn-primary">Previous 50 videos</button>
-        <button className="btn btn-primary">Next 50 videos</button>
+      <div
+        className="d-flex flex-row justify-content-center"
+        id="previous-next-videos-buttons-container"
+      >
+        <button
+          className="btn btn-primary"
+          onClick={() => {setPreviousButtonClicked("true"); handlePreviousPageButtonClicked(); setTokenForPageToGet(pageOf50Node.prevPageToken)}}
+        >
+          Previous 50 videos
+        </button>
+        <button
+          className="btn btn-primary"
+          onClick={() => {setNextButtonClicked("true"); handleNextPageButtonClicked(); setTokenForPageToGet(pageOf50Node.nextPageToken)}}
+        >
+          Next 50 videos
+        </button>
       </div>
       <div className="horizontal-line"></div>
-      <input id="current-number-to-process" hidden type="number" value={0} />
+      <input id="current-number-to-process" hidden type="number" value={currentNumberToProcess ? currentNumberToProcess.value : 0} />
       <Save />
     </>
   );

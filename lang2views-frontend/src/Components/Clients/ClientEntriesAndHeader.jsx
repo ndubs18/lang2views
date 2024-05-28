@@ -4,6 +4,9 @@ import ClientVideoListProcessor from "./ClientVideoListProcessor";
 import ClientPlanButtonClickProcessor from "./ClientPlanButtonClickProcessor";
 import ClientSettingsButtonClickProcessor from "./ClientSettingsButtonClickProcessor";
 import ClientDeleteButtonClickProcessor from "./ClientDeleteButtonClickProcessor";
+import { clientIdContext } from "./clientIdContext";
+import { channelNameContext } from "../client-settings/channelNameContext";
+import { clientNameContext } from "../client-settings/clientNameContext";
 
 function ClientEntriesAndHeader(props) {
   const typeOfClientData = [
@@ -129,9 +132,13 @@ function ClientEntriesAndHeader(props) {
     const settingsButton = (
       <button
         className="client-entry-action-button btn rounded-circle client-entry-settings-button"
+        id={`client-${row + 1}`}
         onClick={() => {
-          ClientSettingsButtonClickProcessor({clientId: dataForCurrentClientEntry.clientId}
-          );
+          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
+          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+
+          ClientSettingsButtonClickProcessor();
         }}
       >
         {settingsButtonIcon}
@@ -149,8 +156,13 @@ function ClientEntriesAndHeader(props) {
     const planButton = (
       <button
         className="client-entry-action-button btn rounded-circle client-entry-plan-button"
+        id={`client-${row + 1}`}
         onClick={() => {
-          ClientPlanButtonClickProcessor({clientId: dataForCurrentClientEntry.clientId});
+          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
+          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+
+          ClientPlanButtonClickProcessor();
         }}
       >
         {planButtonIcon}
@@ -168,8 +180,13 @@ function ClientEntriesAndHeader(props) {
     const videoListButton = (
       <button
         className="client-entry-action-button btn rounded-circle client-entry-video-list-button"
+        id={`client-${row + 1}`}
         onClick={() => {
-          ClientVideoListProcessor({clientId: dataForCurrentClientEntry.clientId});
+          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
+          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+
+          ClientVideoListProcessor();
         }}
       >
         {videoListButtonIcon}
@@ -187,8 +204,13 @@ function ClientEntriesAndHeader(props) {
     const deleteButton = (
       <button
         className="client-entry-action-button btn rounded-circle client-entry-delete-button"
+        id={`client-${row + 1}`}
         onClick={() => {
-          ClientDeleteButtonClickProcessor({clientId: dataForCurrentClientEntry.clientId});
+          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
+          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+
+          ClientDeleteButtonClickProcessor();
         }}
       >
         {deleteButtonIcon}

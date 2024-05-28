@@ -11,7 +11,7 @@ function buttonClickHandler(event) {
     currentVideoSelectButton.textContent = currentNumber.value;
   }
   else {
-    const allVideosButtons = document.querySelectorAll(".shorts-select-button");
+    const allVideosButtons = document.querySelectorAll(".short-select-button");
 
     const currentNumber = document.querySelector("#current-number-to-process");
 
@@ -40,7 +40,7 @@ function Short(props) {
   return (
     <div className="d-flex flex-column shorts-seperation short-container">
       <div style={{ width: "100%", height: "100%", backgroundImage: `url(${props.videoDetails.thumbnailSrc})`}}>
-        <button className="rounded rounded-circle shorts-select-button" onClick={buttonClickHandler} id={props.videoDetails.title} disabled={props.videoDetails.done}></button>
+        <button className="rounded rounded-circle short-select-button" onClick={buttonClickHandler} id={props.videoDetails.title} disabled={props.videoDetails.done}></button>
       </div>
       <p>{props.videoDetails.title}</p>
       <div className="d-flex flex-row">

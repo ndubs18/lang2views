@@ -32,7 +32,7 @@ function ClientsView(props) {
   const dataForTableBodyRow1 = {
     clientId: "12cd7",
     clientYoutubePictureLink: "src/Images/brown.png",
-    clientName: 'A',
+    clientName: 'B',
     numLongFormatVideosDone: "2 of 5 videos",
     numShortsDone: "5 out of 5",
     percentageDone: 60,
@@ -43,7 +43,7 @@ function ClientsView(props) {
     clientName: 'A',
     numLongFormatVideosDone: "2 of 5 videos",
     numShortsDone: "5 out of 5",
-    percentageDone: 60,
+    percentageDone: 60
   }
 
   const clientEntries = [

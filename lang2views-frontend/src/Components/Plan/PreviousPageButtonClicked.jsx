@@ -1,6 +1,3 @@
-import { createContext } from "react";
-import "./save.css";
-
 class LongFormatVideo {
   title = "";
   placement = 0;
@@ -15,14 +12,15 @@ function sortOrderOfVideos(videos) {
   });
 }
 
-export const longFormatVideosContext = createContext([]);
-
-function handleSubmit() {
+function handlePreviousPageButtonClicked() {
   const currentVideosForProcessingContainer = document.querySelector(
     "#videos-for-processing-json"
   );
+  const currentVideosForProcessing = JSON.parse(
+    currentVideosForProcessingContainer.textContent
+  );
 
-  let videoProcessingList = JSON.parse(currentVideosForProcessingContainer.textContent);
+  let videoProcessingList = currentVideosForProcessing;
 
   const videoSelectButtonsWithDuplicates = document.querySelectorAll(
     ".long-format-video-select-button"
@@ -74,21 +72,10 @@ function handleSubmit() {
 
   sortOrderOfVideos(videoProcessingList);
 
-  longFormatVideosContext.Provider = JSON.stringify(videoProcessingList);
+  currentVideosForProcessingContainer.textContent =
+    JSON.stringify(videoProcessingList);
 
-  console.log(longFormatVideosContext.Provider);
+  console.log(currentVideosForProcessingContainer.textContent);
 }
 
-function LongFormatStepSave() {
-  return (
-    <button
-      id="save"
-      className="btn btn-primary"
-      onClick={handleSubmit}
-    >
-      Save
-    </button>
-  );
-}
-
-export default LongFormatStepSave;
+export default handlePreviousPageButtonClicked;

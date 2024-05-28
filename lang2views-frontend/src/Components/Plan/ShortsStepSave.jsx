@@ -1,40 +1,82 @@
+import { createContext } from "react";
 import "./save.css";
 
-class TitleOrderOfPlacementPair {
-  title = ""
-  placement = 0
+class Short {
+  title = "";
+  placement = 0;
+  thumbnailSrc = "";
 }
 
 function sortOrderOfVideos(videos) {
   videos.sort((currentVideo, nextVideo) => {
-      if (currentVideo.placement > nextVideo.placement)
-          return 1;
-      else if (currentVideo.placement < nextVideo.placement)
-          return -1;
-      else
-          return 0;
+    if (currentVideo.placement > nextVideo.placement) return 1;
+    else if (currentVideo.placement < nextVideo.placement) return -1;
+    else return 0;
   });
 }
 
-function handleSubmit() {
-  const videoSelectButtons = document.querySelectorAll(".shorts-select-button");
+export const shortsContext = createContext([]);
 
-  const videoProcessingList = [];
+function handleSubmit() {
+  const currentVideosForProcessingContainer = document.querySelector(
+    "#videos-for-processing-json"
+  );
+
+  let videoProcessingList = JSON.parse(currentVideosForProcessingContainer.textContent);
+
+  const videoSelectButtonsWithDuplicates = document.querySelectorAll(
+    ".short-select-button"
+  );
+  const videoSelectButtons = [];
+  for (let i = 0; i < videoSelectButtonsWithDuplicates.length / 4; i++) {
+    videoSelectButtons.push(videoSelectButtonsWithDuplicates[i]);
+  }
+
+  const videoThumbnailsWithDuplicates =
+    document.querySelectorAll('[id$="thumbnail"]');
+  const videoThumbnails = [];
+  for (let i = 0; i < videoThumbnailsWithDuplicates.length / 4; i++) {
+    videoThumbnails.push(videoThumbnailsWithDuplicates[i]);
+  }
 
   for (let i = 0; i < videoSelectButtons.length; i++) {
     if (videoSelectButtons[i].textContent !== "") {
-      const titleOrderOfPlacementPair = new TitleOrderOfPlacementPair();
+      if (
+        videoProcessingList.find(
+          (video) => video.title === videoSelectButtons[i].id
+        ) === undefined
+      ) {
+        const short = new Short();
 
-      titleOrderOfPlacementPair.title = videoSelectButtons[i].id;
-      titleOrderOfPlacementPair.placement = videoSelectButtons[i].textContent;
+        short.title = videoSelectButtons[i].id;
+        short.placement = Number.parseInt(videoSelectButtons[i].textContent);
+        short.thumbnailSrc = videoThumbnails[i].textContent;
 
-      videoProcessingList.push(titleOrderOfPlacementPair);
+        videoProcessingList.push(short);
+      }
+    } else {
+      const removedVideo = videoProcessingList.find(
+        (video) => video.title === videoSelectButtons[i].id
+      );
+      
+      if (removedVideo !== undefined) {
+        videoProcessingList = videoProcessingList.filter(
+          (video) => video.title !== videoSelectButtons[i].id
+        );
+
+        videoProcessingList.map((video) => {
+          if (video.placement > removedVideo.placement)
+            return (video.placement = video.placement - 1);
+        });
+      }
     }
   }
 
   sortOrderOfVideos(videoProcessingList);
 
-  console.log(videoProcessingList);
+  shortsContext.Provider = JSON.stringify(videoProcessingList);
+
+  console.log(shortsContext.Provider);
 }
 
 function ShortsStepSave() {

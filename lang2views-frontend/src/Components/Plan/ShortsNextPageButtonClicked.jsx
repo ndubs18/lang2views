@@ -1,7 +1,4 @@
-import { createContext } from "react";
-import "./save.css";
-
-class LongFormatVideo {
+class Short {
   title = "";
   placement = 0;
   thumbnailSrc = "";
@@ -15,17 +12,18 @@ function sortOrderOfVideos(videos) {
   });
 }
 
-export const longFormatVideosContext = createContext([]);
-
-function handleSubmit() {
+function handleNextPageButtonClicked() {
   const currentVideosForProcessingContainer = document.querySelector(
     "#videos-for-processing-json"
   );
+  const currentVideosForProcessing = JSON.parse(
+    currentVideosForProcessingContainer.textContent
+  );
 
-  let videoProcessingList = JSON.parse(currentVideosForProcessingContainer.textContent);
+  let videoProcessingList = currentVideosForProcessing;
 
   const videoSelectButtonsWithDuplicates = document.querySelectorAll(
-    ".long-format-video-select-button"
+    ".shorts-select-button"
   );
   const videoSelectButtons = [];
   for (let i = 0; i < videoSelectButtonsWithDuplicates.length / 4; i++) {
@@ -46,13 +44,13 @@ function handleSubmit() {
           (video) => video.title === videoSelectButtons[i].id
         ) === undefined
       ) {
-        const longFormatVideo = new LongFormatVideo();
+        const short = new Short();
 
-        longFormatVideo.title = videoSelectButtons[i].id;
-        longFormatVideo.placement = Number.parseInt(videoSelectButtons[i].textContent);
-        longFormatVideo.thumbnailSrc = videoThumbnails[i].textContent;
+        short.title = videoSelectButtons[i].id;
+        short.placement = Number.parseInt(videoSelectButtons[i].textContent);
+        short.thumbnailSrc = videoThumbnails[i].textContent;
 
-        videoProcessingList.push(longFormatVideo);
+        videoProcessingList.push(short);
       }
     } else {
       const removedVideo = videoProcessingList.find(
@@ -74,21 +72,10 @@ function handleSubmit() {
 
   sortOrderOfVideos(videoProcessingList);
 
-  longFormatVideosContext.Provider = JSON.stringify(videoProcessingList);
+  currentVideosForProcessingContainer.textContent =
+    JSON.stringify(videoProcessingList);
 
-  console.log(longFormatVideosContext.Provider);
+  console.log(currentVideosForProcessingContainer.textContent);
 }
 
-function LongFormatStepSave() {
-  return (
-    <button
-      id="save"
-      className="btn btn-primary"
-      onClick={handleSubmit}
-    >
-      Save
-    </button>
-  );
-}
-
-export default LongFormatStepSave;
+export default handleNextPageButtonClicked;
