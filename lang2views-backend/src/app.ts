@@ -7,14 +7,19 @@ import { Trello, CreateCardRequest, UpdateCardRequest } from './trello.js';
 import { Users } from './users.js';
 import { Clients, ClientSettings } from './clients.js';
 import fs from 'fs';
-import dotenv from 'dotenv';
+import { DropboxConnection } from './dropboxConnection.js'
+import dotenv from 'dotenv'
+
 dotenv.config();
+
 const app = express();
 const port = 3000;
 
 const userFile = 'users.json';
-const clientFile = 'clients.json';
+export const clientFile = 'clients.json';
 const TOKEN_PATH = 'youtube_token.json';
+
+const dropbox = new DropboxConnection()
 
 const trello = new Trello(process.env.TRELLO_API_KEY, process.env.TRELLO_TOKEN);
 
@@ -212,10 +217,19 @@ app.post('/client/addVideo', async (req,res) => {
     */
 
     let clients = new Clients(clientFile);
-    if(channelId && video){
-        if(video.name && video.url && video.id && video.thumbnail && video.duration && video.format){
-            await clients.addClientVideo(channelId,video)
-            res.send('video added.');
+    if (channelId && video) {
+        // TODO: add extra error check to ensure we're not re-adding something already added
+        if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
+            if (await dropbox.isAuthenticated()) {
+                let videoNumber = await clients.addClientVideo(channelId, video)
+                let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
+                res.send({
+                    dropboxUrl: dropboxUrl,
+                    message: "Video added."
+                });
+            } else {
+                res.send('Please authenticate Dropbox first.');
+            }
         } else {
             res.send('Invalid request body. Video format invalid.')
         }
@@ -223,6 +237,7 @@ app.post('/client/addVideo', async (req,res) => {
     } else {
         res.send('Invalid request body.')
     }
+
 })
 
 /*
@@ -330,6 +345,42 @@ app.post('/client/add', async (req, res) => {
     }
 })
 
+/*
+* Dropbox login endpoint
+* Authorizes creation of client/video folders to the lang2views DB account
+*/
+app.get('/dropbox/auth', async (req, res) => {
+    const authUrl = await dropbox.getAuthUrl();
+    res.redirect(authUrl);
+});
+
+/*
+* Dropbox authorization callback
+* After user logs into company account it redirects back here to save the token
+* NOT USED BY US
+*/
+app.get('/dropbox/authsuccess', (req, res) => {
+    const code = req.query.code as string;
+    dropbox.handleTokenFromCode(code)
+    
+    res.send('Authentication successful! You can now close this tab.');
+});
+
+// Dropbox client folder creation API
+app.post('/dropbox/createClientFolders', async (req, res) => {
+    const channelId = req.body.channelId;
+
+    if (channelId) {
+
+        let result = await dropbox.createClientFolders(channelId);
+
+        res.send({ url: result });
+    } else {
+        res.send('Invalid request body.')
+    }
+});
+
+// Login API
 /*
 * Login API
 * Requires email & password
