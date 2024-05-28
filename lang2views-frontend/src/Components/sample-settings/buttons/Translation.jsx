@@ -11,12 +11,12 @@ function Model() {
   );
 }
 
-function Dictionary() {
+function ChatGPTInstructions() {
     return (
       <div className="text-input-container w-100 ms-5 d-flex flex-column align-items-start">
-        <h2>Dictionary</h2>
-        <label htmlFor="dictionary-input"></label>
-        <textarea className="form-control form-control-lg text-area" id="dictionary-input"></textarea>
+        <h2>Chat GPT Instructions</h2>
+        <label htmlFor="ChatGPTInstructions-input"></label>
+        <textarea className="form-control form-control-lg text-area" id="ChatGPTInstructions-input"></textarea>
       </div>
     );
   }
@@ -34,7 +34,7 @@ function Translation(props) {
     <div>
       <br />
       <Model />
-      <Dictionary />
+      <ChatGPTInstructions />
       <div className="horizontal-line"></div>
       <Save />
     </div>

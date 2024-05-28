@@ -24,22 +24,6 @@
     margin-left: 5%;
 }
 
-#use-same-description-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 5%;
-    width: 70em;
-}
-
-#use-same-tags-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 5%;
-    width: 70em;
-}
-
 .text-input-container {
     width: 40%;
 }
@@ -85,12 +69,6 @@
     width: 35em;
 }
 
-.small-text-area {
-    resize: none;
-    height: 5em;
-    width: 50em;
-}
-
 .active-step-button {
     font-weight: bold;
     border-bottom: blue solid 1px;
@@ -98,22 +76,6 @@
 
 .active-step-button:hover {
     border-bottom: blue solid 1px;
-}
-
-.upload-step-toggle-active {
-    background-color: #8dda8d;
-}
-
-.upload-step-toggle-not-active {
-    border: grey solid 1px;
-}
-
-.upload-step-toggle-active:hover {
-    background-color: #8dda8d;
-}
-
-.upload-step-toggle-not-active:hover {
-    border: grey solid 1px;
 }
 
 .pale-green-button {

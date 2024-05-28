@@ -13,7 +13,7 @@ function SampleSettings(props) {
     throw new Error("No props for SampleSettings");
   }
 
-  const [planButtonActive, setPlanButtonActive] = useState("active-step-button");
+  const [videoSourceButtonActive, setVideoSourceButtonActive] = useState("active-step-button");
   const [translationButtonActive, setTranslationButtonActive] =
     useState("normal");
   const [transcriptionButtonActive, setTranscriptionButtonActive] =
@@ -34,12 +34,12 @@ function SampleSettings(props) {
           <button
             id="sample-settings-video-source-button"
             className={
-              planButtonActive +
+              videoSourceButtonActive +
               " me-4 fs-2 ms-5 btn btn-link text-decoration-none text-reset rounded-0"
             }
             onClick={() => {
               SampleSettingsVideoSourceButtonClickProcessor();
-              setPlanButtonActive("active-step-button");
+              setVideoSourceButtonActive("active-step-button");
               setTranscriptionButtonActive("normal");
               setTranslationButtonActive("normal");
               setUploadButtonActive("normal");
@@ -55,7 +55,7 @@ function SampleSettings(props) {
             }
             onClick={() => {
               SampleSettingsTranscriptionButtonClickProcessor();
-              setPlanButtonActive("normal");
+              setVideoSourceButtonActive("normal");
               setTranscriptionButtonActive("active-step-button");
               setTranslationButtonActive("normal");
               setUploadButtonActive("normal");
@@ -71,7 +71,7 @@ function SampleSettings(props) {
             }
             onClick={() => {
               SampleSettingsTranslationButtonClickProcessor();
-              setPlanButtonActive("normal");
+              setVideoSourceButtonActive("normal");
               setTranscriptionButtonActive("normal");
               setTranslationButtonActive("active-step-button");
               setUploadButtonActive("normal");
@@ -87,7 +87,7 @@ function SampleSettings(props) {
             }
             onClick={() => {
               SampleSettingsUploadButtonClickProcessor();
-              setPlanButtonActive("normal");
+              setVideoSourceButtonActive("normal");
               setTranscriptionButtonActive("normal");
               setTranslationButtonActive("normal");
               setUploadButtonActive("active-step-button");

@@ -2,10 +2,10 @@ import "./save.css";
 
 function handleSubmit() {
   const modelInput = document.querySelector("#model-input");
-  const dictionaryInput = document.querySelector("#dictionary-input");
+  const chatGPTInstructionsInput = document.querySelector("#ChatGPTInstructions-input");
 
   console.log(modelInput.value + "\n");
-  console.log(dictionaryInput.value);
+  console.log(chatGPTInstructionsInput.value);
 }
 
 function Save() {
