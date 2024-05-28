@@ -7,7 +7,7 @@ import handleNextPageButtonClicked from "./ShortsNextPageButtonClicked";
 import handlePreviousPageButtonClicked from "./ShortsPreviousPageButtonClicked";
 
 function ShortsList() {
-  const [pageOf50Node, setPageOf50Node] = useState({});
+  const [pageOf50Node, setPageOf50Node] = useState([]);
   const [previousButtonClicked, setPreviousButtonClicked] = useState("");
   const [nextButtonClicked, setNextButtonClicked] = useState("");
   const [tokenForPageToGet, setTokenForPageToGet] = useState("");
@@ -65,9 +65,9 @@ function ShortsList() {
         type: "longFormatVideo",
         done: false,
       },
-  ];
+    ];
 
-  setPageOf50Node(videos);
+    setPageOf50Node(videos);
 
     /* fetch("http://localhost:3000/client/getVideoPage", {
       method: "GET",
@@ -90,53 +90,52 @@ function ShortsList() {
     }
   }, [previousButtonClicked, nextButtonClicked]);
 
-  const currentNumberToProcess = document.querySelector("#current-number-to-process");
+  const currentNumberToProcess = document.querySelector(
+    "#current-number-to-process"
+  );
 
   const [noSortHidden, setNoSortHidden] = useState(false);
   const [sortByViewsHidden, setSortByViewsHidden] = useState(true);
+  const [viewsFilterStatus, setViewsFilterStatus] = useState("");
   const [viewsFilterActive, setViewsFilterActive] = useState(
     "filter-button-inactive"
   );
 
-  pageOf50Node.videos.filter((video) => video.type === "short");
-  
-  const videosUnsorted = [];
-  for (
-    let numVideo = 0;
-    numVideo < pageOf50Node.videos.length;
-    numVideo = numVideo + 3
-  ) {
-    const videoRow = [];
-    const firstVideoInRowDetails = pageOf50Node.videos[numVideo];
-      videoRow.push(<Short videoDetails={firstVideoInRowDetails} />);
+  const shorts = pageOf50Node.filter((video) => video.type === "short");
 
-      const secondVideoInRowDetails = videosByViewsPerMinute[numVideo + 1];
-      videoRow.push(
-        secondVideoInRowDetails ? (
-          <Short videoDetails={secondVideoInRowDetails} />
-        ) : null
-      );
-  
-      const thirdVideoInRowDetails = videosByViewsPerMinute[numVideo + 2];
-      videoRow.push(
-        thirdVideoInRowDetails ? (
-          <Short videoDetails={thirdVideoInRowDetails} />
-        ) : null
-      );
-  
-      const fourthVideoInRowDetails = videosByViewsPerMinute[numVideo + 3];
-      videoRow.push(
-        fourthVideoInRowDetails ? (
-          <Short videoDetails={fourthVideoInRowDetails} />
-        ) : null
-      );
-  
-      const fifthVideoInRowDetails = videosByViewsPerMinute[numVideo + 4];
-      videoRow.push(
-        fifthVideoInRowDetails ? (
-          <Short videoDetails={fifthVideoInRowDetails} />
-        ) : null
-      );
+  const videosUnsorted = [];
+  for (let numVideo = 0; numVideo < shorts.length; numVideo = numVideo + 3) {
+    const videoRow = [];
+    const firstVideoInRowDetails = shorts[numVideo];
+    videoRow.push(<Short videoDetails={firstVideoInRowDetails} />);
+
+    const secondVideoInRowDetails = shorts[numVideo + 1];
+    videoRow.push(
+      secondVideoInRowDetails ? (
+        <Short videoDetails={secondVideoInRowDetails} />
+      ) : null
+    );
+
+    const thirdVideoInRowDetails = shorts[numVideo + 2];
+    videoRow.push(
+      thirdVideoInRowDetails ? (
+        <Short videoDetails={thirdVideoInRowDetails} />
+      ) : null
+    );
+
+    const fourthVideoInRowDetails = shorts[numVideo + 3];
+    videoRow.push(
+      fourthVideoInRowDetails ? (
+        <Short videoDetails={fourthVideoInRowDetails} />
+      ) : null
+    );
+
+    const fifthVideoInRowDetails = shorts[numVideo + 4];
+    videoRow.push(
+      fifthVideoInRowDetails ? (
+        <Short videoDetails={fifthVideoInRowDetails} />
+      ) : null
+    );
 
     const videoRowContainer = React.createElement(
       "div",
@@ -147,7 +146,7 @@ function ShortsList() {
     videosUnsorted.push(videoRowContainer);
   }
 
-  let videosByViews = pageOf50Node.videos;
+  let videosByViews = shorts;
   sortViewsMostToLeast(videosByViews);
   const videosMostToLeastViews = [];
   for (
@@ -159,28 +158,28 @@ function ShortsList() {
     const firstVideoInRowDetails = videosByViews[numVideo];
     videoRow.push(<Short videoDetails={firstVideoInRowDetails} />);
 
-    const secondVideoInRowDetails = videosByViewsPerMinute[numVideo + 1];
+    const secondVideoInRowDetails = videosByViews[numVideo + 1];
     videoRow.push(
       secondVideoInRowDetails ? (
         <Short videoDetails={secondVideoInRowDetails} />
       ) : null
     );
 
-    const thirdVideoInRowDetails = videosByViewsPerMinute[numVideo + 2];
+    const thirdVideoInRowDetails = videosByViews[numVideo + 2];
     videoRow.push(
       thirdVideoInRowDetails ? (
         <Short videoDetails={thirdVideoInRowDetails} />
       ) : null
     );
 
-    const fourthVideoInRowDetails = videosByViewsPerMinute[numVideo + 3];
+    const fourthVideoInRowDetails = videosByViews[numVideo + 3];
     videoRow.push(
       fourthVideoInRowDetails ? (
         <Short videoDetails={fourthVideoInRowDetails} />
       ) : null
     );
 
-    const fifthVideoInRowDetails = videosByViewsPerMinute[numVideo + 4];
+    const fifthVideoInRowDetails = videosByViews[numVideo + 4];
     videoRow.push(
       fifthVideoInRowDetails ? (
         <Short videoDetails={fifthVideoInRowDetails} />
@@ -207,23 +206,13 @@ function ShortsList() {
             if (event.target.value === "clicked") {
               setSortByViewsHidden(true);
               setNoSortHidden(false);
-              setSortByDurationHidden(true);
-              setSortByViewsPerMinuteHidden(true);
               setViewsFilterStatus("");
-              setDurationFilterActive("filter-button-inactive");
               setViewsFilterActive("filter-button-inactive");
-              setViewsPerMinuteFilterActive("filter-button-inactive");
             } else {
               setSortByViewsHidden(false);
               setNoSortHidden(true);
-              setSortByDurationHidden(true);
-              setSortByViewsPerMinuteHidden(true);
               setViewsFilterStatus("clicked");
-              setDurationFilterStatus("");
-              setViewsPerMinuteFilterStatus("");
-              setDurationFilterActive("filter-button-inactive");
               setViewsFilterActive("filter-button-active");
-              setViewsPerMinuteFilterActive("filter-button-inactive");
             }
           }}
         >
@@ -240,19 +229,32 @@ function ShortsList() {
       >
         <button
           className="btn btn-primary"
-          onClick={() => {setPreviousButtonClicked("true"); handlePreviousPageButtonClicked(); setTokenForPageToGet(pageOf50Node.prevPageToken)}}
+          onClick={() => {
+            setPreviousButtonClicked("true");
+            handlePreviousPageButtonClicked();
+            setTokenForPageToGet(pageOf50Node.prevPageToken);
+          }}
         >
           Previous 50 videos
         </button>
         <button
           className="btn btn-primary"
-          onClick={() => {setNextButtonClicked("true"); handleNextPageButtonClicked(); setTokenForPageToGet(pageOf50Node.nextPageToken)}}
+          onClick={() => {
+            setNextButtonClicked("true");
+            handleNextPageButtonClicked();
+            setTokenForPageToGet(pageOf50Node.nextPageToken);
+          }}
         >
           Next 50 videos
         </button>
       </div>
       <div className="horizontal-line"></div>
-      <input id="current-number-to-process" hidden type="number" value={currentNumberToProcess ? currentNumberToProcess.value : 0} />
+      <input
+        id="current-number-to-process"
+        hidden
+        type="number"
+        value={currentNumberToProcess ? currentNumberToProcess.value : 0}
+      />
       <Save />
     </>
   );

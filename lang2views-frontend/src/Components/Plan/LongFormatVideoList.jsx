@@ -361,13 +361,13 @@ function LongFormatVideoList(props) {
       >
         <button
           className="btn btn-primary"
-          onClick={() => {setPreviousButtonClicked("true"); handlePreviousPageButtonClicked(); setTokenForPageToGet(longFormatVideos.prevPageToken)}}
+          onClick={() => {setPreviousButtonClicked("true"); handlePreviousPageButtonClicked(); setTokenForPageToGet(pageOf50Node.prevPageToken)}}
         >
           Previous 50 videos
         </button>
         <button
           className="btn btn-primary"
-          onClick={() => {setNextButtonClicked("true"); handleNextPageButtonClicked(); setTokenForPageToGet(longFormatVideos.nextPageToken)}}
+          onClick={() => {setNextButtonClicked("true"); handleNextPageButtonClicked(); setTokenForPageToGet(pageOf50Node.nextPageToken)}}
         >
           Next 50 videos
         </button>
