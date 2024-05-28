@@ -56,6 +56,19 @@ export class Clients {
         }
     }
 
+    public updateClientVideo(channelId:string, video:Video){
+        for(let client of this._clients){
+            if(channelId === client.channelId){
+                if(client.videos){
+                    client.videos.updateVideo(video);
+                } else {
+                    client.videos = new Videos('clients/'+client.channelId+'/videos.json');
+                    client.videos.updateVideo(video);
+                }
+            }
+        }
+    }
+
     public removeClientVideo(channelId:string, videoId:string){
         let match = false;
         for(let client of this._clients){

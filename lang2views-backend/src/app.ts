@@ -179,30 +179,54 @@ app.post('/client/updateSettings', (req, res) => {
 // This transcribes the video and adds it to the google doc
 // Translates video and adds it to google doc
 // updates trello ticket
-// adds all video files to dropbox (transcription and tranlsation test files, mp4, mp3)
+// adds all video files to dropbox (transcription and tranlsation text files, mp4, mp3)
 app.post('/client/organizeVideo', async (req,res) => {
     const channelId = req.body.channelId;
     const videoId = req.body.videoId;
     const lang = req.body.lang;
 
+    /*
+    * Video {
+        name:string,
+        url:string,
+        id:string,
+        thumbnail:any,
+        duration:any,
+        format:string
+    }
+    TRELLO TICKET
+    params: {
+    key: this.key,
+    token: this.token,
+    idList: cardData.idList,
+    name: cardData.name,
+    desc: cardData.desc,
+    pos: cardData.pos,
+    due: cardData.due,
+    labels: cardData.labels
+    }
+    */
     if(channelId && videoId && lang){
         let clients = new Clients(clientFile);
         let whisper = new Whisper();
-        let bing = new Bing();
+        // let bing = new Bing();
         let youtube = new YouTube();
 
         let filePath = await clients.getClientVideoPath(channelId, videoId) + '.mp3';
         let video = await clients.getClientVideo(channelId, videoId);
         await clients.downloadClientVideo(channelId,videoId);
         let transcription = await whisper.transcribeAudio(filePath, video.name.trim().replaceAll(' ', '_'));
-
-        // Bing translate
-        // let translation = await bing.translateText(transcription, lang);
-
-        // Google translate
         let translation = await youtube.translate(transcription, lang);
+        await fs.writeFileSync(`./clients/${channelId}/${video.id}/transcription.txt`, transcription);
+        await fs.writeFileSync(`./clients/${channelId}/${video.id}/translation.txt`, translation);
+        const cardData: Omit<UpdateCardRequest, 'key' | 'token'> = {
+            id: video.trelloCard,
+            desc: 'Video organized: ' + video.dropboxURL,
+        };
+        const card = await trello.updateCard(cardData);
 
-        res.send(JSON.stringify({ transcription:transcription, translation: translation}));
+
+        res.send(JSON.stringify({ transcription:transcription, translation: translation, trelloCard: card}));
 
     } else {
         res.send('Invalid request body. Please send channelId, videoId, and lang (desired translation language).');
@@ -217,7 +241,7 @@ app.post('/client/organizeVideo', async (req,res) => {
 // - the empty google doc (for transcription)
 app.post('/client/addVideo', async (req,res) => {
     const channelId = req.body.channelId;
-    const video = req.body.video
+    let video = req.body.video
     /*
     * Video {
         name:string,
@@ -227,6 +251,17 @@ app.post('/client/addVideo', async (req,res) => {
         duration:any,
         format:string
     }
+    TRELLO TICKET
+    params: {
+    key: this.key,
+    token: this.token,
+    idList: cardData.idList,
+    name: cardData.name,
+    desc: cardData.desc,
+    pos: cardData.pos,
+    due: cardData.due,
+    labels: cardData.labels
+    }
     */
 
     let clients = new Clients(clientFile);
@@ -234,9 +269,25 @@ app.post('/client/addVideo', async (req,res) => {
         // TODO: add extra error check to ensure we're not re-adding something already added
         if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
             if (await dropbox.isAuthenticated()) {
+                // TODO: Need to get idList from trello board.
+                const today = new Date();
+                let nextWeek = new Date(today.getDate() + 7);
+                const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
+                    idList: '',
+                    name: video.name.trim().replaceAll(' ', '_'),
+                    desc: 'Video added',
+                    pos: 'top',
+                    due: nextWeek.toString(),
+                    labels: ''
+                };
                 let videoNumber = await clients.addClientVideo(channelId, video)
                 let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
+                const card = await trello.createCard(cardData);
+                video.trelloCard = card.id;
+                video.dropboxURL = dropboxUrl;
+                clients.updateClientVideo(channelId,video)
                 res.send({
+                    trelloCard: card,
                     dropboxUrl: dropboxUrl,
                     message: "Video added."
                 });
