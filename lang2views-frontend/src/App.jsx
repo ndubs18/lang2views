@@ -9,7 +9,7 @@ import Upload from "./Components/VideoList/Upload/Upload";
 function App() {
   return (
     <>
-      {<LoginPage />}
+      <LoginPage />
       {/*<ClientAndSampleCreationViews />*/}
       {/*<LongFormatVideoList />*/}
     </>
