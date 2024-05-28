@@ -12,14 +12,14 @@ function Upload(props) {
   return (
     <>
       <div
-        className="client-settings-close-area"
+        className="upload-close-area"
         onClick={CloseUploadPopup}
       ></div>
-      <div className="client-settings-popup">
-        <div id="client-settings-header" className="ms-4">
+      <div className="upload-popup">
+        <div id="upload-header" className="ms-4">
           <UploadHeader sampleVideoName="Sample Video Name" />
         </div>
-        <div className="client-settings-button-section">
+        <div className="upload-buttons-section">
                   {props.sampleVideoName }
         </div>
         <div className="not-full-width-horizontal-line ms-5"></div>

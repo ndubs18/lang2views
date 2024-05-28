@@ -12,7 +12,7 @@ function UploadButton() {
       className="btn btn-primary"
       onClick={handleSubmit}
     >
-      upload
+      Upload
     </button>
   );
 }

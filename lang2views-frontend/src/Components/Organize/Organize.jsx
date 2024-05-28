@@ -12,14 +12,14 @@ function Organize(props) {
   return (
     <>
       <div
-        className="client-settings-close-area"
+        className="organize-close-area"
         onClick={CloseOrganizePopup}
       ></div>
-      <div className="client-settings-popup">
-        <div id="client-settings-header" className="ms-4">
+      <div className="organize-popup">
+        <div id="organize-header" className="ms-4">
           <OrganizeHeader sampleVideoName="Sample Video Name" />
         </div>
-        <div className="client-settings-button-section">
+        <div className="organize-button-section">
                   {props.sampleVideoName }
         </div>
         <div className="not-full-width-horizontal-line ms-5"></div>

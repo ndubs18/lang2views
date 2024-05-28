@@ -23,16 +23,16 @@ function SampleSettings(props) {
   return (
     <>
       <div
-        className="client-settings-close-area"
+        className="sample-settings-close-area"
         onClick={CloseSampleSettingsPopup}
       ></div>
-      <div className="client-settings-popup">
-        <div id="client-settings-header" className="ms-4">
+      <div className="sample-settings-popup">
+        <div id="sample-settings-header" className="ms-4">
           <SampleSettingsHeader sampleVideoName="Sample Video Name" />
         </div>
-        <div className="client-settings-button-section">
+        <div className="sample-settings-button-section">
           <button
-            id="client-settings-plan-button"
+            id="sample-settings-video-source-button"
             className={
               planButtonActive +
               " me-4 fs-2 ms-5 btn btn-link text-decoration-none text-reset rounded-0"
@@ -48,7 +48,7 @@ function SampleSettings(props) {
             Video Source
           </button>
           <button
-            id="client-settings-transcription-button"
+            id="sample-settings-transcription-button"
             className={
               transcriptionButtonActive +
               " mx-3 fs-2 btn btn-link text-decoration-none text-reset rounded-0"
@@ -64,7 +64,7 @@ function SampleSettings(props) {
             Transcription
           </button>
           <button
-            id="client-settings-translation-button"
+            id="sample-settings-translation-button"
             className={
               translationButtonActive +
               " mx-3 fs-2 btn btn-link text-decoration-none text-reset rounded-0"
@@ -80,7 +80,7 @@ function SampleSettings(props) {
             Translation
           </button>
           <button
-            id="client-settings-upload-button"
+            id="sample-settings-upload-button"
             className={
               uploadButtonActive +
               " mx-3 fs-2 btn btn-link text-decoration-none text-reset rounded-0"

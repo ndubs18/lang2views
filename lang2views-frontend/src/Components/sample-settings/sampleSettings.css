@@ -1,4 +1,4 @@
-.client-settings-popup {
+.sample-settings-popup {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -12,7 +12,7 @@
     margin-left: 50%;
 }
 
-.client-settings-close-area {
+.sample-settings-close-area {
     display: flex;
     position: fixed;
     z-index: 1;
@@ -22,14 +22,6 @@
     height: 100%;
     background-color: transparent;
     margin-left: 5%;
-}
-
-#use-monthly-plan-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 5%;
-    width: 70em;
 }
 
 #use-same-description-container {
@@ -48,33 +40,18 @@
     width: 70em;
 }
 
-#toggles-container {
-    display: flex;
-    flex-direction: row;
-}
-
-#num-long-formats-and-shorts-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
 .text-input-container {
     width: 40%;
 }
 
-#processing-amount-slider-container {
-    width: 70em;
-}
-
-#client-settings-buttons-section {
+#sample-settings-buttons-section {
     display: flex;
     flex-direction: row;
     width: 50em;
     margin-top: 5em;
 }
 
-#client-settings-header {
+#sample-settings-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -98,18 +75,6 @@
     width: 100em;
 }
 
-#slider-with-labels-container {
-    width: 40em;
-}
-
-.slider-label-spot {
-    border-radius: 20%;
-    padding: 2px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .text-area {
     resize: none;
     height: 20em;
@@ -124,22 +89,6 @@
     resize: none;
     height: 5em;
     width: 50em;
-}
-
-.monthly-plan-toggle-active {
-    background-color: #8dda8d;
-}
-
-.monthly-plan-toggle-not-active {
-    border: grey solid 1px;
-}
-
-.monthly-plan-toggle-active:hover {
-    background-color: #8dda8d;
-}
-
-.monthly-plan-toggle-not-active:hover {
-    border: grey solid 1px;
 }
 
 .active-step-button {

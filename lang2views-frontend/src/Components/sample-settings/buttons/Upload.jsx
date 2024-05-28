@@ -22,10 +22,10 @@ function GrantYoutubeAccess() {
 
 function Upload(props) {
   if (props === null)
-    return new Error("props for YoutubeAccess in client settings is null");
+    return new Error("props for YoutubeAccess in sample settings is null");
 
   if (props.channelName === null)
-    return new Error("No channelName for upload section of clientSettings");
+    return new Error("No channelName for upload section of sampleSettings");
 
   return (
     <div>

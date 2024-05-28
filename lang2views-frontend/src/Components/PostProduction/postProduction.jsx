@@ -12,14 +12,14 @@ function PostProduction(props) {
   return (
     <>
       <div
-        className="client-settings-close-area"
+        className="post-production-close-area"
         onClick={ClosePostProductionPopup}
       ></div>
-      <div className="client-settings-popup">
-        <div id="client-settings-header" className="ms-4">
+      <div className="post-production-popup">
+        <div id="post-production-header" className="ms-4">
           <PostProductionHeader sampleVideoName="Sample Video Name" />
         </div>
-        <div className="client-settings-button-section">
+        <div className="post-production-button-section">
                   {props.sampleVideoName }
         </div>
         <div className="not-full-width-horizontal-line ms-5"></div>

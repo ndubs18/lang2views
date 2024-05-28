@@ -1,4 +1,4 @@
-client-settings-popup {
+.upload-popup {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -12,7 +12,7 @@ client-settings-popup {
     margin-left: 50%;
 }
 
-.client-settings-close-area {
+.upload-close-area {
     display: flex;
     position: fixed;
     z-index: 1;
@@ -24,57 +24,18 @@ client-settings-popup {
     margin-left: 5%;
 }
 
-#use-monthly-plan-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 5%;
-    width: 70em;
-}
-
-#use-same-description-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 5%;
-    width: 70em;
-}
-
-#use-same-tags-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 5%;
-    width: 70em;
-}
-
-#toggles-container {
-    display: flex;
-    flex-direction: row;
-}
-
-#num-long-formats-and-shorts-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
 .text-input-container {
     width: 40%;
 }
 
-#processing-amount-slider-container {
-    width: 70em;
-}
-
-#client-settings-buttons-section {
+#upload-buttons-section {
     display: flex;
     flex-direction: row;
     width: 50em;
     margin-top: 5em;
 }
 
-#client-settings-header {
+#upload-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -96,88 +57,4 @@ client-settings-popup {
     bottom: 0;
     margin-bottom: 6em;
     width: 100em;
-}
-
-#slider-with-labels-container {
-    width: 40em;
-}
-
-.slider-label-spot {
-    border-radius: 20%;
-    padding: 2px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.text-area {
-    resize: none;
-    height: 20em;
-    width: 50em;
-}
-
-#model-input {
-    width: 35em;
-}
-
-.small-text-area {
-    resize: none;
-    height: 5em;
-    width: 50em;
-}
-
-.monthly-plan-toggle-active {
-    background-color: #8dda8d;
-}
-
-.monthly-plan-toggle-not-active {
-    border: grey solid 1px;
-}
-
-.monthly-plan-toggle-active:hover {
-    background-color: #8dda8d;
-}
-
-.monthly-plan-toggle-not-active:hover {
-    border: grey solid 1px;
-}
-
-.active-step-button {
-    font-weight: bold;
-    border-bottom: blue solid 1px;
-}
-
-.active-step-button:hover {
-    border-bottom: blue solid 1px;
-}
-
-.upload-step-toggle-active {
-    background-color: #8dda8d;
-}
-
-.upload-step-toggle-not-active {
-    border: grey solid 1px;
-}
-
-.upload-step-toggle-active:hover {
-    background-color: #8dda8d;
-}
-
-.upload-step-toggle-not-active:hover {
-    border: grey solid 1px;
-}
-
-.pale-green-button {
-    background-color: #8dda8d;
-}
-
-.youtube-login {
-    border: none;
-    background-color: #8dda8d;
-    border-radius: 10%;
-}
-
-.youtube-login :hover {
-    border: none;
-    background-color: #8dda8d;
 }
