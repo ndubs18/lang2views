@@ -51,7 +51,9 @@ export class Videos {
         }
         if(!match){
             this._videos.push(newVideo);
+            return this._videos.length;
         }
+        return -1;
     }
 
     public addVideos(newVideos:Video[]){

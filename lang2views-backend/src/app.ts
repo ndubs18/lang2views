@@ -3,22 +3,56 @@ import cors from 'cors';
 import { YouTube } from './youtube.js'
 import { Whisper } from './whisper.js';
 import { Bing } from './bing.js';
+import { Trello, CreateCardRequest, UpdateCardRequest } from './trello.js';
 import { Users } from './users.js';
 import { Clients, ClientSettings } from './clients.js';
 import fs from 'fs';
-import env from 'dotenv';
+import { DropboxConnection } from './dropboxConnection.js'
+import dotenv from 'dotenv'
+
+dotenv.config();
+
 const app = express();
 const port = 3000;
 
 const userFile = 'users.json';
-const clientFile = 'clients.json';
+export const clientFile = 'clients.json';
 const TOKEN_PATH = 'youtube_token.json';
 
-// Configure environment from .env
-env.config();
+const dropbox = new DropboxConnection()
+
+const trello = new Trello(process.env.TRELLO_API_KEY, process.env.TRELLO_TOKEN);
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+//Trello API test (Create a new card)
+app.post('/trello/create', async (req, res) => {
+    const cardData: Omit<CreateCardRequest, 'key' | 'token'> = req.body;
+    if (!cardData.idList || !cardData.name) {
+        return res.status(400).json({ error: 'idList and name are required' });
+    }
+    try {
+        const card = await trello.createCard(cardData);
+        res.status(201).json(card);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to create card' });
+    }
+});
+
+// Trello API test (Update an existing card)
+app.put('/trello/update', async (req, res) => {
+    const cardData: Omit<UpdateCardRequest, 'key' | 'token'> = req.body;
+    if (!cardData.id) {
+        return res.status(400).json({ error: 'id is required' });
+    }
+    try {
+        const card = await trello.updateCard(cardData);
+        res.status(200).json(card);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update card' });
+    }
+});
 
 // Allow requests from the frontend on a different port (e.g., http://localhost:3000)
 app.use(cors({
@@ -196,10 +230,19 @@ app.post('/client/addVideo', async (req,res) => {
     */
 
     let clients = new Clients(clientFile);
-    if(channelId && video){
-        if(video.name && video.url && video.id && video.thumbnail && video.duration && video.format){
-            await clients.addClientVideo(channelId,video)
-            res.send('video added.');
+    if (channelId && video) {
+        // TODO: add extra error check to ensure we're not re-adding something already added
+        if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
+            if (await dropbox.isAuthenticated()) {
+                let videoNumber = await clients.addClientVideo(channelId, video)
+                let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
+                res.send({
+                    dropboxUrl: dropboxUrl,
+                    message: "Video added."
+                });
+            } else {
+                res.send('Please authenticate Dropbox first.');
+            }
         } else {
             res.send('Invalid request body. Video format invalid.')
         }
@@ -207,6 +250,7 @@ app.post('/client/addVideo', async (req,res) => {
     } else {
         res.send('Invalid request body.')
     }
+
 })
 
 /*
@@ -254,7 +298,7 @@ app.post('/client/remove', async (req, res) => {
 * Get all clients API
 * Used to send all clients to front end when client page loads or the data changes (add client or remove client)
 */
-app.post('/client/getAll', async (req, res) => {
+app.get('/client/getAll', async (req, res) => {
     let clients = new Clients(clientFile);
     res.send(JSON.stringify(clients.clients));
 })
@@ -314,6 +358,42 @@ app.post('/client/add', async (req, res) => {
     }
 })
 
+/*
+* Dropbox login endpoint
+* Authorizes creation of client/video folders to the lang2views DB account
+*/
+app.get('/dropbox/auth', async (req, res) => {
+    const authUrl = await dropbox.getAuthUrl();
+    res.redirect(authUrl);
+});
+
+/*
+* Dropbox authorization callback
+* After user logs into company account it redirects back here to save the token
+* NOT USED BY US
+*/
+app.get('/dropbox/authsuccess', (req, res) => {
+    const code = req.query.code as string;
+    dropbox.handleTokenFromCode(code)
+    
+    res.send('Authentication successful! You can now close this tab.');
+});
+
+// Dropbox client folder creation API
+app.post('/dropbox/createClientFolders', async (req, res) => {
+    const channelId = req.body.channelId;
+
+    if (channelId) {
+
+        let result = await dropbox.createClientFolders(channelId);
+
+        res.send({ url: result });
+    } else {
+        res.send('Invalid request body.')
+    }
+});
+
+// Login API
 /*
 * Login API
 * Requires email & password

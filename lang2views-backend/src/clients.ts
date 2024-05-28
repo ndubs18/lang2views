@@ -142,13 +142,13 @@ export class Clients {
                 if(!fs.existsSync('clients/'+client.channelId)){
                     fs.mkdirSync('clients/'+client.channelId);
                 }
+                let videoNumber = 0;
                 if(client.videos == null){
                     client.videos = new Videos('clients/'+client.channelId+'/videos.json');
-                    client.videos.addVideo(video);
-                } else {
-                    client.videos.addVideo(video);
-                }
+                } 
+                videoNumber = client.videos.addVideo(video);
                 client.videos.writeVideosToFile();
+                return videoNumber;
             }
         }
     }

@@ -4,6 +4,26 @@
     box-sizing: border-box;
 }
 
+.organize-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.organize-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 500px;
+    text-align: center;
+}
+
 .video-name-in-organize {
     color: #8A8A8A;
     font-weight: bold;
@@ -50,6 +70,17 @@
     border: none;
     width: 125px;
     height: 40px;
-    margin-left: 275px;
     margin-top: 20px;
+}
+
+.go-back-button {
+    background-color: #4285F4;
+    color: white;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    width: 125px;
+    height: 40px;
+    margin-top: 20px;
+    margin-left: 10px;
 }
