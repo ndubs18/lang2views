@@ -41,6 +41,7 @@ function Short(props) {
     <div className="d-flex flex-column shorts-seperation short-container">
       <div style={{ width: "100%", height: "100%", backgroundImage: `url(${props.videoDetails.thumbnailSrc})`}}>
         <button className="rounded rounded-circle short-select-button" onClick={buttonClickHandler} id={props.videoDetails.title} disabled={props.videoDetails.done}></button>
+        <div id={props.videoDetails.title + "-thumbnail"}>{props.videoDetails.thumbnailSrc}</div>
       </div>
       <p>{props.videoDetails.title}</p>
       <div className="d-flex flex-row">

@@ -13,11 +13,15 @@ function ShortsList() {
   const [tokenForPageToGet, setTokenForPageToGet] = useState("");
 
   useEffect(() => {
+    const currentNumberToProcess = document.querySelector("#current-number-to-process");
+
     const currentVideosForProcessingContainer = document.querySelector(
       "#videos-for-processing-json"
     );
-    if (nextButtonClicked === "" && previousButtonClicked === "")
+    if (nextButtonClicked === "" && previousButtonClicked === "") {
       currentVideosForProcessingContainer.textContent = JSON.stringify([]);
+      currentNumberToProcess.value = 0;
+    }
 
     const videos = [
       {

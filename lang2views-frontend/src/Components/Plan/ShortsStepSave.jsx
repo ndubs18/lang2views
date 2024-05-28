@@ -28,14 +28,14 @@ function handleSubmit() {
     ".short-select-button"
   );
   const videoSelectButtons = [];
-  for (let i = 0; i < videoSelectButtonsWithDuplicates.length / 4; i++) {
+  for (let i = 0; i < videoSelectButtonsWithDuplicates.length / 2; i++) {
     videoSelectButtons.push(videoSelectButtonsWithDuplicates[i]);
   }
 
   const videoThumbnailsWithDuplicates =
     document.querySelectorAll('[id$="thumbnail"]');
   const videoThumbnails = [];
-  for (let i = 0; i < videoThumbnailsWithDuplicates.length / 4; i++) {
+  for (let i = 0; i < videoThumbnailsWithDuplicates.length / 2; i++) {
     videoThumbnails.push(videoThumbnailsWithDuplicates[i]);
   }
 

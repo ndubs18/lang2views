@@ -10,18 +10,22 @@ import {
 import handlePreviousPageButtonClicked from "./PreviousPageButtonClicked";
 import handleNextPageButtonClicked from "./NextPageButtonClicked";
 
-function LongFormatVideoList(props) {
+function LongFormatVideoList() {
   const [pageOf50Node, setPageOf50Node] = useState([]);
   const [previousButtonClicked, setPreviousButtonClicked] = useState("");
   const [nextButtonClicked, setNextButtonClicked] = useState("");
   const [tokenForPageToGet, setTokenForPageToGet] = useState("");
 
   useEffect(() => {
+    const currentNumberToProcess = document.querySelector("#current-number-to-process");
+
     const currentVideosForProcessingContainer = document.querySelector(
       "#videos-for-processing-json"
     );
-    if (nextButtonClicked === "" && previousButtonClicked === "")
+    if (nextButtonClicked === "" && previousButtonClicked === "") {
       currentVideosForProcessingContainer.textContent = JSON.stringify([]);
+      currentNumberToProcess.value = 0;
+    }
 
     const videos = [
       {
