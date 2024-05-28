@@ -17,7 +17,6 @@ const port = 3000;
 
 const userFile = 'users.json';
 export const clientFile = 'clients.json';
-const TOKEN_PATH = 'youtube_token.json';
 
 const dropbox = new DropboxConnection()
 
@@ -120,10 +119,6 @@ app.get('/youtube/oauth2callback', (req, res) => {
     oauth.getToken(code, (err, token) => {
       if (err) return res.status(400).send('Error retrieving access token');
       oauth.setCredentials(token);
-    //   fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-    //     if (err) return console.error(err);
-    //     console.log('Token stored to', TOKEN_PATH);
-    //   });
       process.env.CLIENT_TOKEN = token;
       res.send('Authentication successful! You can now close this tab.');
     });
@@ -311,12 +306,11 @@ app.post('/client/addVideo', async (req,res) => {
 * Also sends next and prev page tokens to navigate back or forwards 50 videos
 */
 app.post('/client/getVideoPage', async (req,res) => {
-    // const apiKey = req.body.apiKey;
     const apiKey = process.env.GOOGLE_KEY;
     const channelId = req.body.channelId;
     const pageToken = req.body.pageToken;
     
-    if(/* apiKey && */channelId){
+    if (channelId) {
         let youtube = new YouTube();
         let result = await youtube.getVideoList(apiKey,channelId,pageToken);
         res.send(JSON.stringify(result));
@@ -361,21 +355,16 @@ app.get('/client/getAll', async (req, res) => {
 */
 app.post('/client/add', async (req, res) => {
     const url = req.body.url;
-    // const apiKey = req.body.apiKey;
     const apiKey = process.env.GOOGLE_KEY;
     if (url) {
         if (await dropbox.isAuthenticated()) {
-        let youtube = new YouTube();
-        let clients = new Clients(clientFile);
+            let youtube = new YouTube();
+            let clients = new Clients(clientFile);
             let channelId = "";
             if (url.includes('/channel/')) {
                 channelId = getChannelIdFromUrl(url);
             } else {
-                res.send('Channel not found.')
-            }
-            res.send(JSON.stringify(result));
-        } else {
-            let channel = getChannelUsernameFromUrl(url);
+                let channel = getChannelUsernameFromUrl(url);
                 channelId = await youtube.getChannelFromUsername(apiKey, channel);
             }
 
@@ -442,7 +431,6 @@ app.post('/dropbox/createClientFolders', async (req, res) => {
     }
 });
 
-// Login API
 /*
 * Login API
 * Requires email & password
