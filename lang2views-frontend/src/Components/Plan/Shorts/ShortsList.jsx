@@ -13,6 +13,8 @@ function ShortsList() {
   const [nextButtonClicked, setNextButtonClicked] = useState("");
   const [tokenForPageToGet, setTokenForPageToGet] = useState("");
 
+  const clientId = useContext(clientIdContext);
+
   useEffect(() => {
     const currentNumberToProcess = document.querySelector("#current-number-to-process");
 
@@ -74,10 +76,8 @@ function ShortsList() {
 
     setPageOf50Node(videos);*/
 
-    const clientId = useContext(clientIdContext);
-
     fetch("http://localhost:3000/client/getVideoPage", {
-      method: "GET",
+      method: "POST",
       body: {
         channelId: clientId,
         pageToken: tokenForPageToGet === "" ? null : tokenForPageToGet,
