@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Short from "./Short";
-import Save from "./ShortsStepSave";
-import "./clientPlan.css";
-import { sortViewsMostToLeast } from "../Utilities/sortAscending";
-import handleNextPageButtonClicked from "./ShortsNextPageButtonClicked";
-import handlePreviousPageButtonClicked from "./ShortsPreviousPageButtonClicked";
+import Save from "./Buttons/ShortsStepSave";
+import "../clientPlan.css";
+import { sortViewsMostToLeast } from "../../Utilities/sortAscending";
+import handleNextPageButtonClicked from "./Buttons/ShortsNextPageButtonClicked";
+import handlePreviousPageButtonClicked from "./Buttons/ShortsPreviousPageButtonClicked";
+import { clientIdContext } from "../../Clients/clientIdContext";
 
 function ShortsList() {
   const [pageOf50Node, setPageOf50Node] = useState([]);
@@ -23,14 +24,14 @@ function ShortsList() {
       currentNumberToProcess.value = 0;
     }
 
-    const videos = [
+    /*const videos = [
       {
         thumbnailSrc: "./src/Images/brown.png",
         title: "A",
         duration: "10",
         views: "70",
         viewsPerMinute: "100",
-        type: "longFormatVideo",
+        type: "short",
         done: false,
       },
       {
@@ -57,7 +58,7 @@ function ShortsList() {
         duration: "9",
         views: "22",
         viewsPerMinute: "22",
-        type: "longFormatVideo",
+        type: "short",
         done: true,
       },
       {
@@ -66,17 +67,19 @@ function ShortsList() {
         duration: "10",
         views: "1",
         viewsPerMinute: "1",
-        type: "longFormatVideo",
+        type: "short",
         done: false,
       },
     ];
 
-    setPageOf50Node(videos);
+    setPageOf50Node(videos);*/
 
-    /* fetch("http://localhost:3000/client/getVideoPage", {
+    const clientId = useContext(clientIdContext);
+
+    fetch("http://localhost:3000/client/getVideoPage", {
       method: "GET",
       body: {
-        channelId: props.clientId,
+        channelId: clientId,
         pageToken: tokenForPageToGet === "" ? null : tokenForPageToGet,
       },
     })
@@ -85,7 +88,7 @@ function ShortsList() {
       )
       .catch((err) => {
         throw new Error(err);
-      }); */
+      });
 
     if (previousButtonClicked === "true") {
       setPreviousButtonClicked("false");
@@ -108,7 +111,7 @@ function ShortsList() {
   const shorts = pageOf50Node.filter((video) => video.type === "short");
 
   const videosUnsorted = [];
-  for (let numVideo = 0; numVideo < shorts.length; numVideo = numVideo + 3) {
+  for (let numVideo = 0; numVideo < shorts.length; numVideo = numVideo + 5) {
     const videoRow = [];
     const firstVideoInRowDetails = shorts[numVideo];
     videoRow.push(<Short videoDetails={firstVideoInRowDetails} />);
@@ -239,7 +242,7 @@ function ShortsList() {
             setTokenForPageToGet(pageOf50Node.prevPageToken);
           }}
         >
-          Previous 50 videos
+          Previous
         </button>
         <button
           className="btn btn-primary"
@@ -249,7 +252,7 @@ function ShortsList() {
             setTokenForPageToGet(pageOf50Node.nextPageToken);
           }}
         >
-          Next 50 videos
+          Next
         </button>
       </div>
       <div className="horizontal-line"></div>

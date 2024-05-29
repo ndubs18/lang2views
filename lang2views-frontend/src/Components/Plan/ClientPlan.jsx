@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import CloseClientPlanPopup from "./CloseClientPlanPopup";
 import "./clientPlan.css";
 import ClientPlanHeader from "./ClientPlanHeader";
-import LongFormatVideoList from "./LongFormatVideoList";
+import LongFormatVideoList from "./LongFormatVideos/LongFormatVideoList";
 import ClientPlanShortsButtonClickProcessor from "./ClientPlanShortsButtonClickProcessor";
 import ClientPlanLongFormatButtonClickProcessor from "./ClientPlanLongFormatButtonClickProcessor";
 import { channelNameContext } from "../client-settings/channelNameContext";

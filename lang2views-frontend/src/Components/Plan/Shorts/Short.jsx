@@ -1,4 +1,4 @@
-import "./videos.css";
+import "../videos.css";
 
 function buttonClickHandler(event) {
   const currentVideoSelectButton = document.querySelector(`#${event.target.id}`);
@@ -8,7 +8,10 @@ function buttonClickHandler(event) {
 
     currentNumber.value = Number.parseInt(currentNumber.value) + 1;
 
-    currentVideoSelectButton.textContent = currentNumber.value;
+    const buttonsWithSameIdAsCurrent = document.querySelectorAll(`#${event.target.id}`);
+
+    buttonsWithSameIdAsCurrent[0].textContent = currentNumber.value;
+    buttonsWithSameIdAsCurrent[1].textContent = currentNumber.value;
   }
   else {
     const allVideosButtons = document.querySelectorAll(".short-select-button");
@@ -21,7 +24,7 @@ function buttonClickHandler(event) {
 
     for (let i = 0; i < allVideosButtons.length; i++) {
       if (allVideosButtons[i].id === currentVideoSelectButton.id)
-        currentVideoSelectButton.textContent = "";
+        allVideosButtons[i].textContent = "";
       else {
         if (allVideosButtons[i].textContent !== "" && allVideosButtons[i].textContent > placementOfCurrentVideoInProcessingOrder)
           allVideosButtons[i].textContent = Number.parseInt(allVideosButtons[i].textContent) - 1;

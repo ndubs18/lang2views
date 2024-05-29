@@ -1,4 +1,4 @@
-import "./videos.css";
+import "../videos.css";
 
 function handleSelectButton(event) {
   const currentVideoSelectButton = document.querySelector(`#${event.target.id}`);

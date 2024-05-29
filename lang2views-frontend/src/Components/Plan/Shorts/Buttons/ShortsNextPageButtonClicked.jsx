@@ -23,7 +23,7 @@ function handleNextPageButtonClicked() {
   let videoProcessingList = currentVideosForProcessing;
 
   const videoSelectButtonsWithDuplicates = document.querySelectorAll(
-    ".shorts-select-button"
+    ".short-select-button"
   );
   const videoSelectButtons = [];
   for (let i = 0; i < videoSelectButtonsWithDuplicates.length / 2; i++) {

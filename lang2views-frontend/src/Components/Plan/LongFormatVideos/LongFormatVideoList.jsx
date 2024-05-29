@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import LongFormatVideo from "./LongFormatVideo";
-import Save from "./LongFormatStepSave";
-import "./clientPlan.css";
+import Save from "./Buttons/LongFormatStepSave";
+import "../clientPlan.css";
 import {
   sortDurationMostToLeast,
   sortViewsMostToLeast,
   sortViewsPerMinuteMostToLeast,
-} from "../Utilities/sortAscending";
-import handlePreviousPageButtonClicked from "./PreviousPageButtonClicked";
-import handleNextPageButtonClicked from "./NextPageButtonClicked";
+} from "../../Utilities/sortAscending";
+import handlePreviousPageButtonClicked from "./Buttons/PreviousPageButtonClicked";
+import handleNextPageButtonClicked from "./Buttons/NextPageButtonClicked";
+import { clientIdContext } from "../../Clients/clientIdContext";
 
 function LongFormatVideoList() {
   const [pageOf50Node, setPageOf50Node] = useState([]);
@@ -17,7 +18,9 @@ function LongFormatVideoList() {
   const [tokenForPageToGet, setTokenForPageToGet] = useState("");
 
   useEffect(() => {
-    const currentNumberToProcess = document.querySelector("#current-number-to-process");
+    const currentNumberToProcess = document.querySelector(
+      "#current-number-to-process"
+    );
 
     const currentVideosForProcessingContainer = document.querySelector(
       "#videos-for-processing-json"
@@ -27,7 +30,7 @@ function LongFormatVideoList() {
       currentNumberToProcess.value = 0;
     }
 
-    const videos = [
+    /*     const videos = [
       {
         thumbnailSrc: "./src/Images/brown.png",
         title: "A",
@@ -75,12 +78,14 @@ function LongFormatVideoList() {
       },
   ];
 
-  setPageOf50Node(videos);
+  setPageOf50Node(videos); */
 
-    /* fetch("http://localhost:3000/client/getVideoPage", {
+    const clientId = useContext(clientIdContext);
+
+    fetch("http://localhost:3000/client/getVideoPage", {
       method: "GET",
       body: {
-        channelId: props.clientId,
+        channelId: clientId,
         pageToken: tokenForPageToGet === "" ? null : tokenForPageToGet,
       },
     })
@@ -89,7 +94,7 @@ function LongFormatVideoList() {
       )
       .catch((err) => {
         throw new Error(err);
-      }); */
+      });
 
     if (previousButtonClicked === "true") {
       setPreviousButtonClicked("false");
@@ -98,7 +103,9 @@ function LongFormatVideoList() {
     }
   }, [previousButtonClicked, nextButtonClicked]);
 
-  const currentNumberToProcess = document.querySelector("#current-number-to-process");
+  const currentNumberToProcess = document.querySelector(
+    "#current-number-to-process"
+  );
 
   const [sortByDurationHidden, setSortByDurationHidden] = useState(true);
   const [noSortHidden, setNoSortHidden] = useState(false);
@@ -119,7 +126,9 @@ function LongFormatVideoList() {
     "filter-button-inactive"
   );
 
-  const longFormatVideos = pageOf50Node.filter((video) => video.type === "longFormatVideo");
+  const longFormatVideos = pageOf50Node.filter(
+    (video) => video.type === "longFormatVideo"
+  );
 
   const videosUnsorted = [];
   for (
@@ -129,7 +138,7 @@ function LongFormatVideoList() {
   ) {
     const videoRow = [];
     const firstVideoInRowDetails = longFormatVideos[numVideo];
-      videoRow.push(<LongFormatVideo videoDetails={firstVideoInRowDetails} />);
+    videoRow.push(<LongFormatVideo videoDetails={firstVideoInRowDetails} />);
 
     const secondVideoInRowDetails = longFormatVideos[numVideo + 1];
     videoRow.push(
@@ -365,19 +374,32 @@ function LongFormatVideoList() {
       >
         <button
           className="btn btn-primary"
-          onClick={() => {setPreviousButtonClicked("true"); handlePreviousPageButtonClicked(); setTokenForPageToGet(pageOf50Node.prevPageToken)}}
+          onClick={() => {
+            setPreviousButtonClicked("true");
+            handlePreviousPageButtonClicked();
+            setTokenForPageToGet(pageOf50Node.prevPageToken);
+          }}
         >
-          Previous 50 videos
+          Previous
         </button>
         <button
           className="btn btn-primary"
-          onClick={() => {setNextButtonClicked("true"); handleNextPageButtonClicked(); setTokenForPageToGet(pageOf50Node.nextPageToken)}}
+          onClick={() => {
+            setNextButtonClicked("true");
+            handleNextPageButtonClicked();
+            setTokenForPageToGet(pageOf50Node.nextPageToken);
+          }}
         >
-          Next 50 videos
+          Next
         </button>
       </div>
       <div className="horizontal-line"></div>
-      <input id="current-number-to-process" hidden type="number" value={currentNumberToProcess ? currentNumberToProcess.value : 0} />
+      <input
+        id="current-number-to-process"
+        hidden
+        type="number"
+        value={currentNumberToProcess ? currentNumberToProcess.value : 0}
+      />
       <Save />
     </>
   );
