@@ -328,9 +328,9 @@ app.post('/client/organizeVideo', async (req,res) => {
         const cardData: Omit<UpdateCardRequest, 'key' | 'token'> = {
             console.log("Transcription translated.");
 
-            const transcriptionFilePath = `./clients/${channelId}/${video.id}/transcription.txt`;
-            const translationFilePath = `./clients/${channelId}/${video.id}/translation.txt`;
-            await fs.writeFileSync(transcriptionFilePath, transcription);
+            const videoContentFilePath = `./clients/${channelId}/${video.id}`;
+            await fs.writeFileSync(videoContentFilePath + '/transcription.txt', transcription);
+            await fs.writeFileSync(videoContentFilePath + '/translation.txt', translation);
             await fs.writeFileSync(translationFilePath, translation);
             id: video.trelloCard,
             desc: 'Video organized: ' + video.dropboxURL,
@@ -338,9 +338,25 @@ app.post('/client/organizeVideo', async (req,res) => {
         const card = await trello.updateCard(cardData);
             console.log("Trello card created.")
 
+            const videoNameInFilePath = video.name.replaceAll(' ', '_');
             const dropboxPath = dropbox.getPathFromVideoFolderUrl(video.dropboxURL);
-            console.log(await dropbox.uploadFile(dropboxPath + '/transcription.txt', transcriptionFilePath, transcription));
-            console.log(await dropbox.uploadFile(dropboxPath + '/translation.txt', translationFilePath, translation));
+            await dropbox.uploadFile(dropboxPath + '/transcription.txt', videoContentFilePath + '/transcription.txt', transcription);
+            await dropbox.uploadFile(dropboxPath + '/translation.txt', videoContentFilePath + '/translation.txt', translation);
+            await dropbox.uploadFile(
+                dropboxPath + `/${videoNameInFilePath}.mp3`,
+                videoContentFilePath + `/${videoNameInFilePath}.mp3`,
+                fs.createReadStream(videoContentFilePath + `/${videoNameInFilePath}.mp3`
+                ));
+            await dropbox.uploadFile(
+                dropboxPath + `/${videoNameInFilePath}.mp4`,
+                videoContentFilePath + `/${videoNameInFilePath}.mp4`,
+                fs.createReadStream(videoContentFilePath + `/${videoNameInFilePath}.mp4`
+                ));
+            await dropbox.uploadFile(
+                dropboxPath + `/${videoNameInFilePath}_merged.mp4`,
+                videoContentFilePath + `/${videoNameInFilePath}_merged.mp4`,
+                fs.createReadStream(videoContentFilePath + `/${videoNameInFilePath}_merged.mp4`
+                ));
             console.log("Files uploaded to Dropbox.")
 
             res.send(JSON.stringify({ transcription: transcription, translation: translation, trelloCard: card }));
