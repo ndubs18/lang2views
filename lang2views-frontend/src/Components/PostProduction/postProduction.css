@@ -58,3 +58,15 @@
     margin-bottom: 6em;
     width: 100em;
 }
+
+.side-by-side {
+    display: flex;
+}
+
+h2 {
+    width: 7.5vw;
+}
+
+#projectLink-input {
+    width: 20vw;
+}

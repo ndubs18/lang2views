@@ -58,3 +58,23 @@
     margin-bottom: 6em;
     width: 100em;
 }
+
+.side-by-side {
+    display: flex;
+}
+
+h2 {
+    width: 10vw;
+}
+
+#dropboxLocation-input {
+    width: 20vw;
+}
+
+#scriptLink-input {
+    width: 20vw;
+}
+
+#trelloLink-input {
+    width: 20vw;
+}

@@ -4,6 +4,17 @@ import ClosePostProductionPopup from "./ClosePostProductionPopup";
 import PostProductionHeader from "./postProductionHeader";
 import PostProduceButton from "./postProductionStep";
 
+function projectLinkButton() {
+    const urlInput = document.querySelector("#projectLink-input");
+    if (urlInput.value === '') {
+        console.log("Error: No Target URL");
+        return;
+    }
+
+    window.open(urlInput.value);
+}
+
+
 function PostProduction(props) {
   if (props === null) {
     throw new Error("No props for PostProduction");
@@ -29,10 +40,11 @@ function PostProduction(props) {
         </p>
         <div className="not-full-width-horizontal-line ms-5"></div>
         <div className="popup-menus-step-area">
-            <div className="text-input-container ms-5">
+            <div className="ms-5 side-by-side">
                 <h2>Link to Project</h2>
                 <label htmlFor="projectLink-input"></label>
                 <input className="form-control form-control-lg" id="projectLink-input"></input>
+                <button className="btn btn-default" id="link-button" onClick={projectLinkButton}>&#8599;</button>
             </div>
             <div className="horizontal-line"></div>
             <PostProduceButton />

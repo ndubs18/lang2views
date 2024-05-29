@@ -92,3 +92,19 @@
     border: none;
     background-color: #8dda8d;
 }
+
+.side-by-side {
+    display: flex;
+}
+
+h2 {
+    width: 7.5vw;
+}
+
+#youtubeLink-input {
+    width: 20vw;
+}
+
+#UploadFile-input {
+    width: 20vw;
+}
