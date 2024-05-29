@@ -15,7 +15,7 @@ function sortOrderOfVideos(videos) {
   });
 }
 
-export const shortsContext = createContext([]);
+export const shortsToProcessContext = createContext([]);
 
 function handleSubmit() {
   const currentVideosForProcessingContainer = document.querySelector(
@@ -74,9 +74,9 @@ function handleSubmit() {
 
   sortOrderOfVideos(videoProcessingList);
 
-  shortsContext.Provider = JSON.stringify(videoProcessingList);
+  shortsToProcessContext.Provider = JSON.stringify(videoProcessingList);
 
-  console.log(shortsContext.Provider);
+  console.log(shortsToProcessContext.Provider);
 }
 
 function ShortsStepSave() {

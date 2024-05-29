@@ -100,7 +100,7 @@ function ClientsView(props) {
         </div>
         <ClientEntriesAndHeader
           headerData={headerData}
-          clientEntries={clientList}
+          clientEntries={clientEntries}
         />
       </div>
       <div className="popup-and-close-area-container"></div>
