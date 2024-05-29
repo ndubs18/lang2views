@@ -1,15 +1,17 @@
 import ytdl from 'ytdl-core';
 import ffmpeg from 'fluent-ffmpeg';
+import ffmpegPath from '@ffmpeg-installer/ffmpeg';
 import fs from 'fs';
 import { google } from 'googleapis';
 import { Clients } from './clients.js';
 import { Videos } from './video.js';
 import { TranslationServiceClient } from '@google-cloud/translate';
-import { GoogleAuth }  from 'google-auth-library';
-import env from 'dotenv';
+import { GoogleAuth } from 'google-auth-library';
+
+ffmpeg.setFfmpegPath(ffmpegPath.path);
 
 const clientFile = 'clients.json';
-const CLIENT_SECRET_PATH = 'client_secret.json';
+
 export class YouTube {
     private oAuth2Client;
     async translate(text:string,lang:string){
