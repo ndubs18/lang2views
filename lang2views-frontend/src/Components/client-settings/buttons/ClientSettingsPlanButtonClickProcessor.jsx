@@ -6,7 +6,7 @@ function ClientSettingsPlanButtonClickProcessor() {
     const popupsMenusStepAArea = document.querySelector(".popup-menus-step-area");
     const clientSettingsPlanButtonRoot = createRoot(popupsMenusStepAArea);
 
-    clientSettingsPlanButtonRoot.render(<Plan channelName="Alex" />);
+    clientSettingsPlanButtonRoot.render(<Plan />);
 }
 
 export default ClientSettingsPlanButtonClickProcessor;
