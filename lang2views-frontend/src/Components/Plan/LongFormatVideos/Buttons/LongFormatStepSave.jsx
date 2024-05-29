@@ -1,5 +1,5 @@
-import { createContext } from "react";
 import "../../save.css";
+import { longFormatVideosToProcessContext } from "../../../../Context/longFormatVideosToProcess";
 
 class LongFormatVideo {
   title = "";
@@ -14,8 +14,6 @@ function sortOrderOfVideos(videos) {
     else return 0;
   });
 }
-
-export const longFormatVideosToProcessContext = createContext([]);
 
 function handleSubmit() {
   const currentVideosForProcessingContainer = document.querySelector(

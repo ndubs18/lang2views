@@ -1,5 +1,5 @@
-import { createContext } from "react";
 import "../../save.css";
+import { shortsToProcessContext } from "../../../../Context/shortsToProcessContext";
 
 class Short {
   title = "";
@@ -14,8 +14,6 @@ function sortOrderOfVideos(videos) {
     else return 0;
   });
 }
-
-export const shortsToProcessContext = createContext([]);
 
 function handleSubmit() {
   const currentVideosForProcessingContainer = document.querySelector(
