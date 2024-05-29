@@ -1,14 +1,112 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import LongFormatVideo from "./LongFormatVideo";
-import Save from "./LongFormatStepSave";
-import "./clientPlan.css";
+import Save from "./Buttons/LongFormatStepSave";
+import "../clientPlan.css";
 import {
   sortDurationMostToLeast,
   sortViewsMostToLeast,
   sortViewsPerMinuteMostToLeast,
-} from "../Utilities/sortAscending";
+} from "../../Utilities/sortAscending";
+import handlePreviousPageButtonClicked from "./Buttons/PreviousPageButtonClicked";
+import handleNextPageButtonClicked from "./Buttons/NextPageButtonClicked";
+import { clientIdContext } from "../../Clients/clientIdContext";
 
-function longFormatVideoList() {
+function LongFormatVideoList() {
+  const [pageOf50Node, setPageOf50Node] = useState([]);
+  const [previousButtonClicked, setPreviousButtonClicked] = useState("");
+  const [nextButtonClicked, setNextButtonClicked] = useState("");
+  const [tokenForPageToGet, setTokenForPageToGet] = useState("");
+
+  const clientId = useContext(clientIdContext);
+
+  useEffect(() => {
+    const currentNumberToProcess = document.querySelector(
+      "#current-number-to-process"
+    );
+
+    const currentVideosForProcessingContainer = document.querySelector(
+      "#videos-for-processing-json"
+    );
+    if (nextButtonClicked === "" && previousButtonClicked === "") {
+      currentVideosForProcessingContainer.textContent = JSON.stringify([]);
+      currentNumberToProcess.value = 0;
+    }
+
+    /*     const videos = [
+      {
+        thumbnailSrc: "./src/Images/brown.png",
+        title: "A",
+        duration: "10",
+        views: "70",
+        viewsPerMinute: "100",
+        type: "longFormatVideo",
+        done: false,
+      },
+      {
+        thumbnailSrc: "./src/Images/brown.png",
+        title: "B",
+        duration: "9",
+        views: "56",
+        viewsPerMinute: "5",
+        type: "short",
+        done: false,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "C",
+        duration: "8",
+        views: "100",
+        viewsPerMinute: "10",
+        type: "short",
+        done: false,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "D",
+        duration: "9",
+        views: "22",
+        viewsPerMinute: "22",
+        type: "longFormatVideo",
+        done: true,
+      },
+      {
+        thumbnailSrc: ".",
+        title: "E",
+        duration: "10",
+        views: "1",
+        viewsPerMinute: "1",
+        type: "longFormatVideo",
+        done: false,
+      },
+  ];
+
+  setPageOf50Node(videos); */
+
+    fetch("http://localhost:3000/client/getVideoPage", {
+      method: "POST",
+      body: {
+        channelId: clientId,
+        pageToken: tokenForPageToGet === "" ? null : tokenForPageToGet,
+      },
+    })
+      .then((response) =>
+        response.json().then((value) => setPageOf50Node(value))
+      )
+      .catch((err) => {
+        throw new Error(err);
+      });
+
+    if (previousButtonClicked === "true") {
+      setPreviousButtonClicked("false");
+    } else if (nextButtonClicked === "true") {
+      setNextButtonClicked("false");
+    }
+  }, [previousButtonClicked, nextButtonClicked]);
+
+  const currentNumberToProcess = document.querySelector(
+    "#current-number-to-process"
+  );
+
   const [sortByDurationHidden, setSortByDurationHidden] = useState(true);
   const [noSortHidden, setNoSortHidden] = useState(false);
   const [sortByViewsHidden, setSortByViewsHidden] = useState(true);
@@ -18,180 +116,38 @@ function longFormatVideoList() {
   const [viewsFilterStatus, setViewsFilterStatus] = useState("");
   const [viewsPerMinuteFilterStatus, setViewsPerMinuteFilterStatus] =
     useState("");
-    const [durationFilterActive, setDurationFilterActive] = useState("filter-button-inactive");
-    const [viewsFilterActive, setViewsFilterActive] = useState("filter-button-inactive");
-    const [viewsPerMinuteFilterActive, setViewsPerMinuteFilterActive] = useState("filter-button-inactive");
+  const [durationFilterActive, setDurationFilterActive] = useState(
+    "filter-button-inactive"
+  );
+  const [viewsFilterActive, setViewsFilterActive] = useState(
+    "filter-button-inactive"
+  );
+  const [viewsPerMinuteFilterActive, setViewsPerMinuteFilterActive] = useState(
+    "filter-button-inactive"
+  );
 
-  const props = {
-    longFormatVideos: [
-      {
-        thumbnailSrc: "./src/Images/brown.png",
-        title: "A",
-        duration: "10",
-        views: "70",
-        viewsPerMinute: "100",
-        done: true,
-      },
-      {
-        thumbnailSrc: "./src/Images/brown.png",
-        title: "B",
-        duration: "9",
-        views: "56",
-        viewsPerMinute: "5",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "C",
-        duration: "8",
-        views: "100",
-        viewsPerMinute: "10",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "D",
-        duration: "9",
-        views: "22",
-        viewsPerMinute: "22",
-        done: true,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "1",
-        viewsPerMinute: "1",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "3",
-        viewsPerMinute: "3",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: true,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: true,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: true,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: true,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-      {
-        thumbnailSrc: ".",
-        title: "A",
-        duration: "10",
-        views: "100",
-        viewsPerMinute: "100",
-        done: false,
-      },
-    ],
-  };
+  const longFormatVideos = pageOf50Node.filter(
+    (video) => video.type === "longFormatVideo"
+  );
 
-  if (props.longFormatVideos === null)
-    throw new Error("Need to have LongFormatVideos to display");
-
-  const videos = [];
+  const videosUnsorted = [];
   for (
     let numVideo = 0;
-    numVideo < props.longFormatVideos.length;
+    numVideo < longFormatVideos.length;
     numVideo = numVideo + 3
   ) {
     const videoRow = [];
-    const firstVideoInRowDetails = props.longFormatVideos[numVideo];
+    const firstVideoInRowDetails = longFormatVideos[numVideo];
     videoRow.push(<LongFormatVideo videoDetails={firstVideoInRowDetails} />);
 
-    const secondVideoInRowDetails = props.longFormatVideos[numVideo + 1];
+    const secondVideoInRowDetails = longFormatVideos[numVideo + 1];
     videoRow.push(
       secondVideoInRowDetails ? (
         <LongFormatVideo videoDetails={secondVideoInRowDetails} />
       ) : null
     );
 
-    const thirdVideoInRowDetails = props.longFormatVideos[numVideo + 2];
+    const thirdVideoInRowDetails = longFormatVideos[numVideo + 2];
     videoRow.push(
       thirdVideoInRowDetails ? (
         <LongFormatVideo videoDetails={thirdVideoInRowDetails} />
@@ -204,10 +160,10 @@ function longFormatVideoList() {
       videoRow
     );
 
-    videos.push(videoRowContainer);
+    videosUnsorted.push(videoRowContainer);
   }
 
-  let videosByDuration = props.longFormatVideos;
+  let videosByDuration = longFormatVideos;
   sortDurationMostToLeast(videosByDuration);
   const videosMostToLeastDuration = [];
   for (
@@ -242,7 +198,7 @@ function longFormatVideoList() {
     videosMostToLeastDuration.push(videoRowContainer);
   }
 
-  let videosByViews = props.longFormatVideos;
+  let videosByViews = longFormatVideos;
   sortViewsMostToLeast(videosByViews);
   const videosMostToLeastViews = [];
   for (
@@ -277,12 +233,12 @@ function longFormatVideoList() {
     videosMostToLeastViews.push(videoRowContainer);
   }
 
-  let videosByViewsPerMinute = props.longFormatVideos;
+  let videosByViewsPerMinute = longFormatVideos;
   sortViewsPerMinuteMostToLeast(videosByViewsPerMinute);
   const videosMostToLeastViewsPerMinute = [];
   for (
     let numVideo = 0;
-    numVideo < props.longFormatVideos.length;
+    numVideo < longFormatVideos.length;
     numVideo = numVideo + 3
   ) {
     const videoRow = [];
@@ -316,7 +272,8 @@ function longFormatVideoList() {
     <>
       <div className="d-flex flex-row ms-5 mb-5 filter-buttons-container">
         <p className="align-middle fs-4 mt-2 me-4">Filters:</p>
-        <button className={durationFilterActive + " btn"}
+        <button
+          className={durationFilterActive + " btn"}
           value={durationFilterStatus}
           onClick={(event) => {
             if (event.target.value === "clicked") {
@@ -404,18 +361,48 @@ function longFormatVideoList() {
         </button>
       </div>
       <div className="scrollable-video-list">
-        <div hidden={noSortHidden}>{videos}</div>
+        <div hidden={noSortHidden}>{videosUnsorted}</div>
         <div hidden={sortByDurationHidden}>{videosMostToLeastDuration}</div>
         <div hidden={sortByViewsHidden}>{videosMostToLeastViews}</div>
         <div hidden={sortByViewsPerMinuteHidden}>
           {videosMostToLeastViewsPerMinute}
         </div>
       </div>
+      <div
+        className="d-flex flex-row justify-content-center"
+        id="previous-next-videos-buttons-container"
+      >
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            setPreviousButtonClicked("true");
+            handlePreviousPageButtonClicked();
+            setTokenForPageToGet(pageOf50Node.prevPageToken);
+          }}
+        >
+          Previous
+        </button>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            setNextButtonClicked("true");
+            handleNextPageButtonClicked();
+            setTokenForPageToGet(pageOf50Node.nextPageToken);
+          }}
+        >
+          Next
+        </button>
+      </div>
       <div className="horizontal-line"></div>
-      <input id="current-number-to-process" hidden type="number" value={0} />
+      <input
+        id="current-number-to-process"
+        hidden
+        type="number"
+        value={currentNumberToProcess ? currentNumberToProcess.value : 0}
+      />
       <Save />
     </>
   );
 }
 
-export default longFormatVideoList;
+export default LongFormatVideoList;

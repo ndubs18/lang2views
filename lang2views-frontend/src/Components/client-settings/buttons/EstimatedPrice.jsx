@@ -1,6 +1,6 @@
 import "../clientSettings.css";
 
-function EstimatedPriceInput() {
+function EstimatedPriceInput(props) {
   return (
     <div className="text-input-container ms-5">
       <h2>Estimated Price</h2>
@@ -9,7 +9,7 @@ function EstimatedPriceInput() {
         className="form-control form-control-lg"
         id="estimated-price-input"
         readOnly=""
-        placeholder="$"
+        placeholder={"$" + props.EstimatedPriceInput}
       ></input>
     </div>
   );

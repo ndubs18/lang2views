@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import CloseClientPlanPopup from "./CloseClientPlanPopup";
 import "./clientPlan.css";
 import ClientPlanHeader from "./ClientPlanHeader";
-import LongFormatVideoList from "./LongFormatVideoList";
+import LongFormatVideoList from "./LongFormatVideos/LongFormatVideoList";
 import ClientPlanShortsButtonClickProcessor from "./ClientPlanShortsButtonClickProcessor";
 import ClientPlanLongFormatButtonClickProcessor from "./ClientPlanLongFormatButtonClickProcessor";
+import { channelNameContext } from "../client-settings/channelNameContext";
+import { clientNameContext } from "../client-settings/clientNameContext";
 
 function ClientPlan() {
   const [longFormatButtonActive, setLongFormatButtonActive] =
     useState("active-step-button");
   const [shortsButtonActive, setShortsButtonActive] = useState("normal");
+
+  const videosToProcessContainer = JSON.stringify([]);
 
   return (
     <>
@@ -18,9 +22,8 @@ function ClientPlan() {
         onClick={CloseClientPlanPopup}
       ></div>
       <div className="client-plan-popup">
-        {" "}
         <div id="client-plan-header" className="ms-4">
-          <ClientPlanHeader clientName="ClientName" />
+          <ClientPlanHeader clientName={clientNameContext.Provider} />
         </div>
         <div className="client-plan-button-section">
           <button
@@ -55,12 +58,13 @@ function ClientPlan() {
         <div className="not-full-width-horizontal-line ms-5"></div>
         <p className="mt-5 mb-3 fs-4 ms-5">
           <img className="me-3" src="../brown.png" />
-          ChannelName
+          channelName
         </p>
         <div className="not-full-width-horizontal-line ms-5"></div>
         <div className="popup-menus-step-area">
           <LongFormatVideoList />
         </div>
+        <div id="videos-for-processing-json" hidden={true}>{videosToProcessContainer}</div>
       </div>
     </>
   );

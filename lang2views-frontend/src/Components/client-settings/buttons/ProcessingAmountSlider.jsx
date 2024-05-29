@@ -1,6 +1,6 @@
 import "../clientSettings.css";
 
-function ProcessingAmountSlider() {
+function ProcessingAmountSlider(props) {
   return (
     <div id="processing-amount-slider-container" className="ms-5 d-flex flex-row justify-content-between">
         <div>
@@ -24,6 +24,7 @@ function ProcessingAmountSlider() {
             className="py-0 w-100 slider"
             min={1}
             max={3}
+            defaultValue={props.levelOfPostProcessing}
         ></input>
       </div>
     </div>
