@@ -1,6 +1,7 @@
 import { clientFile } from './app.js'
 import { Clients } from './clients.js'
 import { Dropbox } from 'dropbox';
+import fs from 'fs';
 import { Video } from './video.js'
 
 export class DropboxConnection {
@@ -110,5 +111,77 @@ export class DropboxConnection {
             });
 
         return response
+    }
+
+    async uploadFile(dropboxPath: string, filePath: string, contents: any) {
+        // https://github.com/dropbox/dropbox-sdk-js/blob/main/examples/javascript/upload/index.html
+        const UPLOAD_FILE_SIZE_LIMIT = 150 * 1024 * 1024;
+        let fileSize = fs.statSync(filePath).size
+
+        if (fileSize < UPLOAD_FILE_SIZE_LIMIT) { // File is smaller than 150 MB - use filesUpload API
+            await this.dbx.filesUpload({ path: dropboxPath, contents: contents })
+                .then(function (response) {
+                    console.log(response);
+                    return 'https://www.dropbox.com/home' + response.result.path_lower;
+                })
+                .catch(function (error) {
+                    console.error(error.error || error);
+                    return "Could not upload file at path " + dropboxPath
+                });
+        // TODO: THIS IS CURRENTLY UNTESTED. Hypothetically this will work to upload a video > 150MB,
+        // but currently we can't *transcribe* videos larger than 25MB due to Whisper API limits.
+        // Need to revisit, test, and possibly fix this after we have workarounds for Whisper limits.
+        } else { // File is bigger than 150 MB - use filesUploadSession API
+            const maxBlob = 12 * 1024 * 1024; // 8MB - Dropbox JavaScript API suggested chunk size
+
+            var workItems = [];
+            var offset = 0;
+
+            while (offset < fileSize) {
+                var chunkSize = Math.min(maxBlob, fileSize - offset);
+                workItems.push(contents.slice(offset, offset + chunkSize));
+                offset += chunkSize;
+            }
+
+            const task = workItems.reduce((acc, blob, idx, items) => {
+                if (idx == 0) {
+                    // Starting multipart upload of file
+                    return acc.then(function () {
+                        return this.dbx.filesUploadSessionStart({ close: false, contents: blob })
+                            .then(response => response.result.session_id)
+                    });
+                } else if (idx < items.length - 1) {
+                    // Append part to the upload session
+                    return acc.then(function (sessionId) {
+                        var cursor = { session_id: sessionId, offset: idx * maxBlob };
+                        return this.dbx.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob }).then(() => sessionId);
+                    });
+                } else {
+                    // Last chunk of data, close session
+                    return acc.then(function (sessionId) {
+                        var cursor = { session_id: sessionId, offset: fileSize - blob.size };
+                        var commit = { path: dropboxPath, mode: 'add', autorename: true, mute: false };
+                        return this.dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });
+                    });
+                }
+            }, Promise.resolve());
+
+            task.then(function (response) {
+                console.log(response);
+                return 'https://www.dropbox.com/home' + response.result.path_lower;
+            })
+                .catch(function (error) {
+                    console.error(error);
+                    return "Could not upload file at path " + dropboxPath
+            });
+        }
+    }
+
+    getPathFromVideoFolderUrl(folderUrl: string) {
+        // Assuming video folder URL has format:
+        // '[url beginning]/home/lang2views/client projects/[channel name]/[format]/[video number]. [video title]'
+        // then we only need the part after '/home'
+        let position = folderUrl.search('/home') + 5;
+        return folderUrl.slice(position);
     }
 }

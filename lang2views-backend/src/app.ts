@@ -309,6 +309,7 @@ app.post('/client/organizeVideo', async (req,res) => {
     }
     */
     if(channelId && videoId && lang){
+        if (await dropbox.isAuthenticated()) {
         let clients = new Clients(clientFile);
         let whisper = new Whisper();
         // let bing = new Bing();
@@ -316,20 +317,36 @@ app.post('/client/organizeVideo', async (req,res) => {
 
         let filePath = await clients.getClientVideoPath(channelId, videoId) + '.mp3';
         let video = await clients.getClientVideo(channelId, videoId);
-        await clients.downloadClientVideo(channelId,videoId);
+            console.log("Starting video download.")
+            await clients.downloadClientVideo(channelId, videoId);
+            console.log("Video downloaded.");
+
         let transcription = await whisper.transcribeAudio(filePath, video.name.trim().replaceAll(' ', '_'));
-        let translation = await youtube.translate(transcription, lang);
+            console.log("Audio transcribed.");
         await fs.writeFileSync(`./clients/${channelId}/${video.id}/transcription.txt`, transcription);
         await fs.writeFileSync(`./clients/${channelId}/${video.id}/translation.txt`, translation);
         const cardData: Omit<UpdateCardRequest, 'key' | 'token'> = {
+            console.log("Transcription translated.");
+
+            const transcriptionFilePath = `./clients/${channelId}/${video.id}/transcription.txt`;
+            const translationFilePath = `./clients/${channelId}/${video.id}/translation.txt`;
+            await fs.writeFileSync(transcriptionFilePath, transcription);
+            await fs.writeFileSync(translationFilePath, translation);
             id: video.trelloCard,
             desc: 'Video organized: ' + video.dropboxURL,
         };
         const card = await trello.updateCard(cardData);
+            console.log("Trello card created.")
 
+            const dropboxPath = dropbox.getPathFromVideoFolderUrl(video.dropboxURL);
+            console.log(await dropbox.uploadFile(dropboxPath + '/transcription.txt', transcriptionFilePath, transcription));
+            console.log(await dropbox.uploadFile(dropboxPath + '/translation.txt', translationFilePath, translation));
+            console.log("Files uploaded to Dropbox.")
 
-        res.send(JSON.stringify({ transcription:transcription, translation: translation, trelloCard: card}));
-
+            res.send(JSON.stringify({ transcription: transcription, translation: translation, trelloCard: card }));
+        } else {
+            res.send('Please authenticate Dropbox first.');
+        }
     } else {
         res.send('Invalid request body. Please send channelId, videoId, and lang (desired translation language).');
     }
