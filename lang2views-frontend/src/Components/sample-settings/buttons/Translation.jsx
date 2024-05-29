@@ -13,8 +13,8 @@ function Model() {
 
 function ChatGPTInstructions() {
     return (
-      <div className="text-input-container w-100 ms-5 d-flex flex-column align-items-start">
-        <h2>Chat GPT Instructions</h2>
+      <div className="w-100 ms-5 d-flex flex-column align-items-start">
+        <h2 className="text-long">Chat GPT Instructions</h2>
         <label htmlFor="ChatGPTInstructions-input"></label>
         <textarea className="form-control form-control-lg text-area" id="ChatGPTInstructions-input"></textarea>
       </div>
@@ -34,6 +34,7 @@ function Translation(props) {
     <div>
       <br />
       <Model />
+      <br />
       <ChatGPTInstructions />
       <div className="horizontal-line"></div>
       <Save />

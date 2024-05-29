@@ -4,7 +4,7 @@ import Save from "./UploadStepSave";
 function GrantYoutubeAccess() {
   return (
     <div className="mb-3">
-      <h2 className="ms-5 mb-2">Grant YouTube Access</h2>
+      <h2 className="ms-5 text-long">Grant YouTube Access</h2>
       <div className="d-flex flex-row justify-content-between ms-5">
         <div className="d-flex flex-row">
           <button className="pale-green-button youtube-login px-3 py-2">

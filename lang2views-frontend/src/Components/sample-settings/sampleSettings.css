@@ -101,6 +101,10 @@ h2 {
     width: 7.5vw;
 }
 
+.text-long {
+    width: 20vw;
+}
+
 #youtubeLink-input {
     width: 20vw;
 }
