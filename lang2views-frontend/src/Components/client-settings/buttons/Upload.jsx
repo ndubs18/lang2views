@@ -1,6 +1,7 @@
 import "../clientSettings.css";
+import { currentClientSettingsContext } from "../currentClientSettings";
 import Save from "./UploadStepSave";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 function disableGrantYoutubeAccess() {
   const sectionValue = document.querySelector(
@@ -66,7 +67,7 @@ function GrantYoutubeAccess() {
   );
 }
 
-function GrantYoutubeAccessToggles() {
+function GrantYoutubeAccessToggles(props) {
   const [disableYoutubeAccessActive, setDisableYoutubeAccessActive] = useState(
     "upload-step-toggle-not-active"
   );
@@ -106,11 +107,17 @@ function GrantYoutubeAccessToggles() {
   );
 }
 
-function UseSameDescriptionToggles() {
+function UseSameDescriptionToggles(props) {
   const [notUseSameDescriptionActive, setNotUseSameDescriptionActive] =
-    useState("upload-step-toggle-active");
+    useState(
+      props.useSameDescriptionSectionValue
+        ? "upload-step-toggle-not-active"
+        : "upload-step-toggle-active"
+    );
   const [useSameDescriptionActive, setUseSameDescriptionActive] = useState(
-    "upload-step-toggle-not-active"
+    props.useSameDescriptionSectionValue
+      ? "upload-step-toggle-active"
+      : "upload-step-toggle-not-active"
   );
 
   return (
@@ -145,12 +152,16 @@ function UseSameDescriptionToggles() {
   );
 }
 
-function UseSameTagsToggles() {
+function UseSameTagsToggles(props) {
   const [notUseSameTagsActive, setNotUseSameTagsActive] = useState(
-    "upload-step-toggle-active"
+    props.useSameTagsSectionValue
+      ? "upload-step-toggle-not-active"
+      : "upload-step-toggle-active"
   );
   const [useSameTagsActive, setUseSameTagsActive] = useState(
-    "upload-step-toggle-not-active"
+    props.useSameTagsSectionValue
+      ? "upload-step-toggle-active"
+      : "upload-step-toggle-not-active"
   );
 
   return (
@@ -185,27 +196,31 @@ function UseSameTagsToggles() {
   );
 }
 
-function UseSameDescription() {
+function UseSameDescription(props) {
   return (
     <div id="use-same-description-container" className="ms-5">
       <h2>Use same description</h2>
-      <UseSameDescriptionToggles />
+      <UseSameDescriptionToggles
+        useSameDescriptionSectionValue={props.useSameDescriptionSectionValue}
+      />
       <div className="use-same-description-section-value" hidden></div>
     </div>
   );
 }
 
-function UseSameTags() {
+function UseSameTags(props) {
   return (
     <div id="use-same-tags-container" className="ms-5">
       <h2>Use same tags</h2>
-      <UseSameTagsToggles />
+      <UseSameTagsToggles
+        useSameTagsSectionValue={props.useSameTagsSectionValue}
+      />
       <div className="use-same-tags-section-value" hidden></div>
     </div>
   );
 }
 
-function Description() {
+function Description(props) {
   return (
     <div className="text-input-container w-100 ms-5 d-flex flex-column align-items-start">
       <h2>Description</h2>
@@ -213,12 +228,13 @@ function Description() {
       <textarea
         className="form-control form-control-lg small-text-area"
         id="description-input"
+        value={props.description}
       ></textarea>
     </div>
   );
 }
 
-function NumTags() {
+function NumTags(props) {
   return (
     <div className="text-input-container w-100 ms-5 mt-5 d-flex flex-column align-items-start">
       <h2># Tags</h2>
@@ -226,25 +242,36 @@ function NumTags() {
       <textarea
         className="form-control form-control-lg small-text-area"
         id="num-tags-input"
+        value={props.tags}
       ></textarea>
     </div>
   );
 }
 
-function Upload(props) {
-  if (props === null)
-    return new Error("props for YoutubeAccess in client settings is null");
+function Upload() {
+  const [uploadSettings, setUploadSettings] = useState({});
 
-  if (props.channelName === null)
-    return new Error("No channelName for upload section of clientSettings");
+  fetch("http://localhost:3000/client/updateSettings", {
+    method: "GET",
+  }).then((response) =>
+    response.json().then((value) => setUploadSettings(value))
+  );
 
   return (
     <div>
-      <GrantYoutubeAccess />
-      <UseSameDescription />
-      <UseSameTags />
-      <Description />
-      <NumTags />
+      <GrantYoutubeAccess
+        youtubeAccessSectionValue={uploadSettings.youtubeAccessSectionValue}
+      />
+      <UseSameDescription
+        useSameDescriptionSectionValue={
+          uploadSettings.useSameDescriptionSectionValue
+        }
+      />
+      <UseSameTags
+        useSameTagsSectionValue={uploadSettings.useSameTagsSectionValue}
+      />
+      <Description description={uploadSettings.description} />
+      <NumTags tags={uploadSettings.tags} />
       <div className="horizontal-line"></div>
       <Save />
     </div>
