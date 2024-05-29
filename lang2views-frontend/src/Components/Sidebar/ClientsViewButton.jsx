@@ -5,15 +5,14 @@ import { createRoot } from "react-dom/client";
 function renderClientsView() {
   const viewContainer = document.querySelector("#view-container");
 
-  const clientsViewButton = document.querySelector("#clients-view-button");
-  clientsViewButton.classList.add("bg-primary");
+  const clientsViewIcon = document.querySelector("#clients-view-button-icon");
+  clientsViewIcon.src = "src/Images/clientActive.png";
 
-  const sampleCreationViewButton = document.querySelector(
-    "#sample-creation-view-button"
+  const sampleCreationViewIcon = document.querySelector(
+    "#sample-creation-view-button-icon"
   );
 
-  if (sampleCreationViewButton.classList.contains("bg-primary"))
-    sampleCreationViewButton.classList.remove("bg-primary");
+  sampleCreationViewIcon.src = "src/Images/sample.png";
 
   if (viewContainer === null)
     throw new Error(
@@ -29,13 +28,13 @@ function renderClientsView() {
 
 function ClientsViewButton() {
   const accountPicture = (
-    <img id="clients-view-button-icon" src="src/Images/"></img>
+        <img id="clients-view-button-icon" src="src/Images/clientActive.png"></img>
   );
 
   return (
     <button
       onClick={renderClientsView}
-      className="btn"
+      className="btn buttonActive"
       id="clients-view-button"
     >
       {accountPicture}

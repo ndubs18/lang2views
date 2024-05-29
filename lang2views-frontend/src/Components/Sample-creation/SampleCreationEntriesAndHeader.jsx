@@ -2,7 +2,7 @@ import React from "react";
 import "./sampleCreationEntriesAndHeader.css";
 import UploadButtonClickProcessor from "./UploadButtonClickProcessor";
 import PostProductionButtonClickProcessor from "./PostProductionButtonClickProcessor";
-import SettingsButtonClickProcessor from "./SettingsButtonClickProcessor";
+import SampleSettingsButtonClickProcessor from "./SampleSettingsButtonClickProcessor";
 import DeleteButtonClickProcessor from "./DeleteButtonClickProcessor";
 import OrganizeButtonClickProcessor from "./OrganizeButtonClickProcessor";
 
@@ -101,7 +101,7 @@ function SampleCreationEntriesAndHeader(props) {
     const settingsButton = (
       <button
         className="sample-creation-entry-action-button btn rounded-circle sample-creation-settings-button"
-        onClick={SettingsButtonClickProcessor}
+        onClick={SampleSettingsButtonClickProcessor}
       >
         {settingsButtonIcon}
       </button>
@@ -112,7 +112,7 @@ function SampleCreationEntriesAndHeader(props) {
       <img
         className="sample-creation-entry-action-icon rounded-circle"
         id={`sample-creation-entry-${row + 1}`}
-        src="src/Images/brown.png"
+        src="src/Images/organize.png"
       ></img>
     );
     const organizeButton = (
@@ -129,7 +129,7 @@ function SampleCreationEntriesAndHeader(props) {
       <img
         className="sample-creation-entry-action-icon rounded-circle"
         id={`sample-creation-entry-${row + 1}`}
-        src="src/Images/brown.png"
+        src="src/Images/postProduction.png"
       ></img>
     );
     const postProductionButton = (
@@ -146,7 +146,7 @@ function SampleCreationEntriesAndHeader(props) {
       <img
         className="sample-creation-entry-action-icon rounded-circle"
         id={`sample-creation-entry-${row + 1}`}
-        src="src/Images/brown.png"
+        src="src/Images/upload.png"
       ></img>
     );
     const uploadButton = (

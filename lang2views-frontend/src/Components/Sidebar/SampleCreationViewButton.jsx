@@ -5,13 +5,14 @@ import { createRoot } from "react-dom/client";
 function renderSampleCreationView() {
     const viewContainer = document.querySelector("#view-container");
 
-    const sampleCreationViewButton = document.querySelector("#sample-creation-view-button");
-    sampleCreationViewButton.classList.add("bg-primary");
+    const sampleCreationViewIcon = document.querySelector(
+    "#sample-creation-view-button-icon"
+    );
 
-    const clientsViewButton = document.querySelector("#clients-view-button");
+    sampleCreationViewIcon.src = "src/Images/sampleActive.png";
 
-    if (clientsViewButton.classList.contains("bg-primary"))
-        clientsViewButton.classList.remove("bg-primary");
+    const clientsViewIcon = document.querySelector("#clients-view-button-icon");
+    clientsViewIcon.src = "src/Images/client.png";
 
     if (viewContainer === null)
         throw new Error("Cannot display the sample creation view if the view container is null, the sample creation view is supposed to be rendered on the same page");
@@ -26,9 +27,9 @@ function renderSampleCreationView() {
 }
 
 function SampleCreationViewButton() {
-    const sampleCreationViewLogo = <img id="sample-creation-view-button-icon" src="src/Images/"></img>;
+    const sampleCreationViewLogo = <img id="sample-creation-view-button-icon" src="src/Images/sample.png"></img>;
 
-    return <button onClick={renderSampleCreationView} className="btn" id="sample-creation-view-button">{sampleCreationViewLogo}</button>;
+    return <button onClick={renderSampleCreationView} className="btn buttonInactive" id="sample-creation-view-button">{sampleCreationViewLogo}</button>;
 }
 
 export default SampleCreationViewButton;

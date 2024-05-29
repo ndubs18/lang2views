@@ -1,16 +1,16 @@
 import { createRoot } from "react-dom/client";
-import Organize from "../Organize/Organize";
+import SampleSettings from "../sample-settings/SampleSettings";
 import React from "react";
 
 function SampleSettingsButtonClickProcessor(props) {
     if (props === null)
-        throw new Error("props for function OrganizeButtonClickProcessor is null");
+        throw new Error("props for function SampleSettingsButtonClickProcessor is null");
 
     const popupAndCloseAreaContainer = document.querySelector(".popup-and-close-area-container");
 
     const clientsViewHook = createRoot(popupAndCloseAreaContainer);
     
-    clientsViewHook.render(<Organize channelName={props.channelName} />);
+    clientsViewHook.render(<SampleSettings channelName={props.channelName} />);
 }
 
 export default SampleSettingsButtonClickProcessor;

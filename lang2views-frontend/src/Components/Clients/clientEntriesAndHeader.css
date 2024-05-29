@@ -65,11 +65,13 @@
     display: flex;
     flex-direction: row;
     align-self: center;
+    justify-content: center;
     width: 2vw;
     height: 2vw;
 }
 
 .client-entry-action-icon {
-    width: 1vw;
+    width: 1.3vw;
     height: auto;
+    align-self: center;
 }
