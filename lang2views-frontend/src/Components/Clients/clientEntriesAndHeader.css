@@ -1,0 +1,77 @@
+.client-entries {
+    display: block;
+    position: relative;
+    height: 75vh;
+    overflow-y: auto;
+}
+
+.clients-table-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    margin-bottom: 10px;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.client-entry {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    border: 1px solid black;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    padding-left: 1%;
+    padding-right: 1%;
+    height: 50px;
+}
+
+#client-entries-and-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.client-entry-and-header-individual-pieces-of-data-divs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.client-photo-client-entry-data {
+    width: 2vw;
+    height: auto;
+}
+
+.name-client-entry-data {
+    margin-left: 1%;
+    width: 35%;
+}
+
+.long-format-client-entry-data {
+    width: 12%;
+}
+
+.shorts-client-entry-data {
+    width: 14%;
+}
+
+.percentage-done-client-entry-data {
+    width: 25%;
+}
+
+.client-entry-action-button {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    justify-content: center;
+    width: 2vw;
+    height: 2vw;
+}
+
+.client-entry-action-icon {
+    width: 1.3vw;
+    height: auto;
+    align-self: center;
+}
