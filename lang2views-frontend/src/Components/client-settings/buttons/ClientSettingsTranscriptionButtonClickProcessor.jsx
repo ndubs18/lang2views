@@ -6,7 +6,7 @@ function ClientSettingsTranscriptionButtonClickProcessor() {
     const popupsMenusStepAArea = document.querySelector(".popup-menus-step-area");
     const clientSettingsPlanButtonRoot = createRoot(popupsMenusStepAArea);
 
-    clientSettingsPlanButtonRoot.render(<Transcription channelName="Alex" />);
+    clientSettingsPlanButtonRoot.render(<Transcription />);
 }
 
 export default ClientSettingsTranscriptionButtonClickProcessor;

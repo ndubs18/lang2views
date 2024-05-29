@@ -7,10 +7,44 @@ import ProjectIcon from "../../../Icons/project.svg";
 import YouTubeIcon from "../../../Icons/youtube.svg";
 import TrashIcon from "../../../Icons/trash.svg";
 import { useState } from "react";
+import { useGlobalContext } from "../../../Context/globalContext";
 
 function LongFormatIndividualVideo({ videoNumber, videoName, thumbnailImage }) {
   const [checkbox, setCheckbox] = useState(false);
   const [thumbnail, setThumbnail] = useState("");
+  const {
+    isOrganizeVisible,
+    setIsOrganizeVisible,
+    isPostProductionVisible,
+    setIsPostProductionVisible,
+    isUploadVisible,
+    setIsUploadVisible,
+  } = useGlobalContext();
+
+  function toggleOrganizeModal() {
+    if (isOrganizeVisible) {
+      setIsOrganizeVisible(false);
+    } else {
+      setIsOrganizeVisible(true);
+    }
+  }
+
+  function togglePostProductionModal() {
+    if (isPostProductionVisible) {
+      setIsPostProductionVisible(false);
+    } else {
+      setIsPostProductionVisible(true);
+    }
+  }
+
+  function toggleUploadModal() {
+    if (isUploadVisible) {
+      setIsUploadVisible(false);
+    } else {
+      setIsUploadVisible(true);
+    }
+  }
+
   return (
     <div className="video-container">
       <div className="check-and-video-name">
@@ -31,25 +65,24 @@ function LongFormatIndividualVideo({ videoNumber, videoName, thumbnailImage }) {
       </div>
       <div className="four-buttons">
         <img
-          className="organize-button widget-buttons"
+          className="widget-buttons"
           src={FolderIcon}
           alt="Organize button"
+          onClick={toggleOrganizeModal}
         />
         <img
-          className="post-production-button widget-buttons"
+          className="widget-buttons"
           src={ProjectIcon}
           alt="Post production button"
+          onClick={togglePostProductionModal}
         />
         <img
-          className="upload-button widget-buttons"
+          className="widget-buttons"
           src={YouTubeIcon}
           alt="Upload button"
+          onClick={toggleUploadModal}
         />
-        <img
-          className="delete-button widget-buttons"
-          src={TrashIcon}
-          alt="Delete button"
-        />
+        <img className="widget-buttons" src={TrashIcon} alt="Delete button" />
       </div>
     </div>
   );

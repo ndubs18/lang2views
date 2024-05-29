@@ -14,9 +14,16 @@ function ClientsView(props) {
 
   useEffect(() => {
     fetch("http://localhost:3000/client/getAll", {
-    method: "GET",
-  }).then((response) => response.json().then((value) => setClientList(value)));
-  }, [])
+      method: "POST",
+    }).then((response) =>
+      response
+        .json()
+        .then((value) => setClientList(value))
+        .catch((err) => {
+          throw new Error(err);
+        })
+    );
+  }, []);
 
   const headerData = [
     "",
@@ -32,19 +39,19 @@ function ClientsView(props) {
   const dataForTableBodyRow1 = {
     clientId: "12cd7",
     clientYoutubePictureLink: "src/Images/brown.png",
-    clientName: 'A',
+    clientName: "B",
     numLongFormatVideosDone: "2 of 5 videos",
     numShortsDone: "5 out of 5",
     percentageDone: 60,
-  }
+  };
   const dataForTableBodyRow2 = {
     clientId: "12ce7",
     clientYoutubePictureLink: "src/Images/brown.png",
-    clientName: 'A',
+    clientName: "A",
     numLongFormatVideosDone: "2 of 5 videos",
     numShortsDone: "5 out of 5",
     percentageDone: 60,
-  }
+  };
 
   const clientEntries = [
     dataForTableBodyRow1,
@@ -93,7 +100,7 @@ function ClientsView(props) {
         </div>
         <ClientEntriesAndHeader
           headerData={headerData}
-          clientEntries={clientEntries}
+          clientEntries={clientList}
         />
       </div>
       <div className="popup-and-close-area-container"></div>

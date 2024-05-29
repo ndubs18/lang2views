@@ -8,3 +8,6 @@ clients.json
 videos.json
 clients
 clients/*
+client_secret.json
+youtube_token.json
+.env

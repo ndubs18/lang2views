@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import "./login.css";
 import Lang2ViewsLogo from "../../Images/lang2views_logo.jpeg";
+import { useGlobalContext } from "../../Context/globalContext";
 import axios from "axios";
 
 function login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginResponse, setLoginResponse] = useState("");
+  //Works just like a useState variable:
+  const { userInfo, setUserInfo } = useGlobalContext();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

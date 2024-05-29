@@ -6,7 +6,7 @@ function ClientSettingsTranslationButtonClickProcessor() {
     const popupsMenusStepArea = document.querySelector(".popup-menus-step-area");
     const clientSettingsTranslationButtonRoot = createRoot(popupsMenusStepArea);
 
-    clientSettingsTranslationButtonRoot.render(<Translation channelName="Alex" />);
+    clientSettingsTranslationButtonRoot.render(<Translation />);
 }
 
 export default ClientSettingsTranslationButtonClickProcessor;

@@ -4,6 +4,9 @@ import ClientVideoListProcessor from "./ClientVideoListProcessor";
 import ClientPlanButtonClickProcessor from "./ClientPlanButtonClickProcessor";
 import ClientSettingsButtonClickProcessor from "./ClientSettingsButtonClickProcessor";
 import ClientDeleteButtonClickProcessor from "./ClientDeleteButtonClickProcessor";
+import { clientIdContext } from "./clientIdContext";
+import { channelNameContext } from "../client-settings/channelNameContext";
+import { clientNameContext } from "../client-settings/clientNameContext";
 
 function ClientEntriesAndHeader(props) {
   const typeOfClientData = [
@@ -129,7 +132,14 @@ function ClientEntriesAndHeader(props) {
     const settingsButton = (
       <button
         className="client-entry-action-button btn rounded-circle client-entry-settings-button"
-        onClick={ClientSettingsButtonClickProcessor}
+        id={`client-${row + 1}`}
+        onClick={() => {
+          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
+          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+
+          ClientSettingsButtonClickProcessor();
+        }}
       >
         {settingsButtonIcon}
       </button>
@@ -146,7 +156,14 @@ function ClientEntriesAndHeader(props) {
     const planButton = (
       <button
         className="client-entry-action-button btn rounded-circle client-entry-plan-button"
-        onClick={ClientPlanButtonClickProcessor}
+        id={`client-${row + 1}`}
+        onClick={() => {
+          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
+          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+
+          ClientPlanButtonClickProcessor();
+        }}
       >
         {planButtonIcon}
       </button>
@@ -163,7 +180,14 @@ function ClientEntriesAndHeader(props) {
     const videoListButton = (
       <button
         className="client-entry-action-button btn rounded-circle client-entry-video-list-button"
-        onClick={ClientVideoListProcessor}
+        id={`client-${row + 1}`}
+        onClick={() => {
+          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
+          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+
+          ClientVideoListProcessor();
+        }}
       >
         {videoListButtonIcon}
       </button>
@@ -180,17 +204,19 @@ function ClientEntriesAndHeader(props) {
     const deleteButton = (
       <button
         className="client-entry-action-button btn rounded-circle client-entry-delete-button"
-        onClick={ClientDeleteButtonClickProcessor}
+        id={`client-${row + 1}`}
+        onClick={() => {
+          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
+          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+
+          ClientDeleteButtonClickProcessor();
+        }}
       >
         {deleteButtonIcon}
       </button>
     );
     clientEntryDataArray.push(deleteButton);
-
-    const clientIdContainer = (
-      <div hidden={true}>{dataForCurrentClientEntry.clientId}</div>
-    );
-    clientEntryDataArray.push(clientIdContainer);
 
     const clientEntryContainer = (
       <div className="client-entry border border-secondary rounded">
@@ -198,11 +224,19 @@ function ClientEntriesAndHeader(props) {
       </div>
     );
     clientEntriesArray.push(clientEntryContainer);
+
+    const clientIdContainer = (
+      <div id={"client-id-" + Number.parseInt(row + 1)} hidden={true}>
+        {dataForCurrentClientEntry.clientId}
+      </div>
+    );
+    clientEntriesArray.push(clientIdContainer);
   }
 
   const clientEntriesContainer = (
     <div className="client-entries">{clientEntriesArray}</div>
   );
+
   const clientEntriesAndHeaderContainer = (
     <div id="client-entries-and-header">
       {headerContainer}

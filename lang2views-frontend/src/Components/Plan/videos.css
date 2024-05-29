@@ -19,11 +19,15 @@
     background-color: white;
 }
 
-.shorts-select-button {
+.short-select-button {
     width: 14%;
     height: 14%;
     margin-left: 85%;
     margin-bottom: 85%;
     margin-top: 3%;
     background-color: white;
+}
+
+#previous-next-videos-buttons-container {
+    margin-top: 3%;
 }

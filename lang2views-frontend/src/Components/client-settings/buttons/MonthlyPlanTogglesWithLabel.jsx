@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "../clientSettings.css";
+import { UseMonthlyPlanContext } from "./UseMonthlyPlanContext";
 
 function MonthlyPlanTogglesWithLabel() {
   return (
@@ -24,8 +25,10 @@ function enableMonthlyPlan() {
 }
 
 function Toggles() {
-  const [disablePlanActive, setDisablePlanActive] = useState("monthly-plan-toggle-not-active");
-  const [enablePlanActive, setEnablePlanActive] = useState("monthly-plan-toggle-active");
+  const monthlyPlanContext = useContext(UseMonthlyPlanContext);
+
+  const [disablePlanActive, setDisablePlanActive] = useState(monthlyPlanContext ? "monthly-plan-toggle-not-active" : "monthly-plan-toggle-active");
+  const [enablePlanActive, setEnablePlanActive] = useState(monthlyPlanContext ? "monthly-plan-toggle-active" : "monthly-plan-toggle-not-active");
   
   return (
     <div>
