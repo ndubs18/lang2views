@@ -365,12 +365,11 @@ app.post('/client/organizeVideo', async (req,res) => {
                 videoContentFilePath + `/${videoNameInFilePath}.mp4`,
                 fs.createReadStream(videoContentFilePath + `/${videoNameInFilePath}.mp4`
                 ));
-            // Dont need merged file (removed from YT class)
-            // await dropbox.uploadFile(
-            //     dropboxPath + `/${videoNameInFilePath}_merged.mp4`,
-            //     videoContentFilePath + `/${videoNameInFilePath}_merged.mp4`,
-            //     fs.createReadStream(videoContentFilePath + `/${videoNameInFilePath}_merged.mp4`
-            //     ));
+            await dropbox.uploadFile(
+                dropboxPath + `/${videoNameInFilePath}_merged.mp4`,
+                videoContentFilePath + `/${videoNameInFilePath}_merged.mp4`,
+                fs.createReadStream(videoContentFilePath + `/${videoNameInFilePath}_merged.mp4`
+                ));
             console.log("Files uploaded to Dropbox.")
 
             res.send(JSON.stringify({ transcription: transcriptions.join('\n'), translation: translation.join('\n'), trelloCard: card }));
