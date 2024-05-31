@@ -37,8 +37,6 @@ export class YouTube {
             // Translates the text into the target language
             const [response] = await translate.translateText(request);
             const translation = response.translations[0].translatedText;
-            console.log(`Text: ${text}`);
-            console.log(`Translation: ${translation}`);
             return translation;
         } catch (error) {
             console.error('ERROR:', error);
@@ -88,8 +86,6 @@ export class YouTube {
 
     loadAuthClient(){
         // Load client secrets from a local file.
-        // let content = fs.readFileSync(CLIENT_SECRET_PATH);
-        // const credentials = JSON.parse(content.toString());
         let credentials = JSON.parse(process.env.CLIENT_SECRET);
         const { client_id, client_secret, redirect_uris } = credentials.web;
         this.oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
@@ -163,22 +159,6 @@ export class YouTube {
                 quality:'highestaudio'
             })
             await ffmpeg(stream).audioBitrate(128).output(videoName+'.mp3').on('end', async () => {
-                // // Merge video and audio using ffmpeg
-                // await ffmpeg()
-                // .input(videoName+'.mp4')
-                // .input(videoName+'.mp3')
-                // .outputOptions('-c:v copy')  // Copy the video codec
-                // .outputOptions('-c:a aac')   // Ensure the audio is in AAC format
-                // .output(`${videoName}_merged.mp4`)
-                // .on('end', () => {
-                //     console.log('Merging complete');
-                //     callback();
-                // })
-                // .on('error', (err) => {
-                //     console.error(err);
-                //     callback(err);
-                // })
-                // .run();
                 callback();
             }).on('error', (err) => {
                 console.log(err);
