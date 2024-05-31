@@ -10,11 +10,13 @@ import CreateAccountPictureAndNameContainer from "../Utilities/CreateAccountPict
 import { useEffect, useState } from "react";
 
 function ClientsView(props) {
+  window.history.replaceState({}, "clientsView", "/clientsView");
+
   const [clientList, setClientList] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:3000/client/getAll", {
-      method: "POST",
+      method: "GET",
     }).then((response) =>
       response
         .json()
@@ -100,7 +102,7 @@ function ClientsView(props) {
         </div>
         <ClientEntriesAndHeader
           headerData={headerData}
-          clientEntries={clientList}
+          clientEntries={clientEntries}
         />
       </div>
       <div className="popup-and-close-area-container"></div>
