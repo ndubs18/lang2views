@@ -310,32 +310,32 @@ app.post('/client/organizeVideo', async (req,res) => {
     */
     if(channelId && videoId && lang){
         if (await dropbox.isAuthenticated()) {
-        let clients = new Clients(clientFile);
-        let whisper = new Whisper();
-        // let bing = new Bing();
-        let youtube = new YouTube();
+            let clients = new Clients(clientFile);
+            let whisper = new Whisper();
+            // let bing = new Bing();
+            let youtube = new YouTube();
 
-        let filePath = await clients.getClientVideoPath(channelId, videoId) + '.mp3';
-        let video = await clients.getClientVideo(channelId, videoId);
+            let filePath = await clients.getClientVideoPath(channelId, videoId) + '.mp3';
+            let video = await clients.getClientVideo(channelId, videoId);
             console.log("Starting video download.")
             await clients.downloadClientVideo(channelId, videoId);
             console.log("Video downloaded.");
 
-        let transcription = await whisper.transcribeAudio(filePath, video.name.trim().replaceAll(' ', '_'));
+
+            let transcription = await whisper.transcribeAudio(filePath, video.name.trim().replaceAll(' ', '_'));
             console.log("Audio transcribed.");
-        await fs.writeFileSync(`./clients/${channelId}/${video.id}/transcription.txt`, transcription);
-        await fs.writeFileSync(`./clients/${channelId}/${video.id}/translation.txt`, translation);
-        const cardData: Omit<UpdateCardRequest, 'key' | 'token'> = {
+            let translation = await youtube.translate(transcription, lang);
             console.log("Transcription translated.");
 
             const videoContentFilePath = `./clients/${channelId}/${video.id}`;
             await fs.writeFileSync(videoContentFilePath + '/transcription.txt', transcription);
             await fs.writeFileSync(videoContentFilePath + '/translation.txt', translation);
-            await fs.writeFileSync(translationFilePath, translation);
-            id: video.trelloCard,
-            desc: 'Video organized: ' + video.dropboxURL,
-        };
-        const card = await trello.updateCard(cardData);
+
+            const cardData: Omit<UpdateCardRequest, 'key' | 'token'> = {
+                id: video.trelloCard,
+                desc: 'Video organized: ' + video.dropboxURL,
+            };
+            const card = await trello.updateCard(cardData);
             console.log("Trello card created.")
 
             const videoNameInFilePath = video.name.replaceAll(' ', '_');
@@ -389,7 +389,7 @@ app.get('/dropbox/authsuccess', (req, res) => {
     res.send('Authentication successful! You can now close this tab.');
 });
 
-// Dropbox client folder creation API
+// Dropbox API test (client folder creation)
 app.post('/dropbox/createClientFolders', async (req, res) => {
     const channelId = req.body.channelId;
 
