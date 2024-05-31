@@ -215,6 +215,9 @@ export class Clients {
                 return 'Client already exists.';
             }
         }
+        if(!fs.existsSync('./clients')){
+            fs.mkdirSync('./clients');
+        }
         fs.mkdirSync('clients/'+newClient.channelId);
         this._clients.push(newClient);
         return 'Client created.';
