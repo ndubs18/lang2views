@@ -8,7 +8,7 @@ import { Videos } from './video.js';
 import { TranslationServiceClient } from '@google-cloud/translate';
 import { GoogleAuth } from 'google-auth-library';
 
-// If ffmpeg is installed locally this will give you issues. Just uncomment
+// If ffmpeg is installed locally this will give you issues. Just comment out line below
 ffmpeg.setFfmpegPath(ffmpegPath.path);
 
 const clientFile = 'clients.json';
