@@ -174,24 +174,18 @@ app.post('/client/addVideo', async (req, res) => {
         // TODO: add extra error check to ensure we're not re-adding something already added
         if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
             if (await dropbox.isAuthenticated()) {
-                // TODO: Need to get idList from trello board.
                 const docs = new GoogleDocs();
-                const today = new Date();
-                let nextWeek = new Date(today.getDate() + 7);
 
                 const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
-                    idList: '',
-                    name: video.name.trim().replaceAll(' ', '_'),
-                    desc: 'Video added',
-                    pos: 'top',
-                    due: nextWeek.toString(),
-                    labels: ''
+                    idList: '665927794165d5dafe9569e4',
+                    name: video.name,
+                    pos: 'bottom',
                 };
 
                 let videoNumber = await clients.addClientVideo(channelId, video)
                 let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
                 let documentId = await docs.createGoogleDoc(`${videoNumber}. ${video.name} - Script`)
-                const card = await trello.createCard(cardData);
+                const card = await trello.createCard(cardData, getCustomFields(video));
 
                 video.trelloCard = card.id;
                 video.dropboxURL = dropboxUrl;
@@ -563,6 +557,36 @@ function getChannelIdFromUrl(url) {
     const match = url.match(/(?:\/channel\/|\/c\/|\/user\/|\/@)([A-Za-z0-9_-]{1,})/);
     return match ? match[1] : null;
 }
+
+function getFormattedDuration(duration: any) {
+    return `${duration.days == 0 ? '' : duration.days + ':'}`
+         + `${duration.hours == 0 && duration.days == 0 ? '' : duration.hours + ':'}`
+         + `${duration.minutes + ':'}`
+         + `${duration.seconds}`;
+}
+
+function getCustomFields(video: any) {
+    return {
+        customFields: [
+            {
+                idCustomField: process.env.VIDEO_LENGTH_ID,
+                value: { text: getFormattedDuration(video.duration) }
+            },
+            {
+                idCustomField: process.env.ORIGINAL_VIDEO_ID,
+                value: { text: video.url }
+            },
+            {
+                idCustomField: process.env.SCRIPT_IN_SPANISH_ID,
+                value: { text: getDocumentLink(video.documentId) }
+            }
+        ]
+    }
+
+}
+
+}
+
 
 // // YouTube download API
 // app.post('/youtube/download', async (req,res) => {
