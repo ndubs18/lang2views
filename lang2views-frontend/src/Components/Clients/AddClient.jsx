@@ -2,15 +2,19 @@ import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import ClientAndSampleCreationViews from "../../Pages/clientAndSampleCreationViews";
 
+
 function saveButtonClick() {
   const channelNameInput = document.querySelector("#channelName");
   const channelUrlInput = document.querySelector("#channelUrl");
 
   fetch("http://localhost:3000/client/add", {
     method: "POST",
-    body: {
+    body: JSON.stringify({
       url: channelUrlInput.textContent,
-    },
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    }
   })
     .then((response) => response.json())
     .then((value) => console.log(value));
