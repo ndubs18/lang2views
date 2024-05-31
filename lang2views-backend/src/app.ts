@@ -349,7 +349,7 @@ app.post('/client/organizeVideo', async (req,res) => {
             console.log("Trello card created.")
 
             const docs = new GoogleDocs();
-            docs.writeToGoogleDoc(video.documentId, translation);
+            docs.writeToGoogleDoc(video.documentId, translation.join('\n'));
 
             const videoNameInFilePath = video.name.replaceAll(' ', '_');
             const dropboxPath = dropbox.getPathFromVideoFolderUrl(video.dropboxURL);
