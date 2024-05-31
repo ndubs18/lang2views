@@ -10,7 +10,8 @@ export interface Video {
     format:string,
     finalized:boolean,
     trelloCard:string | null,
-    dropboxURL:string | null
+    dropboxURL: string | null,
+    documentId: string | null,
 }
 
 export class Videos {
