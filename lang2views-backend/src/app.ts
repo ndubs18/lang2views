@@ -174,8 +174,10 @@ app.post('/client/addVideo', async (req, res) => {
         if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
             if (await dropbox.isAuthenticated()) {
                 // TODO: Need to get idList from trello board.
+                const docs = new GoogleDocs();
                 const today = new Date();
                 let nextWeek = new Date(today.getDate() + 7);
+
                 const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
                     idList: '',
                     name: video.name.trim().replaceAll(' ', '_'),
@@ -184,11 +186,15 @@ app.post('/client/addVideo', async (req, res) => {
                     due: nextWeek.toString(),
                     labels: ''
                 };
+
                 let videoNumber = await clients.addClientVideo(channelId, video)
                 let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
+                let documentId = await docs.createGoogleDoc(`${videoNumber}. ${video.name} - Script`)
                 const card = await trello.createCard(cardData);
+
                 video.trelloCard = card.id;
                 video.dropboxURL = dropboxUrl;
+                video.documentId = documentId
                 clients.updateClientVideo(channelId, video)
                 res.send({
                     trelloCard: card,
@@ -337,6 +343,9 @@ app.post('/client/organizeVideo', async (req,res) => {
             };
             const card = await trello.updateCard(cardData);
             console.log("Trello card created.")
+
+            const docs = new GoogleDocs();
+            docs.writeToGoogleDoc(video.documentId, translation);
 
             const videoNameInFilePath = video.name.replaceAll(' ', '_');
             const dropboxPath = dropbox.getPathFromVideoFolderUrl(video.dropboxURL);
