@@ -8,6 +8,7 @@ import { Users } from './users.js';
 import { Clients, ClientSettings } from './clients.js';
 import fs from 'fs';
 import { DropboxConnection } from './dropboxConnection.js'
+import { GoogleDocs } from './googledoc.js'
 import dotenv from 'dotenv'
 
 dotenv.config();
