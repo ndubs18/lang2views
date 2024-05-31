@@ -368,6 +368,7 @@ app.post('/client/organizeVideo', async (req,res) => {
                 davinci.generateTimelineXML(fileNames),
                 videoContentFilePath + '/davinciTimeline.fcpxml'
             );
+            
 
             const dropboxPath = dropbox.getPathFromVideoFolderUrl(video.dropboxURL);
             await dropbox.uploadFile(dropboxPath + '/transcription.txt', videoContentFilePath + '/transcription.txt', transcription);

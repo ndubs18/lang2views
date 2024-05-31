@@ -18,6 +18,7 @@ export interface VideoAndAudioNames {
 }
 
 export class DaVinci {
+    
     public generateTimelineXML(names: VideoAndAudioNames): string {
         const fcpxml = xmlbuilder.create('fcpxml', { encoding: 'UTF-8' })
             .att('version', '1.8');
