@@ -305,6 +305,56 @@ app.post('/client/upload', async (req, res) => {
     }
 });
 
+// Export FCPXML timeline file for editing in DaVinci
+app.post('/client/postProcess', async (req,res) => {
+    const channelId = req.body.channelId;
+    const videoId = req.body.videoId;
+
+    if(channelId && videoId) {
+        if (await dropbox.isAuthenticated()) {
+            let clients = new Clients(clientFile);
+            let davinci = new DaVinci();
+
+            let video = await clients.getClientVideo(channelId, videoId);
+
+            const videoContentFilePath = `./clients/${channelId}/${video.id}`;
+            const videoNameInFilePath = video.name.replaceAll(' ', '_');
+
+            // For DaVinci
+            // When you import the .fcpxml file, it will ask for the directory of the files.
+            // This needs to be done manually by the employee.
+            // The file names here SHOULD be the same as the ones that the employees would download from Dropbox
+            const fileNames: VideoAndAudioNames = {
+                videoName: `${videoNameInFilePath}.mp4`,
+                originalAudioName: `${videoNameInFilePath}.mp3`
+            };
+
+            // For DaVinci
+            // Second argument is the output path for the XML
+            // The second argument might need to be changed? I'm not sure where it needs to be saved right now
+            davinci.exportXMLToFile(
+                davinci.generateTimelineXML(fileNames),
+                videoContentFilePath + '/davinciTimeline.fcpxml'
+            );
+
+            const dropboxPath = dropbox.getPathFromVideoFolderUrl(video.dropboxURL);
+            await dropbox.uploadFile(dropboxPath + '/davinciTimeline.fcpxml',
+                videoContentFilePath + '/davinciTimeline.fcpxml',
+                fs.createReadStream(videoContentFilePath + `/davinciTimeline.fcpxml`)
+            );
+
+            console.log("Files uploaded to Dropbox.")
+
+            // Temp
+            res.send('davinciTimeline.fcpxml uploaded to Dropbox.');
+        } else {
+            res.send('Please authenticate Dropbox first.');
+        }
+    } else {
+        res.send('Invalid request body. Please send channelId and videoId.');
+    }
+})
+
 // WIP
 // Organize step after video has been added
 // This transcribes the video and adds it to the google doc
@@ -343,7 +393,6 @@ app.post('/client/organizeVideo', async (req,res) => {
             let whisper = new Whisper();
             // let bing = new Bing();
             let youtube = new YouTube();
-            let davinci = new DaVinci();
 
             let filePath = await clients.getClientVideoPath(channelId, videoId) + '.mp3';
             let video = await clients.getClientVideo(channelId, videoId);
@@ -375,24 +424,6 @@ app.post('/client/organizeVideo', async (req,res) => {
             docs.writeToGoogleDoc(video.documentId, translation);
 
             const videoNameInFilePath = video.name.replaceAll(' ', '_');
-            
-            // For DaVinci
-            // When you import the .fcpxml file, it will ask for the directory of the files.
-            // This needs to be done manually by the employee.
-            // The file names here SHOULD be the same as the ones that the employees would download from Dropbox
-            const fileNames: VideoAndAudioNames = {
-                videoName: `${videoNameInFilePath}.mp4`,
-                originalAudioName: `${videoNameInFilePath}.mp3`
-            };
-
-            // For DaVinci
-            // Second argument is the output path for the XML
-            // The second argument might need to be changed? I'm not sure where it needs to be saved right now
-            davinci.exportXMLToFile(
-                davinci.generateTimelineXML(fileNames),
-                videoContentFilePath + '/davinciTimeline.fcpxml'
-            );
-            
 
             const dropboxPath = dropbox.getPathFromVideoFolderUrl(video.dropboxURL);
             await dropbox.uploadFile(dropboxPath + '/transcription.txt', videoContentFilePath + '/transcription.txt', transcriptions.join('\n'));
