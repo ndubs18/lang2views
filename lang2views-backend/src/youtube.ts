@@ -1,6 +1,6 @@
 import ytdl from 'ytdl-core';
 import ffmpeg from 'fluent-ffmpeg';
-import ffmpegPath from '@ffmpeg-installer/ffmpeg';
+// import ffmpegPath from '@ffmpeg-installer/ffmpeg';
 import fs from 'fs';
 import { google } from 'googleapis';
 import { Clients } from './clients.js';
@@ -8,7 +8,7 @@ import { Videos } from './video.js';
 import { TranslationServiceClient } from '@google-cloud/translate';
 import { GoogleAuth } from 'google-auth-library';
 
-ffmpeg.setFfmpegPath(ffmpegPath.path);
+// ffmpeg.setFfmpegPath(ffmpegPath.path);
 
 const clientFile = 'clients.json';
 
@@ -162,22 +162,23 @@ export class YouTube {
                 quality:'highestaudio'
             })
             await ffmpeg(stream).audioBitrate(128).output(videoName+'.mp3').on('end', async () => {
-                // Merge video and audio using ffmpeg
-                await ffmpeg()
-                .input(videoName+'.mp4')
-                .input(videoName+'.mp3')
-                .outputOptions('-c:v copy')  // Copy the video codec
-                .outputOptions('-c:a aac')   // Ensure the audio is in AAC format
-                .output(`${videoName}_merged.mp4`)
-                .on('end', () => {
-                    console.log('Merging complete');
-                    callback();
-                })
-                .on('error', (err) => {
-                    console.error(err);
-                    callback(err);
-                })
-                .run();
+                // // Merge video and audio using ffmpeg
+                // await ffmpeg()
+                // .input(videoName+'.mp4')
+                // .input(videoName+'.mp3')
+                // .outputOptions('-c:v copy')  // Copy the video codec
+                // .outputOptions('-c:a aac')   // Ensure the audio is in AAC format
+                // .output(`${videoName}_merged.mp4`)
+                // .on('end', () => {
+                //     console.log('Merging complete');
+                //     callback();
+                // })
+                // .on('error', (err) => {
+                //     console.error(err);
+                //     callback(err);
+                // })
+                // .run();
+                callback();
             }).on('error', (err) => {
                 console.log(err);
                 callback(err);
