@@ -111,6 +111,27 @@ app.get('/client/getAll', async (req, res) => {
     res.send(JSON.stringify(clients.clients));
 })
 
+/*
+* Get client settings
+*/
+app.get("/client/getSettings", (req, res) => {
+    const channelId: string = req.query.channelId as string;
+  
+    if (channelId) {
+        let clients = new Clients(clientFile);
+        const settings: ClientSettings | null =
+            clients.getClientSettings(channelId);
+    
+        if (settings) {
+            res.json(settings);
+        } else {
+            res.status(404).send("Client settings not found for the given channelId");
+        }
+    } else {
+        res.status(400).send("Invalid request. Please provide a channelId");
+    }
+});
+
 // WIP
 // API to update client settings from client settings page
 app.post('/client/updateSettings', (req, res) => {
