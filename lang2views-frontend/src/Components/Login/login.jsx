@@ -3,13 +3,33 @@ import "./login.css";
 import Lang2ViewsLogo from "../../Images/lang2views_logo.jpeg";
 import { useGlobalContext } from "../../Context/globalContext";
 import axios from "axios";
+import { createRoot } from "react-dom/client";
+import ClientAndSampleCreationViews from "../../Pages/clientAndSampleCreationViews";
 
-function login() {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginResponse, setLoginResponse] = useState("");
   //Works just like a useState variable:
   const { userInfo, setUserInfo } = useGlobalContext();
+  const [loginButtonClicked, setLoginButtonClicked] = useState(false);
+
+  useEffect(() => {
+    if (loginButtonClicked) {
+      fetch("http://localhost:3000/user/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) =>
+      response.text().then((value) => setLoginResponse(value))
+    );
+    }
+  }, [loginButtonClicked]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -25,18 +45,16 @@ function login() {
     console.log(email);
     console.log(password);
 
-    fetch("http://localhost:3000/user/login", {
-      method: "POST",
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) =>
-      response.text().then((value) => setLoginResponse(value))
-    );
+    setLoginButtonClicked(true);
+
+    if (
+      loginResponse != "Invalid request body: Please send email and password"
+    ) {
+      const root = document.querySelector("#root");
+      const addClientHook = createRoot(root);
+
+      addClientHook.render(<ClientAndSampleCreationViews />);
+    }
   };
 
   const handleForgotPassword = () => {
@@ -96,4 +114,4 @@ function login() {
   );
 }
 
-export default login;
+export default Login;

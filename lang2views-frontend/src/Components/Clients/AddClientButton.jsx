@@ -11,7 +11,7 @@ function addClientButtonClick() {
 }
 
 function AddClientButton() {
-    return <button className="btn btn-primary" id="add-client-button" value="+ Add new" onClick={addClientButtonClick}>+ Add mew</button>
+    return <button className="btn btn-primary" id="add-client-button" value="+ Add new" onClick={addClientButtonClick}>+ Add new</button>
 }
 
 export default AddClientButton;
