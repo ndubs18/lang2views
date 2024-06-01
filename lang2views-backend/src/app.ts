@@ -301,17 +301,6 @@ app.post('/client/organizeVideo', async (req,res) => {
         duration:any,
         format:string
     }
-    TRELLO TICKET
-    params: {
-    key: this.key,
-    token: this.token,
-    idList: cardData.idList,
-    name: cardData.name,
-    desc: cardData.desc,
-    pos: cardData.pos,
-    due: cardData.due,
-    labels: cardData.labels
-    }
     */
     if(channelId && videoId && lang){
         if (await dropbox.isAuthenticated()) {
@@ -326,7 +315,6 @@ app.post('/client/organizeVideo', async (req,res) => {
             await clients.downloadClientVideo(channelId, videoId);
             console.log("Video downloaded.");
 
-
             let transcriptions = await whisper.transcribeAudio(filePath, video.name.trim().replaceAll(' ', '_'));
             console.log("Audio transcribed.");
             let translation = [];
@@ -338,13 +326,6 @@ app.post('/client/organizeVideo', async (req,res) => {
             const videoContentFilePath = `./clients/${channelId}/${video.id}`;
             await fs.writeFileSync(videoContentFilePath + '/transcription.txt', transcriptions.join('\n'));
             await fs.writeFileSync(videoContentFilePath + '/translation.txt', translation.join('\n'));
-
-            const cardData: Omit<UpdateCardRequest, 'key' | 'token'> = {
-                id: video.trelloCard,
-                desc: 'Video organized: ' + video.dropboxURL,
-            };
-            const card = await trello.updateCard(cardData);
-            console.log("Trello card created.")
 
             const docs = new GoogleDocs();
             docs.writeToGoogleDoc(video.documentId, translation);
@@ -371,7 +352,7 @@ app.post('/client/organizeVideo', async (req,res) => {
             //     ));
             console.log("Files uploaded to Dropbox.")
 
-            res.send(JSON.stringify({ transcription: transcriptions.join('\n'), translation: translation.join('\n'), trelloCard: card }));
+            res.send(JSON.stringify({ transcription: transcriptions.join('\n'), translation: translation.join('\n') }));
         } else {
             res.send('Please authenticate Dropbox first.');
         }
