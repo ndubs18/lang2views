@@ -9,19 +9,22 @@ import BlackCheckbox from "../../../Icons/check_box.svg";
 import OrganizePanel from "../Organize/Organize";
 import PostProductionPanel from "../PostProduction/PostProduction";
 import UploadPanel from "../Upload/Upload";
+import { GlobalContextProvider } from "../../../Context/globalContext";
+//import LongFormatVideoListButtonClickProcessor from "./LongFormatVideoListButtonClickProcessor";
+//import ShortFormatVideoListButtonClickProcessor from "../ShortFormatVideoList/ShortFormatVideoListButtonClickProcessor";
 
-function longFormatVideoList() {
+function LongFormatVideoList() {
   const [checkbox, setCheckbox] = useState(false);
-
+  
   return (
+    <GlobalContextProvider>
     <div className="long-format-video-list">
       <div className="top-details">
         <p className="client-name">Client Name</p>{" "}
         <p className="video-list-header"></p>
       </div>
       <div className="video-list-tabs">
-        <p className="long-format">Long Format</p>
-        <p className="short-format">Short</p>
+      
       </div>
       <hr />
       <div className="icon-with-channel-name-content">
@@ -72,7 +75,8 @@ function longFormatVideoList() {
         />
       </div>
     </div>
+    </GlobalContextProvider>
   );
 }
 
-export default longFormatVideoList;
+export default LongFormatVideoList;

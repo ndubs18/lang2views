@@ -3,8 +3,8 @@ import Plan from "./Plan";
 import "../../Utilities/popup.css";
 
 function ClientSettingsPlanButtonClickProcessor() {
-    const popupsMenusStepAArea = document.querySelector(".popup-menus-step-area");
-    const clientSettingsPlanButtonRoot = createRoot(popupsMenusStepAArea);
+    const popupsMenusStepArea = document.querySelector(".popup-menus-step-area");
+    const clientSettingsPlanButtonRoot = createRoot(popupsMenusStepArea);
 
     clientSettingsPlanButtonRoot.render(<Plan />);
 }
