@@ -70,6 +70,15 @@ export class Clients {
         }
     }
 
+    public getClientSettings(channelId: string): ClientSettings | null {
+        for (let client of this._clients) {
+            if (client.channelId === channelId) {
+                return client.clientSettings;
+            }
+        }
+        return null;
+    }
+
     public removeClientVideo(channelId:string, videoId:string){
         let match = false;
         for(let client of this._clients){

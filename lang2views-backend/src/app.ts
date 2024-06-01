@@ -111,6 +111,27 @@ app.get('/client/getAll', async (req, res) => {
     res.send(JSON.stringify(clients.clients));
 })
 
+/*
+* Get client settings
+*/
+app.get("/client/getSettings", (req, res) => {
+    const channelId: string = req.query.channelId as string;
+  
+    if (channelId) {
+        let clients = new Clients(clientFile);
+        const settings: ClientSettings | null =
+            clients.getClientSettings(channelId);
+    
+        if (settings) {
+            res.json(settings);
+        } else {
+            res.status(404).send("Client settings not found for the given channelId");
+        }
+    } else {
+        res.status(400).send("Invalid request. Please provide a channelId");
+    }
+});
+
 // WIP
 // API to update client settings from client settings page
 app.post('/client/updateSettings', (req, res) => {
@@ -328,7 +349,7 @@ app.post('/client/organizeVideo', async (req,res) => {
             await fs.writeFileSync(videoContentFilePath + '/translation.txt', translation.join('\n'));
 
             const docs = new GoogleDocs();
-            docs.writeToGoogleDoc(video.documentId, translation);
+            docs.writeToGoogleDoc(video.documentId, translation.join('\n'));
 
             const videoNameInFilePath = video.name.replaceAll(' ', '_');
             const dropboxPath = dropbox.getPathFromVideoFolderUrl(video.dropboxURL);
@@ -344,12 +365,11 @@ app.post('/client/organizeVideo', async (req,res) => {
                 videoContentFilePath + `/${videoNameInFilePath}.mp4`,
                 fs.createReadStream(videoContentFilePath + `/${videoNameInFilePath}.mp4`
                 ));
-            // Dont need merged file (removed from YT class)
-            // await dropbox.uploadFile(
-            //     dropboxPath + `/${videoNameInFilePath}_merged.mp4`,
-            //     videoContentFilePath + `/${videoNameInFilePath}_merged.mp4`,
-            //     fs.createReadStream(videoContentFilePath + `/${videoNameInFilePath}_merged.mp4`
-            //     ));
+            await dropbox.uploadFile(
+                dropboxPath + `/${videoNameInFilePath}_merged.mp4`,
+                videoContentFilePath + `/${videoNameInFilePath}_merged.mp4`,
+                fs.createReadStream(videoContentFilePath + `/${videoNameInFilePath}_merged.mp4`
+                ));
             console.log("Files uploaded to Dropbox.")
 
             res.send(JSON.stringify({ transcription: transcriptions.join('\n'), translation: translation.join('\n') }));
