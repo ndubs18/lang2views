@@ -171,38 +171,42 @@ app.post('/client/addVideo', async (req, res) => {
 
     let clients = new Clients(clientFile);
     if (channelId && video) {
-        // TODO: add extra error check to ensure we're not re-adding something already added
-        if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
-            if (await dropbox.isAuthenticated()) {
-                const docs = new GoogleDocs();
+        let clientTrelloListId = clients.getClient(channelId).clientSettings.trelloListId
+        if (clientTrelloListId) {
+            // TODO: add extra error check to ensure we're not re-adding something already added
+            if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
+                if (await dropbox.isAuthenticated()) {
+                    const docs = new GoogleDocs();
 
-                const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
-                    idList: '665927794165d5dafe9569e4',
-                    name: video.name,
-                    pos: 'bottom',
-                };
+                    const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
+                        idList: clientTrelloListId,
+                        name: video.name,
+                        pos: 'bottom',
+                    };
 
-                let videoNumber = await clients.addClientVideo(channelId, video)
-                let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
-                let documentId = await docs.createGoogleDoc(`${videoNumber}. ${video.name} - Script`)
+                    let videoNumber = await clients.addClientVideo(channelId, video)
+                    let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
+                    let documentId = await docs.createGoogleDoc(`${videoNumber}. ${video.name} - Script`)
                     const card = await trello.createCard(cardData/*, getCustomFields(video)*/);
 
-                video.trelloCard = card.id;
-                video.dropboxURL = dropboxUrl;
-                video.documentId = documentId
-                clients.updateClientVideo(channelId, video)
-                res.send({
-                    trelloCard: card,
-                    dropboxUrl: dropboxUrl,
-                    message: "Video added."
-                });
+                    video.trelloCard = card.id;
+                    video.dropboxURL = dropboxUrl;
+                    video.documentId = documentId
+                    clients.updateClientVideo(channelId, video)
+                    res.send({
+                        trelloCard: card,
+                        dropboxUrl: dropboxUrl,
+                        message: "Video added."
+                    });
+                } else {
+                    res.send('Please authenticate Dropbox first.');
+                }
             } else {
-                res.send('Please authenticate Dropbox first.');
+                res.send('Invalid request body. Video format invalid.');
             }
         } else {
-            res.send('Invalid request body. Video format invalid.')
+            res.send('No Trello list ID found for this client. Make sure to set a Trello list ID in this client\'s settings.');
         }
-
     } else {
         res.send('Invalid request body.')
     }

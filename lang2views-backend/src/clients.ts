@@ -12,7 +12,8 @@ export interface ClientSettings {
     numLongFormatInput: null | number,
     numShortsInput: null | number,
     levelOfPostProcessing: null | string,
-    estimatedPriceInput: null | string
+    estimatedPriceInput: null | string,
+    trelloListId: null | string,
 }
 
 export interface Client {
