@@ -39,7 +39,7 @@ export class Trello {
         this.token = token;
     }
 
-    public async createCard(cardData: Omit<CreateCardRequest, 'key' | 'token'>, customFieldItems: object): Promise<CreateCardResponse> {
+    public async createCard(cardData: Omit<CreateCardRequest, 'key' | 'token'>/*, customFieldItems: object*/): Promise<CreateCardResponse> {
         try {
             const response = await axios.post(
                 `https://api.trello.com/1/cards`,

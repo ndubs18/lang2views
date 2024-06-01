@@ -185,7 +185,7 @@ app.post('/client/addVideo', async (req, res) => {
                 let videoNumber = await clients.addClientVideo(channelId, video)
                 let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
                 let documentId = await docs.createGoogleDoc(`${videoNumber}. ${video.name} - Script`)
-                const card = await trello.createCard(cardData, getCustomFields(video));
+                    const card = await trello.createCard(cardData/*, getCustomFields(video)*/);
 
                 video.trelloCard = card.id;
                 video.dropboxURL = dropboxUrl;
@@ -569,6 +569,7 @@ function getFormattedDuration(duration: any) {
          + `${duration.seconds}`;
 }
 
+/*
 function getCustomFields(video: any) {
     return {
         customFields: [
@@ -588,8 +589,7 @@ function getCustomFields(video: any) {
     }
 
 }
-
-}
+*/
 
 
 // // YouTube download API
