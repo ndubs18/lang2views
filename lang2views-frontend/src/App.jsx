@@ -1,9 +1,9 @@
 import ClientAndSampleCreationViews from "./Pages/clientAndSampleCreationViews";
 import { GlobalContextProvider } from "./Context/globalContext.jsx";
 import Login from "./Components/Login/Login.jsx";
-import { BrowserRouter, Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import LongFormatVideoList from "./Components/VideoList/LongFormatVideoList/LongFormatVideoList";
-import SampleCreationEntriesAndHeader from "./Components/Sample-creation/SampleCreationEntriesAndHeader.jsx";
+import ClientsView from "./Components/Clients/ClientsView";
 
 function App() {
   return (
@@ -18,10 +18,18 @@ function App() {
             element={<Login />}
           />
           <Route
-            path="/processvideolist"
+            path="/processvideolist/:channelId"
             element={<LongFormatVideoList />}
           />
-        </Routes>
+        <Route
+          path="/add"
+          element={<ClientAndSampleCreationViews />}
+        />
+        <Route
+          path="/clientsView"
+          element={<ClientAndSampleCreationViews />}
+        />
+      </Routes>
     </>
   );
 }

@@ -16,12 +16,21 @@
 .long-format {
     color: #000000;
     font-weight: bold;
-    text-decoration: underline;
+    border-bottom: blue 1px solid;
+}
+
+.long-format:hover {
+    color: #000000;
+    font-weight: bold;
+    border-bottom: blue 1px solid;
 }
 
 .short-format {
-    color: #8A8A8A;
-    font-weight: bold;
+    color: #000000;
+}
+
+.short-format:hover {
+    color: #000000;
 }
 
 .top-details {

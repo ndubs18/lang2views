@@ -1,5 +1,4 @@
 import "../../save.css";
-import { shortsToProcessContext } from "../../../../Context/shortsToProcessContext";
 
 class Short {
   title = "";
@@ -72,9 +71,10 @@ function handleSubmit() {
 
   sortOrderOfVideos(videoProcessingList);
 
-  shortsToProcessContext.Provider = JSON.stringify(videoProcessingList);
+  if (localStorage.getItem("shortsForProcessing") !== null)
+    localStorage.removeItem("shortsForProcessing");
 
-  console.log(shortsToProcessContext.Provider);
+  localStorage.setItem('shortsForProcessing', JSON.stringify(videoProcessingList));
 }
 
 function ShortsStepSave() {

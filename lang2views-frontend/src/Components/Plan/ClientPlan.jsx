@@ -7,6 +7,7 @@ import ClientPlanShortsButtonClickProcessor from "./ClientPlanShortsButtonClickP
 import ClientPlanLongFormatButtonClickProcessor from "./ClientPlanLongFormatButtonClickProcessor";
 import { channelNameContext } from "../client-settings/channelNameContext";
 import { clientNameContext } from "../client-settings/clientNameContext";
+import channelIcon from "../../Icons/profile.svg";
 
 function ClientPlan() {
   const [longFormatButtonActive, setLongFormatButtonActive] =
@@ -57,7 +58,7 @@ function ClientPlan() {
         </div>
         <div className="not-full-width-horizontal-line ms-5"></div>
         <p className="mt-5 mb-3 fs-4 ms-5">
-          <img className="me-3" src="../brown.png" />
+          <img className="me-3 channel-icon-dimensions" src={channelIcon} />
           channelName
         </p>
         <div className="not-full-width-horizontal-line ms-5"></div>

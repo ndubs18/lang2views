@@ -1,5 +1,5 @@
 import "./shortFormatVideoList.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import placeholderIcon from "../../../Images/brown.png";
 import ShortFormatIndividualVideo from "../IndividualVideo/shortFormatIndividualVideo";
 import DefaultChannelIcon from "../../../Icons/profile.svg";
@@ -9,58 +9,95 @@ import BlackCheckbox from "../../../Icons/check_box.svg";
 import OrganizePanel from "../Organize/Organize";
 import PostProductionPanel from "../PostProduction/PostProduction";
 import UploadPanel from "../Upload/Upload";
+import LongFormatVideoListButtonClickProcessor from "../LongFormatVideoList/LongFormatVideoListButtonClickProcessor";
+import ShortFormatVideoListButtonClickProcessor from "./ShortFormatVideoListButtonClickProcessor";
+import { GlobalContextProvider } from "../../../Context/globalContext";
 
-function shortFormatVideoList() {
+function createVideoList(videoList) {
+  const videos = [];
+
+  if (videoList === null)
+    videoList = [];
+
+  for (let i = 0; i < videoList.length; i++) {
+    const video = (<ShortFormatIndividualVideo
+            videoNumber={i + "."}
+            videoName={videoList[i].title}
+            thumbnailImage={""}
+          />)
+
+    videos.push(video);
+  }
+
+  return videos;
+}
+
+function ShortFormatVideoList() {
   const [checkbox, setCheckbox] = useState(false);
+  const clientName = localStorage.getItem("clientName");
+
+  const videoListFromLocalStorage = JSON.parse(localStorage.getItem("shortsForProcessing"));
+
+  const videos = createVideoList(videoListFromLocalStorage);
 
   return (
-    <div className="long-format-video-list">
-      <div className="top-details">
-        <p className="client-name">Client Name</p>{" "}
-        <p className="video-list-header"></p>
-      </div>
-      <div className="video-list-tabs">
-        <p className="long-format-in-short-format">Long Format</p>
-        <p className="short-format-in-short-format">Short</p>
-      </div>
-      <hr />
-      <div className="icon-with-channel-name-content">
-        <div className="default-channel-icon-div">
+    <GlobalContextProvider>
+      <div className="long-format-video-list">
+        <div className="top-details">
+          <p className="client-name">{clientName}</p>{" "}
+          <p className="video-list-header"></p>
+        </div>
+        <div className="video-list-tabs">
+          <button
+            className="long-format-in-short-format btn btn-link bg-white fs-2 text-decoration-none rounded-0"
+            onClick={LongFormatVideoListButtonClickProcessor}
+          >
+            Long Format
+          </button>
+          <button
+            className="short-format-in-short-format btn btn-link bg-white fs-2 text-decoration-none rounded-0"
+            onClick={ShortFormatVideoListButtonClickProcessor}
+          >
+            Short
+          </button>
+        </div>
+        <hr />
+        <div className="icon-with-channel-name-content">
+          <div className="default-channel-icon-div">
+            <img
+              className="default-channel-icon"
+              src={DefaultChannelIcon}
+              alt="Default channel icon"
+            />
+          </div>
+          <p className="channel-name">Channel name</p>
+        </div>
+        <hr />
+        <div className="search-and-modify">
+          <div className="search-content">
+            <img className="search-icon" src={SearchIcon} alt="Search icon" />
+            <input className="search-bar" />
+          </div>
+          <button className="modify-plan-button">Modify plan</button>
+        </div>
+        <OrganizePanel />
+        <PostProductionPanel />
+        <UploadPanel />
+        <div className="header-for-video-list">
           <img
-            className="default-channel-icon"
-            src={DefaultChannelIcon}
-            alt="Default channel icon"
+            className="check-box"
+            src={!checkbox ? BlankCheckbox : BlackCheckbox}
           />
+          <p className="name-header">NAME</p>
+          <p className="thumbnail-header">THUMBNAIL</p>
         </div>
-        <p className="channel-name">Channel name</p>
-      </div>
-      <hr />
-      <div className="search-and-modify">
-        <div className="search-content">
-          <img className="search-icon" src={SearchIcon} alt="Search icon" />
-          <input className="search-bar" />
+        {/* Make a component for an individual video and loop through that component here*/}
+        <div className="all-videos">
+          {videos}
         </div>
-        <button className="modify-plan-button">Modify plan</button>
       </div>
-      <OrganizePanel />
-      <PostProductionPanel />
-      <UploadPanel />
-      <div className="header-for-video-list">
-        <img
-          className="check-box"
-          src={!checkbox ? BlankCheckbox : BlackCheckbox}
-        />
-        <p className="name-header">NAME</p>
-        <p className="thumbnail-header">THUMBNAIL</p>
-      </div>
-      {/* Make a component for an individual video and loop through that component here*/}
-      <div className="all-videos">
-        <ShortFormatIndividualVideo videoNumber="001." videoName="Video 01" />
-        <ShortFormatIndividualVideo videoNumber="002." videoName="Video 02" />
-        <ShortFormatIndividualVideo videoNumber="003." videoName="Video 03" />
-      </div>
-    </div>
+    </GlobalContextProvider>
   );
 }
 
-export default shortFormatVideoList;
+export default ShortFormatVideoList;

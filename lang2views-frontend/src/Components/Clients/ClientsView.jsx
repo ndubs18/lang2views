@@ -10,11 +10,13 @@ import CreateAccountPictureAndNameContainer from "../Utilities/CreateAccountPict
 import { useEffect, useState } from "react";
 
 function ClientsView(props) {
+  window.history.replaceState({}, "clientsView", "/clientsView");
+
   const [clientList, setClientList] = useState([]);
 
-  useEffect(() => {
+   useEffect(() => {
     fetch("http://localhost:3000/client/getAll", {
-      method: "POST",
+      method: "GET",
     }).then((response) =>
       response
         .json()
@@ -24,6 +26,8 @@ function ClientsView(props) {
         })
     );
   }, []);
+
+  console.log(clientList)
 
   const headerData = [
     "",
@@ -36,7 +40,7 @@ function ClientsView(props) {
     "",
     "",
   ];
-  const dataForTableBodyRow1 = {
+   /* const dataForTableBodyRow1 = {
     clientId: "12cd7",
     clientYoutubePictureLink: "src/Images/brown.png",
     clientName: "B",
@@ -66,7 +70,7 @@ function ClientsView(props) {
     dataForTableBodyRow2,
     dataForTableBodyRow2,
     dataForTableBodyRow2,
-  ];
+  ]; */
 
   const accountPictureLink = "src/Images/brown.png";
 

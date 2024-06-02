@@ -1,17 +1,12 @@
-import React, { useEffect, useState } from "react";
 import "./clientEntriesAndHeader.css";
-import ClientVideoListProcessor from "./ClientVideoListProcessor";
 import ClientPlanButtonClickProcessor from "./ClientPlanButtonClickProcessor";
 import ClientSettingsButtonClickProcessor from "./ClientSettingsButtonClickProcessor";
 import ClientDeleteButtonClickProcessor from "./ClientDeleteButtonClickProcessor";
 import { clientIdContext } from "./clientIdContext";
-import { channelNameContext } from "../client-settings/channelNameContext";
 import { clientNameContext } from "../client-settings/clientNameContext";
-import { Link, Navigate, redirect } from "react-router-dom";
 
 function ClientEntriesAndHeader(props) {
 
-  const [videoList, setVideoList] = useState(false);
 
   const typeOfClientData = [
     "client-photo-client-entry-data",
@@ -85,7 +80,7 @@ function ClientEntriesAndHeader(props) {
           " client-entry-and-header-individual-pieces-of-data-divs"
         }
       >
-        {dataForCurrentClientEntry.clientName}
+        {dataForCurrentClientEntry.channelName}
       </div>
     );
     clientEntryDataArray.push(clientName);
@@ -144,6 +139,7 @@ function ClientEntriesAndHeader(props) {
 
           ClientSettingsButtonClickProcessor();
         }}
+        title="Settings"
       >
         {settingsButtonIcon}
       </button>
@@ -168,6 +164,7 @@ function ClientEntriesAndHeader(props) {
 
           ClientPlanButtonClickProcessor();
         }}
+        title="Plan"
       >
         {planButtonIcon}
       </button>
@@ -182,17 +179,11 @@ function ClientEntriesAndHeader(props) {
       ></img>
     );
     const videoListButton = (
-      <a href={"/processvideolist"}>
+      <a href={`/processvideolist/${dataForCurrentClientEntry.channelId}`}>
         <button
           className="client-entry-action-button btn rounded-circle client-entry-video-list-button"
           id={`client-${row + 1}`}
-          onClick={() => {
-            clientIdContext.Provider = dataForCurrentClientEntry.clientId;
-            //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
-            clientNameContext.Provider = dataForCurrentClientEntry.clientName;
-
-            //ClientVideoListProcessor();
-          }}
+          title="Video list"
         >
           {videoListButtonIcon}
         </button>
@@ -218,6 +209,7 @@ function ClientEntriesAndHeader(props) {
 
           ClientDeleteButtonClickProcessor();
         }}
+        title="Delete"
       >
         {deleteButtonIcon}
       </button>

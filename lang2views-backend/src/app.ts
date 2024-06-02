@@ -103,6 +103,20 @@ app.post('/client/remove', async (req, res) => {
 })
 
 /*
+* Get specific client API
+* Used to send single client to front end
+*/
+app.post('/client/get', async (req, res) => {
+    const channelId = req.body.channelId;
+    if (channelId) {
+        let clients = new Clients(clientFile);
+        res.send(JSON.stringify(clients.getClient(channelId)));
+    } else {
+        res.send('Invalid request body: Please send clientId.')
+    }
+})
+
+/*
 * Get all clients API
 * Used to send all clients to front end when client page loads or the data changes (add client or remove client)
 */
@@ -250,6 +264,21 @@ app.post('/client/removeVideo', (req, res) => {
         res.send('Invalid request body. Please send channelId and videoId');
     }
 });
+
+/*
+* Get videos that have been added for a client
+*/
+app.post('/client/getAddedVideos', async (req, res) => {
+    const channelId = req.body.channelId;
+    if (channelId) {
+        const result = new Clients(clientFile).getClientVideos(channelId);
+        console.log(result)
+        res.send(JSON.stringify(result));
+    } else {
+        res.send('Invalid request body: Please send channelId.');
+    }
+
+})
 
 /*
 * YouTube video list

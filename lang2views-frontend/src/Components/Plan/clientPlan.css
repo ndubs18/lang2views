@@ -98,3 +98,8 @@
 .filter-buttons-container {
     margin-top: -5%;
 }
+
+.channel-icon-dimensions {
+    width: 20px;
+    height: 20px;
+}
