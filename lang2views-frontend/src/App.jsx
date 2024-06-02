@@ -1,6 +1,6 @@
 import Login from "./Components/Login/login.jsx";
 import { Routes, Route } from "react-router-dom";
-import LongFormatVideoList from "./Components/VideoList/LongFormatVideoList/LongFormatVideoList.jsx";
+import LongFormatVideoList from "./Components/VideoList/LongFormatVideoList/longFormatVideoList.jsx";
 import AddClient from "./Components/Clients/AddClient.jsx";
 import ClientsView from "./Components/Clients/ClientsView.jsx";
 import ClientAndSampleCreationViews from "./Pages/clientAndSampleCreationViews.jsx";

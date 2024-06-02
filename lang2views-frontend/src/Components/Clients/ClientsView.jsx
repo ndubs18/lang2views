@@ -14,7 +14,7 @@ function ClientsView(props) {
 
   const [clientList, setClientList] = useState([]);
 
-  useEffect(() => {
+   useEffect(() => {
     fetch("http://localhost:3000/client/getAll", {
       method: "POST",
     }).then((response) =>
@@ -38,7 +38,7 @@ function ClientsView(props) {
     "",
     "",
   ];
-/*   const dataForTableBodyRow1 = {
+   /* const dataForTableBodyRow1 = {
     clientId: "12cd7",
     clientYoutubePictureLink: "src/Images/brown.png",
     clientName: "B",

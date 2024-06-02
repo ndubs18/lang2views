@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { Navigate } from "react-router-dom";
-import LongFormatVideoList from "../VideoList/LongFormatVideoList/LongFormatVideoList";
+import LongFormatVideoList from "../VideoList/LongFormatVideoList/longFormatVideoList";
 
 function ClientVideoListProcessor() {
     const root = document.querySelector("#root");

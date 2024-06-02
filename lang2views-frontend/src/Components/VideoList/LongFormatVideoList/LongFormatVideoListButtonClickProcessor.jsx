@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client"
-import LongFormatVideoList from "./LongFormatVideoList";
+import LongFormatVideoList from "./longFormatVideoList";
 
 function LongFormatVideoListButtonClickProcessor() {
     const rootElement = document.querySelector("#root");
