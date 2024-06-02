@@ -67,21 +67,30 @@ function LongFormatIndividualVideo({ videoNumber, videoName, thumbnailImage }) {
           className="widget-buttons"
           src={FolderIcon}
           alt="Organize button"
+          title="Organize"
           onClick={toggleOrganizeModal}
         />
         <img
           className="widget-buttons"
           src={ProjectIcon}
           alt="Post production button"
+          title="Post-produce"
           onClick={togglePostProductionModal}
         />
         <img
           className="widget-buttons"
           src={YouTubeIcon}
           alt="Upload button"
+          title="Upload"
           onClick={toggleUploadModal}
         />
-        <img className="widget-buttons" src={TrashIcon} alt="Delete button" />
+        <img
+          className="widget-buttons"
+          src={TrashIcon}
+          alt="Delete button"
+          title="Delete"
+          //onClick={}
+        />
       </div>
     </div>
   );

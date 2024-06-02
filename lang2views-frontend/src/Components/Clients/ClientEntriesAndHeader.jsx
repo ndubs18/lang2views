@@ -139,6 +139,7 @@ function ClientEntriesAndHeader(props) {
 
           ClientSettingsButtonClickProcessor();
         }}
+        title="Settings"
       >
         {settingsButtonIcon}
       </button>
@@ -163,6 +164,7 @@ function ClientEntriesAndHeader(props) {
 
           ClientPlanButtonClickProcessor();
         }}
+        title="Plan"
       >
         {planButtonIcon}
       </button>
@@ -181,6 +183,7 @@ function ClientEntriesAndHeader(props) {
         <button
           className="client-entry-action-button btn rounded-circle client-entry-video-list-button"
           id={`client-${row + 1}`}
+          title="Video list"
         >
           {videoListButtonIcon}
         </button>
@@ -206,6 +209,7 @@ function ClientEntriesAndHeader(props) {
 
           ClientDeleteButtonClickProcessor();
         }}
+        title="Delete"
       >
         {deleteButtonIcon}
       </button>
