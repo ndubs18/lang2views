@@ -11,7 +11,6 @@ import { useGlobalContext } from "../../../Context/globalContext";
 
 function LongFormatIndividualVideo({ videoNumber, videoName, thumbnailImage }) {
   const [checkbox, setCheckbox] = useState(false);
-  const [thumbnail, setThumbnail] = useState("");
   const {
     isOrganizeVisible,
     setIsOrganizeVisible,

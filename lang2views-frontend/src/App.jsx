@@ -18,7 +18,7 @@ function App() {
             element={<Login />}
           />
           <Route
-            path="/processvideolist"
+            path="/processvideolist/:channelId"
             element={<LongFormatVideoList />}
           />
         <Route

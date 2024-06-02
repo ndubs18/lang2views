@@ -1,6 +1,6 @@
 import "./longFormatVideoList.css";
-import { useState } from "react";
-import placeholderIcon from "../../../Images/brown.png";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import LongFormatIndividualVideo from "../IndividualVideo/longFormatIndividualVideo";
 import DefaultChannelIcon from "../../../Icons/profile.svg";
 import SearchIcon from "../../../Icons/search.svg";
@@ -10,17 +10,68 @@ import OrganizePanel from "../Organize/Organize";
 import PostProductionPanel from "../PostProduction/PostProduction";
 import UploadPanel from "../Upload/Upload";
 import { GlobalContextProvider } from "../../../Context/globalContext";
-//import LongFormatVideoListButtonClickProcessor from "./LongFormatVideoListButtonClickProcessor";
-//import ShortFormatVideoListButtonClickProcessor from "../ShortFormatVideoList/ShortFormatVideoListButtonClickProcessor";
 
 function LongFormatVideoList() {
-  const [checkbox, setCheckbox] = useState(false);
-  
+    const [checkbox, setCheckbox] = useState(false);
+    const [client, setClient] = useState(null);
+    const [videoList, setVideoList] = useState([]);
+    const { channelId } = useParams()
+
+    useEffect(() => {
+        fetch("http://localhost:3000/client/getAddedVideos", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                channelId: channelId,
+            }),
+        }).then((response) => {
+            response
+                .json()
+                .then((value) => setVideoList(value))
+                .catch((err) => {
+                    throw new Error(err);
+                })
+        });
+        fetch("http://localhost:3000/client/get", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                channelId: channelId,
+            }),
+        }).then((response) => {
+            response
+                .json()
+                .then((value) => {setClient(value)})
+                .catch((err) => {
+                    throw new Error(err);
+                })
+        });
+    }, []);
+    console.log(videoList)
+    const individualVideos = [];
+    videoList.forEach((video) => {
+        individualVideos.push(<LongFormatIndividualVideo
+            videoNumber={ video.number }
+            videoName={ video.name }
+            thumbnailImage={ video.thumbnail.url }
+        />)
+    })
+
+    let channelName = "Loading..."
+    if (client) {
+        channelName = client.channelName
+    }
+
+
   return (
     <GlobalContextProvider>
     <div className="long-format-video-list">
       <div className="top-details">
-        <p className="client-name">Client Name</p>{" "}
+                  <p className="client-name">{channelName}</p>{" "}
         <p className="video-list-header"></p>
       </div>
       <div className="video-list-tabs">
@@ -35,7 +86,7 @@ function LongFormatVideoList() {
             alt="Default channel icon"
           />
         </div>
-        <p className="channel-name">Channel name</p>
+                  <p className="channel-name">{channelName}</p>
       </div>
       <hr />
       <div className="search-and-modify">
@@ -56,23 +107,8 @@ function LongFormatVideoList() {
         <p className="name-header">NAME</p>
         <p className="thumbnail-header">THUMBNAIL</p>
       </div>
-      {/* Make a component for an individual video and loop through that component here*/}
       <div className="all-videos">
-        <LongFormatIndividualVideo
-          videoNumber="001."
-          videoName="Video 01"
-          thumbnailImage={placeholderIcon}
-        />
-        <LongFormatIndividualVideo
-          videoNumber="002."
-          videoName="Video 02"
-          thumbnailImage={placeholderIcon}
-        />
-        <LongFormatIndividualVideo
-          videoNumber="003."
-          videoName="Video 03"
-          thumbnailImage={placeholderIcon}
-        />
+        {individualVideos}
       </div>
     </div>
     </GlobalContextProvider>
