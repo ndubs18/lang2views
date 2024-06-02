@@ -9,12 +9,8 @@ function Organize({ channelId, channelName, video }) {
     let dropboxUrl = ""
     let scriptUrl = ""
     let trelloUrl = ""
-    console.log("body:")
-    console.log(JSON.stringify({
-        channelId: channelId,
-        videoId: video.id,
-        lang: "es",
-    }))
+    let videoName = ""
+
     const organizeVideo = async () => {
         fetch("http://localhost:3000/client/organizeVideo", {
             method: "POST",
@@ -35,11 +31,16 @@ function Organize({ channelId, channelName, video }) {
                 })
         });
     }
-    console.log("organize data:")
-    console.log(organizeData)
-    dropboxUrl = organizeData.dropboxUrl;
-    scriptUrl = organizeData.scriptUrl;
-    trelloUrl = organizeData.trelloUrl;
+
+    if (organizeData) {
+        dropboxUrl = organizeData.dropboxUrl;
+        scriptUrl = organizeData.scriptUrl;
+        trelloUrl = organizeData.trelloUrl;
+    }
+
+    if (video) {
+        videoName = video.name
+    }
 
   if (!isOrganizeVisible) return null;
   function toggleOrganizeModal() {
@@ -59,7 +60,7 @@ function Organize({ channelId, channelName, video }) {
             <p className="video-list-header"></p>
           </div>
           <div className="video-list-tabs">
-            <p className="video-name-in-organize">{video.name}</p>
+            <p className="video-name-in-organize">{videoName}</p>
           </div>
           <hr />
           <div className="icon-with-channel-name-content">
