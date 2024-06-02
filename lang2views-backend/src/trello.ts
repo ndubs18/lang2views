@@ -39,9 +39,9 @@ export class Trello {
         this.token = token;
     }
 
-    public async createCard(cardData: Omit<CreateCardRequest, 'key' | 'token'>): Promise<CreateCardResponse> {
+    public async createCard(cardData: Omit<CreateCardRequest, 'key' | 'token'>/*, customFieldItems: object*/): Promise<CreateCardResponse> {
         try {
-            const response: AxiosResponse<CreateCardResponse> = await axios.post(
+            const response = await axios.post(
                 `https://api.trello.com/1/cards`,
                 null,
                 {
@@ -50,14 +50,36 @@ export class Trello {
                         token: this.token,
                         idList: cardData.idList,
                         name: cardData.name,
-                        desc: cardData.desc,
                         pos: cardData.pos,
-                        due: cardData.due,
-                        labels: cardData.labels
                     }
                 }
             );
-            return response.data;
+            const cardId = response.data.id;
+            const cardUrl = response.data.url
+
+            // TODO: Can any of us get this past the "error parsing body" issue??
+            /*
+            try {
+                const response = await axios.put(
+                    `'https://api.trello.com/1/cards/${cardId}/customFields`,
+                    null,
+                    {
+                        params: {
+                            key: this.key,
+                            token: this.token,
+                        },
+                        data: {
+                            customFieldItems: customFieldItems,
+                        }
+                
+
+                );
+            } catch (error) {
+                console.error('Error creating Trello card:', error);
+                throw error;
+            }
+            */
+            return cardUrl;
         } catch (error) {
             console.error('Error creating Trello card:', error);
             throw error;

@@ -192,44 +192,42 @@ app.post('/client/addVideo', async (req, res) => {
 
     let clients = new Clients(clientFile);
     if (channelId && video) {
-        // TODO: add extra error check to ensure we're not re-adding something already added
-        if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
-            if (await dropbox.isAuthenticated()) {
-                // TODO: Need to get idList from trello board.
-                const docs = new GoogleDocs();
-                const today = new Date();
-                let nextWeek = new Date(today.getDate() + 7);
+        let clientTrelloListId = clients.getClient(channelId).clientSettings.trelloListId
+        if (clientTrelloListId) {
+            // TODO: add extra error check to ensure we're not re-adding something already added
+            if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
+                if (await dropbox.isAuthenticated()) {
+                    const docs = new GoogleDocs();
 
-                const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
-                    idList: '',
-                    name: video.name.trim().replaceAll(' ', '_'),
-                    desc: 'Video added',
-                    pos: 'top',
-                    due: nextWeek.toString(),
-                    labels: ''
-                };
+                    const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
+                        idList: clientTrelloListId,
+                        name: video.name,
+                        pos: 'bottom',
+                    };
 
-                let videoNumber = await clients.addClientVideo(channelId, video)
-                let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
-                let documentId = await docs.createGoogleDoc(`${videoNumber}. ${video.name} - Script`)
-                const card = await trello.createCard(cardData);
+                    let videoNumber = await clients.addClientVideo(channelId, video)
+                    let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
+                    let documentId = await docs.createGoogleDoc(`${videoNumber}. ${video.name} - Script`)
+                    const card = await trello.createCard(cardData/*, getCustomFields(video)*/);
 
-                video.trelloCard = card.id;
-                video.dropboxURL = dropboxUrl;
-                video.documentId = documentId
-                clients.updateClientVideo(channelId, video)
-                res.send({
-                    trelloCard: card,
-                    dropboxUrl: dropboxUrl,
-                    message: "Video added."
-                });
+                    video.trelloCard = card.id;
+                    video.dropboxURL = dropboxUrl;
+                    video.documentId = documentId
+                    clients.updateClientVideo(channelId, video)
+                    res.send({
+                        trelloCard: card,
+                        dropboxUrl: dropboxUrl,
+                        message: "Video added."
+                    });
+                } else {
+                    res.send('Please authenticate Dropbox first.');
+                }
             } else {
-                res.send('Please authenticate Dropbox first.');
+                res.send('Invalid request body. Video format invalid.');
             }
         } else {
-            res.send('Invalid request body. Video format invalid.')
+            res.send('No Trello list ID found for this client. Make sure to set a Trello list ID in this client\'s settings.');
         }
-
     } else {
         res.send('Invalid request body.')
     }
@@ -324,17 +322,6 @@ app.post('/client/organizeVideo', async (req,res) => {
         duration:any,
         format:string
     }
-    TRELLO TICKET
-    params: {
-    key: this.key,
-    token: this.token,
-    idList: cardData.idList,
-    name: cardData.name,
-    desc: cardData.desc,
-    pos: cardData.pos,
-    due: cardData.due,
-    labels: cardData.labels
-    }
     */
     if(channelId && videoId && lang){
         if (await dropbox.isAuthenticated()) {
@@ -349,7 +336,6 @@ app.post('/client/organizeVideo', async (req,res) => {
             await clients.downloadClientVideo(channelId, videoId);
             console.log("Video downloaded.");
 
-
             let transcriptions = await whisper.transcribeAudio(filePath, video.name.trim().replaceAll(' ', '_'));
             console.log("Audio transcribed.");
             let translation = [];
@@ -361,13 +347,6 @@ app.post('/client/organizeVideo', async (req,res) => {
             const videoContentFilePath = `./clients/${channelId}/${video.id}`;
             await fs.writeFileSync(videoContentFilePath + '/transcription.txt', transcriptions.join('\n'));
             await fs.writeFileSync(videoContentFilePath + '/translation.txt', translation.join('\n'));
-
-            const cardData: Omit<UpdateCardRequest, 'key' | 'token'> = {
-                id: video.trelloCard,
-                desc: 'Video organized: ' + video.dropboxURL,
-            };
-            const card = await trello.updateCard(cardData);
-            console.log("Trello card created.")
 
             const docs = new GoogleDocs();
             docs.writeToGoogleDoc(video.documentId, translation.join('\n'));
@@ -393,7 +372,7 @@ app.post('/client/organizeVideo', async (req,res) => {
                 ));
             console.log("Files uploaded to Dropbox.")
 
-            res.send(JSON.stringify({ transcription: transcriptions.join('\n'), translation: translation.join('\n'), trelloCard: card }));
+            res.send(JSON.stringify({ transcription: transcriptions.join('\n'), translation: translation.join('\n') }));
         } else {
             res.send('Please authenticate Dropbox first.');
         }
@@ -587,6 +566,36 @@ function getChannelIdFromUrl(url) {
     const match = url.match(/(?:\/channel\/|\/c\/|\/user\/|\/@)([A-Za-z0-9_-]{1,})/);
     return match ? match[1] : null;
 }
+
+function getFormattedDuration(duration: any) {
+    return `${duration.days == 0 ? '' : duration.days + ':'}`
+         + `${duration.hours == 0 && duration.days == 0 ? '' : duration.hours + ':'}`
+         + `${duration.minutes + ':'}`
+         + `${duration.seconds}`;
+}
+
+/*
+function getCustomFields(video: any) {
+    return {
+        customFields: [
+            {
+                idCustomField: process.env.VIDEO_LENGTH_ID,
+                value: { text: getFormattedDuration(video.duration) }
+            },
+            {
+                idCustomField: process.env.ORIGINAL_VIDEO_ID,
+                value: { text: video.url }
+            },
+            {
+                idCustomField: process.env.SCRIPT_IN_SPANISH_ID,
+                value: { text: getDocumentLink(video.documentId) }
+            }
+        ]
+    }
+
+}
+*/
+
 
 // // YouTube download API
 // app.post('/youtube/download', async (req,res) => {
