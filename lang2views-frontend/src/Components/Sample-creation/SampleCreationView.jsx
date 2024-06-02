@@ -33,7 +33,7 @@ function SampleCreationView(props) {
     "",
   ];
 
-  const dataForTableBodyRow1 = {
+  /* const dataForTableBodyRow1 = {
     name: 'A',
     videoType: "Long format",
     thumbnailLink: "src/Images/brown.png",
@@ -58,7 +58,7 @@ function SampleCreationView(props) {
     dataForTableBodyRow2,
     dataForTableBodyRow2,
     dataForTableBodyRow2,
-  ];
+  ]; */
 
   const accountPictureLink = 'src/Images/brown.png';
 
@@ -87,7 +87,7 @@ function SampleCreationView(props) {
           </div>
           <SampleCreationEntriesAndHeader
             headerData={headerData}
-            sampleCreationEntries={sampleVideosManual}
+            sampleCreationEntries={sampleVideos}
           />
         </div>
       <div className="popup-and-close-area-container"></div>
