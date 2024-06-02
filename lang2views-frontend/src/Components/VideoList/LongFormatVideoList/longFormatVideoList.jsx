@@ -17,6 +17,7 @@ function LongFormatVideoList() {
     const [checkbox, setCheckbox] = useState(false);
     const [client, setClient] = useState(null);
     const [videoList, setVideoList] = useState([]);
+    const [currentVideoId, setCurrentVideoId] = useState("default");
     const { channelId } = useParams()
 
     useEffect(() => {
@@ -53,13 +54,16 @@ function LongFormatVideoList() {
                 })
         });
     }, []);
-    console.log(videoList)
+
     const individualVideos = [];
     videoList.forEach((video) => {
         individualVideos.push(<LongFormatIndividualVideo
-            videoNumber={ video.number }
-            videoName={ video.name }
-            thumbnailImage={ video.thumbnail.url }
+            key={video.id}
+            videoNumber={video.number}
+            videoName={video.name}
+            thumbnailImage={video.thumbnail.url}
+            videoId={video.id}
+            sendVideoId={handleCurrentVideoId}
         />)
     })
 
@@ -68,6 +72,15 @@ function LongFormatVideoList() {
         channelName = client.channelName
     }
 
+    function getVideoFromId(videoId) {
+        return videoList.filter((video) => { return video.id == videoId; })[0]
+    }
+
+    // Used to process when one of a child individual video's buttons is pressed;
+    // updates the video id used to send a video over to the relevant popup modal
+    function handleCurrentVideoId(data) {
+        setCurrentVideoId(data);
+    }
 
   return (
     <GlobalContextProvider>
@@ -109,7 +122,7 @@ function LongFormatVideoList() {
         </div>
         <button className="modify-plan-button">Modify plan</button>
       </div>
-      <OrganizePanel />
+      <OrganizePanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
       <PostProductionPanel />
       <UploadPanel />
       <div className="header-for-video-list">

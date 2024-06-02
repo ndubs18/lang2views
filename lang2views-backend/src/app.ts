@@ -342,21 +342,10 @@ app.post('/client/organizeVideo', async (req,res) => {
     const videoId = req.body.videoId;
     const lang = req.body.lang;
 
-    /*
-    * Video {
-        name:string,
-        url:string,
-        id:string,
-        thumbnail:any,
-        duration:any,
-        format:string
-    }
-    */
     if(channelId && videoId && lang){
         if (await dropbox.isAuthenticated()) {
             let clients = new Clients(clientFile);
             let whisper = new Whisper();
-            // let bing = new Bing();
             let youtube = new YouTube();
 
             let filePath = await clients.getClientVideoPath(channelId, videoId) + '.mp3';
@@ -401,7 +390,11 @@ app.post('/client/organizeVideo', async (req,res) => {
                 ));
             console.log("Files uploaded to Dropbox.")
 
-            res.send(JSON.stringify({ transcription: transcriptions.join('\n'), translation: translation.join('\n') }));
+            res.send(JSON.stringify({
+                dropboxUrl: video.dropboxURL,
+                scriptUrl: `https://docs.google.com/document/d/${video.documentId}/edit`,
+                trelloUrl: video.trelloCard,
+            }));
         } else {
             res.send('Please authenticate Dropbox first.');
         }
@@ -447,16 +440,18 @@ app.post('/dropbox/createClientFolders', async (req, res) => {
 
 //Trello API test (Create a new card)
 app.post('/trello/create', async (req, res) => {
-    const cardData: Omit<CreateCardRequest, 'key' | 'token'> = req.body;
-    if (!cardData.idList || !cardData.name) {
-        return res.status(400).json({ error: 'idList and name are required' });
-    }
-    try {
-        const card = await trello.createCard(cardData);
-        res.status(201).json(card);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to create card' });
-    }
+    const id = '66592779f0dc5550393c9fa4'
+
+    const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
+        idList: id,
+        name: "test",
+        pos: 'bottom',
+    };
+
+    const card = await trello.createCard(cardData/*, getCustomFields(video)*/);
+
+    console.log(card)
+    res.send(card)
 });
 
 // Trello API test (Update an existing card)
