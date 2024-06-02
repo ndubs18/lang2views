@@ -14,7 +14,7 @@ function ClientsView(props) {
 
   useEffect(() => {
     fetch("http://localhost:3000/client/getAll", {
-      method: "POST",
+      method: "GET",
     }).then((response) =>
       response
         .json()
@@ -24,6 +24,8 @@ function ClientsView(props) {
         })
     );
   }, []);
+
+  console.log(clientList)
 
   const headerData = [
     "",
