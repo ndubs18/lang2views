@@ -3,6 +3,8 @@ import "./login.css";
 import Lang2ViewsLogo from "../../Images/lang2views_logo.jpeg";
 import { useGlobalContext } from "../../Context/globalContext";
 import axios from "axios";
+import { createRoot } from "react-dom/client";
+import ClientAndSampleCreationViews from "../../Pages/clientAndSampleCreationViews";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -25,7 +27,7 @@ function Login() {
     console.log(email);
     console.log(password);
 
-    fetch("http://localhost:3000/user/login", {
+    /*fetch("http://localhost:3000/user/login", {
       method: "POST",
       body: JSON.stringify({
         email: email,
@@ -36,7 +38,15 @@ function Login() {
       },
     }).then((response) =>
       response.text().then((value) => setLoginResponse(value))
-    );
+    );*/
+
+    const value = "Success";
+    if (value !== "Invalid request body: Please send email and password") {
+      const root = document.querySelector("#root");
+
+      const rootElement = createRoot(root);
+      rootElement.render(<ClientAndSampleCreationViews />);
+    }
   };
 
   const handleForgotPassword = () => {

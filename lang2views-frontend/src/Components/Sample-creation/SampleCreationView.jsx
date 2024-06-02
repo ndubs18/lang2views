@@ -12,6 +12,7 @@ import "./otherSampleCreationViewFunctionality.css";
 import { useEffect, useState } from 'react';
 
 function SampleCreationView(props) {
+  window.history.replaceState({}, "sampleCreationView", "/sampleCreationView");
 
   const [sampleVideos, setSampleVideos] = useState([]);
 

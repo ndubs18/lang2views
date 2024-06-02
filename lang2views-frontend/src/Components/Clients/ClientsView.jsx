@@ -10,6 +10,8 @@ import CreateAccountPictureAndNameContainer from "../Utilities/CreateAccountPict
 import { useEffect, useState } from "react";
 
 function ClientsView(props) {
+  window.history.replaceState({}, "clientsView", "/clientsView");
+
   const [clientList, setClientList] = useState([]);
 
   useEffect(() => {
