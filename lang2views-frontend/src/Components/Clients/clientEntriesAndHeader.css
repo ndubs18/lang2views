@@ -75,3 +75,7 @@
     height: auto;
     align-self: center;
 }
+
+.anchor-tag-button {
+    margin-top: 0.6em;
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useEffect, useState } from "react";
 import "./clientEntriesAndHeader.css";
 import ClientVideoListProcessor from "./ClientVideoListProcessor";
 import ClientPlanButtonClickProcessor from "./ClientPlanButtonClickProcessor";
@@ -178,19 +178,25 @@ function ClientEntriesAndHeader(props) {
       ></img>
     );
     const videoListButton = (
-      <button
-        className="client-entry-action-button btn rounded-circle client-entry-video-list-button"
-        id={`client-${row + 1}`}
-        onClick={() => {
-          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
-          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
-          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+      <a href={"/processvideolist"} className="anchor-tag-button">
+        <button
+          className="client-entry-action-button btn rounded-circle client-entry-video-list-button"
+          id={`client-${row + 1}`}
+          onClick={() => {
+            clientIdContext.Provider = dataForCurrentClientEntry.clientId;
+            //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+            if (localStorage.getItem("clientName") !== null)
+              localStorage.removeItem("clientName");
 
-          ClientVideoListProcessor();
-        }}
-      >
-        {videoListButtonIcon}
-      </button>
+            localStorage.setItem(
+              "clientName",
+              dataForCurrentClientEntry.clientName
+            );
+          }}
+        >
+          {videoListButtonIcon}
+        </button>
+      </a>
     );
     clientEntryDataArray.push(videoListButton);
 

@@ -1,5 +1,5 @@
 import "../../save.css";
-import { longFormatVideosToProcessContext } from "../../../../Context/longFormatVideosToProcess";
+import { useContext, useEffect, useState } from "react";
 
 class LongFormatVideo {
   title = "";
@@ -20,7 +20,9 @@ function handleSubmit() {
     "#videos-for-processing-json"
   );
 
-  let videoProcessingList = JSON.parse(currentVideosForProcessingContainer.textContent);
+  let videoProcessingList = JSON.parse(
+    currentVideosForProcessingContainer.textContent
+  );
 
   const videoSelectButtonsWithDuplicates = document.querySelectorAll(
     ".long-format-video-select-button"
@@ -47,7 +49,9 @@ function handleSubmit() {
         const longFormatVideo = new LongFormatVideo();
 
         longFormatVideo.title = videoSelectButtons[i].id;
-        longFormatVideo.placement = Number.parseInt(videoSelectButtons[i].textContent);
+        longFormatVideo.placement = Number.parseInt(
+          videoSelectButtons[i].textContent
+        );
         longFormatVideo.thumbnailSrc = videoThumbnails[i].textContent;
 
         videoProcessingList.push(longFormatVideo);
@@ -56,7 +60,7 @@ function handleSubmit() {
       const removedVideo = videoProcessingList.find(
         (video) => video.title === videoSelectButtons[i].id
       );
-      
+
       if (removedVideo !== undefined) {
         videoProcessingList = videoProcessingList.filter(
           (video) => video.title !== videoSelectButtons[i].id
@@ -72,9 +76,13 @@ function handleSubmit() {
 
   sortOrderOfVideos(videoProcessingList);
 
-  longFormatVideosToProcessContext.Provider = JSON.stringify(videoProcessingList);
+  if (localStorage.getItem("longFormatVideosForProcessing") !== null)
+    localStorage.removeItem("longFormatVideosForProcessing");
 
-  console.log(longFormatVideosToProcessContext.Provider);
+  localStorage.setItem(
+    "longFormatVideosForProcessing",
+    JSON.stringify(videoProcessingList)
+  );
 }
 
 function LongFormatStepSave() {

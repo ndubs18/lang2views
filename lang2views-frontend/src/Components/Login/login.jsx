@@ -4,7 +4,7 @@ import Lang2ViewsLogo from "../../Images/lang2views_logo.jpeg";
 import { useGlobalContext } from "../../Context/globalContext";
 import axios from "axios";
 
-function login() {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginResponse, setLoginResponse] = useState("");
@@ -96,4 +96,4 @@ function login() {
   );
 }
 
-export default login;
+export default Login;

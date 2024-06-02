@@ -181,3 +181,8 @@
     border: none;
     background-color: #8dda8d;
 }
+
+.channel-icon-dimensions {
+    width: 20px;
+    height: 20px;
+}

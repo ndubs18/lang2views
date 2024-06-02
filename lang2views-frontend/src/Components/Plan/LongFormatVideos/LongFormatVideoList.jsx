@@ -32,7 +32,7 @@ function LongFormatVideoList() {
       currentNumberToProcess.value = 0;
     }
 
-    /*     const videos = [
+    const videos = [
       {
         thumbnailSrc: "./src/Images/brown.png",
         title: "A",
@@ -80,9 +80,9 @@ function LongFormatVideoList() {
       },
   ];
 
-  setPageOf50Node(videos); */
+  setPageOf50Node(videos);
 
-    fetch("http://localhost:3000/client/getVideoPage", {
+    /* fetch("http://localhost:3000/client/getVideoPage", {
       method: "POST",
       body: {
         channelId: clientId,
@@ -94,7 +94,7 @@ function LongFormatVideoList() {
       )
       .catch((err) => {
         throw new Error(err);
-      });
+      }); */
 
     if (previousButtonClicked === "true") {
       setPreviousButtonClicked("false");
