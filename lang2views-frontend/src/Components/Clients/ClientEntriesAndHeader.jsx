@@ -7,8 +7,12 @@ import ClientDeleteButtonClickProcessor from "./ClientDeleteButtonClickProcessor
 import { clientIdContext } from "./clientIdContext";
 import { channelNameContext } from "../client-settings/channelNameContext";
 import { clientNameContext } from "../client-settings/clientNameContext";
+import { Link, Navigate, redirect } from "react-router-dom";
 
 function ClientEntriesAndHeader(props) {
+
+  const [videoList, setVideoList] = useState(false);
+
   const typeOfClientData = [
     "client-photo-client-entry-data",
     "name-client-entry-data",
@@ -134,9 +138,9 @@ function ClientEntriesAndHeader(props) {
         className="client-entry-action-button btn rounded-circle client-entry-settings-button"
         id={`client-${row + 1}`}
         onClick={() => {
-          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
+          //clientIdContext.Provider = dataForCurrentClientEntry.clientId;
           //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
-          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+          //clientNameContext.Provider = dataForCurrentClientEntry.clientName;
 
           ClientSettingsButtonClickProcessor();
         }}

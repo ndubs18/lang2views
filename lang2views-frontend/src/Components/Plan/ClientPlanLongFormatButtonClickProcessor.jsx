@@ -3,8 +3,8 @@ import "../Utilities/popup.css";
 import LongFormatVideoList from "./LongFormatVideos/LongFormatVideoList";
 
 function ClientPlanLongFormatButtonClickProcessor() {
-    const popupsMenusStepAArea = document.querySelector(".popup-menus-step-area");
-    const clientSettingsPlanButtonRoot = createRoot(popupsMenusStepAArea);
+    const popupsMenusStepArea = document.querySelector(".popup-menus-step-area");
+    const clientSettingsPlanButtonRoot = createRoot(popupsMenusStepArea);
 
     clientSettingsPlanButtonRoot.render(<LongFormatVideoList />);
 }

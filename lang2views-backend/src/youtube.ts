@@ -159,7 +159,22 @@ export class YouTube {
                 quality:'highestaudio'
             })
             await ffmpeg(stream).audioBitrate(128).output(videoName+'.mp3').on('end', async () => {
-                callback();
+                // Merge video and audio using ffmpeg
+                await ffmpeg()
+                    .input(videoName + '.mp4')
+                    .input(videoName + '.mp3')
+                    .outputOptions('-c:v copy')  // Copy the video codec
+                    .outputOptions('-c:a aac')   // Ensure the audio is in AAC format
+                    .output(`${videoName}_merged.mp4`)
+                    .on('end', () => {
+                        console.log('Merging complete');
+                        callback();
+                    })
+                    .on('error', (err) => {
+                        console.error(err);
+                        callback(err);
+                    })
+                    .run();
             }).on('error', (err) => {
                 console.log(err);
                 callback(err);

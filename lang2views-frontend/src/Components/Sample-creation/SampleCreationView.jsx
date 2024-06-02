@@ -1,5 +1,3 @@
-// needs work
-
 import SampleCreationEntriesAndHeader from './SampleCreationEntriesAndHeader';
 import SampleCreationViewSearch from './SampleCreationViewSearch';
 import AccountSettingsButton from '../Utilities/AccoutSettingsButton';
@@ -15,12 +13,6 @@ function SampleCreationView(props) {
   window.history.replaceState({}, "sampleCreationView", "/sampleCreationView");
 
   const [sampleVideos, setSampleVideos] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:3000/client/getAll", {
-    method: "GET",
-  }).then((response) => response.json().then((value) => setSampleVideos(value)));
-  }, [])
 
   const headerData = [
     "NAME",

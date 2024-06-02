@@ -12,6 +12,24 @@ function Login() {
   const [loginResponse, setLoginResponse] = useState("");
   //Works just like a useState variable:
   const { userInfo, setUserInfo } = useGlobalContext();
+  const [loginButtonClicked, setLoginButtonClicked] = useState(false);
+
+  useEffect(() => {
+    if (loginButtonClicked) {
+      fetch("http://localhost:3000/user/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) =>
+      response.text().then((value) => setLoginResponse(value))
+    );
+    }
+  }, [loginButtonClicked]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
