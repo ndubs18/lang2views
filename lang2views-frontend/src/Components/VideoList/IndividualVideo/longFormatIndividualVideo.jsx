@@ -9,7 +9,7 @@ import TrashIcon from "../../../Icons/trash.svg";
 import { useState } from "react";
 import { useGlobalContext } from "../../../Context/globalContext";
 
-function LongFormatIndividualVideo({ videoNumber, videoName, thumbnailImage }) {
+function LongFormatIndividualVideo({ videoNumber, videoName, thumbnailImage, videoId, sendVideoId }) {
   const [checkbox, setCheckbox] = useState(false);
   const {
     isOrganizeVisible,
@@ -24,6 +24,7 @@ function LongFormatIndividualVideo({ videoNumber, videoName, thumbnailImage }) {
     if (isOrganizeVisible) {
       setIsOrganizeVisible(false);
     } else {
+      sendVideoId(videoId);
       setIsOrganizeVisible(true);
     }
   }

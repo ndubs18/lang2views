@@ -1,14 +1,45 @@
 import DefaultChannelIcon from "../../../Icons/profile.svg";
-import ArrowDiagonal from "../../../Icons/arrowdiagonal.svg";
 import "./Organize.css";
 import { useState } from "react";
 import { useGlobalContext } from "../../../Context/globalContext";
 
-function Organize() {
-  const [dropboxLocation, setDropboxLocation] = useState("");
-  const [scriptLink, setScriptLink] = useState("");
-  const [trelloTicket, setTrelloTicket] = useState("");
+function Organize({ channelId, channelName, video }) {
+  const [organizeData, setOrganizeData] = useState("");
   const { isOrganizeVisible, setIsOrganizeVisible } = useGlobalContext();
+    let dropboxUrl = ""
+    let scriptUrl = ""
+    let trelloUrl = ""
+    console.log("body:")
+    console.log(JSON.stringify({
+        channelId: channelId,
+        videoId: video.id,
+        lang: "es",
+    }))
+    const organizeVideo = async () => {
+        fetch("http://localhost:3000/client/organizeVideo", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                channelId: channelId,
+                videoId: video.id,
+                lang: "es",
+            }),
+        }).then((response) => {
+            response
+                .json()
+                .then((value) => setOrganizeData(value))
+                .catch((err) => {
+                    throw new Error(err);
+                })
+        });
+    }
+    console.log("organize data:")
+    console.log(organizeData)
+    dropboxUrl = organizeData.dropboxUrl;
+    scriptUrl = organizeData.scriptUrl;
+    trelloUrl = organizeData.trelloUrl;
 
   if (!isOrganizeVisible) return null;
   function toggleOrganizeModal() {
@@ -17,7 +48,7 @@ function Organize() {
     } else {
       setIsOrganizeVisible(true);
     }
-  }
+    }
 
   return (
     <div className="organize-overlay">
@@ -28,7 +59,7 @@ function Organize() {
             <p className="video-list-header"></p>
           </div>
           <div className="video-list-tabs">
-            <p className="video-name-in-organize">Video Name</p>
+            <p className="video-name-in-organize">{video.name}</p>
           </div>
           <hr />
           <div className="icon-with-channel-name-content">
@@ -39,7 +70,7 @@ function Organize() {
                 alt="Default channel icon"
               />
             </div>
-            <p className="channel-name">Channel name</p>
+            <p className="channel-name">{channelName}</p>
           </div>
           <hr />
           <div className="text-with-input-information">
@@ -47,8 +78,8 @@ function Organize() {
             <input
               className="widget-input"
               type="text"
-              placeholder={dropboxLocation}
-              value={dropboxLocation}
+              placeholder={dropboxUrl}
+              value={dropboxUrl}
             />
             <button className="arrow-diagonal">↗</button>
           </div>
@@ -57,8 +88,8 @@ function Organize() {
             <input
               className="widget-input"
               type="text"
-              placeholder={scriptLink}
-              value={scriptLink}
+              placeholder={scriptUrl}
+              value={scriptUrl}
             />
             <button className="arrow-diagonal">↗</button>
           </div>
@@ -67,12 +98,12 @@ function Organize() {
             <input
               className="widget-input"
               type="text"
-              placeholder={trelloTicket}
-              value={trelloTicket}
+              placeholder={trelloUrl}
+              value={trelloUrl}
             />
             <button className="arrow-diagonal">↗</button>
           </div>
-          <button className="organize-button">ORGANIZE</button>
+          <button onClick={organizeVideo} className="organize-button">ORGANIZE</button>
           <button onClick={toggleOrganizeModal} className="go-back-button">
             GO BACK
           </button>
