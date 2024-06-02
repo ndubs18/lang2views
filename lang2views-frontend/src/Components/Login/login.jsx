@@ -14,23 +14,6 @@ function Login() {
   const { userInfo, setUserInfo } = useGlobalContext();
   const [loginButtonClicked, setLoginButtonClicked] = useState(false);
 
-  useEffect(() => {
-    if (loginButtonClicked) {
-      fetch("http://localhost:3000/user/login", {
-      method: "POST",
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) =>
-      response.text().then((value) => setLoginResponse(value))
-    );
-    }
-  }, [loginButtonClicked]);
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === "email") {
@@ -45,15 +28,24 @@ function Login() {
     console.log(email);
     console.log(password);
 
-    setLoginButtonClicked(true);
+    fetch("http://localhost:3000/user/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) =>
+      response.text().then((value) => setLoginResponse(value))
+    );
 
-    if (
-      loginResponse != "Invalid request body: Please send email and password"
-    ) {
+    if (value !== "Invalid request body: Please send email and password") {
       const root = document.querySelector("#root");
-      const addClientHook = createRoot(root);
 
-      addClientHook.render(<ClientAndSampleCreationViews />);
+      const rootElement = createRoot(root);
+      rootElement.render(<ClientAndSampleCreationViews />);
     }
   };
 

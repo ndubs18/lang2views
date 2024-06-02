@@ -9,6 +9,8 @@ import BlackCheckbox from "../../../Icons/check_box.svg";
 import OrganizePanel from "../Organize/Organize";
 import PostProductionPanel from "../PostProduction/PostProduction";
 import UploadPanel from "../Upload/Upload";
+import LongFormatVideoListButtonClickProcessor from "./LongFormatVideoListButtonClickProcessor";
+import ShortFormatVideoListButtonClickProcessor from "../ShortFormatVideoList/ShortFormatVideoListButtonClickProcessor";
 import { GlobalContextProvider } from "../../../Context/globalContext";
 
 function LongFormatVideoList() {
@@ -75,7 +77,18 @@ function LongFormatVideoList() {
         <p className="video-list-header"></p>
       </div>
       <div className="video-list-tabs">
-      
+        <button
+            className="long-format btn btn-link bg-white fs-2 text-decoration-none rounded-0"
+            onClick={LongFormatVideoListButtonClickProcessor}
+        >
+            Long Format
+        </button>
+        <button
+            className="short-format btn btn-link bg-white fs-2 text-decoration-none rounded-0"
+            onClick={ShortFormatVideoListButtonClickProcessor}
+        >
+            Short
+        </button>
       </div>
       <hr />
       <div className="icon-with-channel-name-content">

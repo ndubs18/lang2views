@@ -22,10 +22,14 @@ function App() {
             element={<LongFormatVideoList />}
           />
         <Route
-            path="/clients"
-            element={<ClientsView />}
+          path="/add"
+          element={<ClientAndSampleCreationViews />}
         />
-        </Routes>
+        <Route
+          path="/clientsView"
+          element={<ClientAndSampleCreationViews />}
+        />
+      </Routes>
     </>
   );
 }
