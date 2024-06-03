@@ -2,7 +2,7 @@ import { useState } from "react";
 import CloseClientPlanPopup from "./CloseClientPlanPopup";
 import "./clientPlan.css";
 import ClientPlanHeader from "./ClientPlanHeader";
-import ClientPlanVideoList from "./LongFormatVideos/ClientPlanVideoList";
+import ClientPlanVideoList from "./ClientPlanVideoList";
 import channelIcon from "../../Icons/profile.svg";
 
 function ClientPlan({ channelId, channelName }) {

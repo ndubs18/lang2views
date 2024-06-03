@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Video from "./Video";
 import Save from "./Buttons/StepSave";
-import "../clientPlan.css";
+import "./clientPlan.css";
 import {
   sortDurationMostToLeast,
   sortViewsMostToLeast,
   sortViewsPerMinuteMostToLeast,
-} from "../../Utilities/sortAscending";
+} from "../Utilities/sortAscending";
 import storeSelectedVideos from "./Buttons/StoreSelectedVideos";
 
 const ACTIVE_BUTTON_CLASS = "filter-button-active";

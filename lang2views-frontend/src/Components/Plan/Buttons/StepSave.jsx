@@ -1,4 +1,4 @@
-import "../../save.css";
+import "../save.css";
 import storeSelectedVideos from "./StoreSelectedVideos";
 
 
@@ -12,13 +12,6 @@ function StepSave({ channelId }) {
             currentVideosForProcessingContainer.textContent
         );
         for (let i = 0; i < currentVideosForProcessing.length; ++i) {
-            console.log("wtf")
-            console.log(currentVideosForProcessing[i])
-            console.log("body")
-            console.log(JSON.stringify({
-                channelId: channelId,
-                video: currentVideosForProcessing[i]
-            }))
             fetch("http://localhost:3000/client/addVideo", {
                 method: "POST",
                 headers: {
@@ -29,7 +22,10 @@ function StepSave({ channelId }) {
                     video: currentVideosForProcessing[i]
                 }),
             }).then((response) => {
-                console.log(response)
+                response
+                    .json()
+                    .then((value) => console.log(value))
+                    .catch((error) => console.error(error))
             });
         }
     }
