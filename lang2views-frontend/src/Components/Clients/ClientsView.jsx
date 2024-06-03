@@ -14,7 +14,7 @@ function ClientsView(props) {
 
   const [clientList, setClientList] = useState([]);
 
-   useEffect(() => {
+   /*useEffect(() => {
     fetch("http://localhost:3000/client/getAll", {
       method: "GET",
     }).then((response) =>
@@ -25,9 +25,7 @@ function ClientsView(props) {
           throw new Error(err);
         })
     );
-  }, []);
-
-  console.log(clientList)
+  }, []);*/
 
   const headerData = [
     "",
@@ -40,7 +38,7 @@ function ClientsView(props) {
     "",
     "",
   ];
-   /* const dataForTableBodyRow1 = {
+   const dataForTableBodyRow1 = {
     clientId: "12cd7",
     clientYoutubePictureLink: "src/Images/brown.png",
     clientName: "B",
@@ -70,7 +68,7 @@ function ClientsView(props) {
     dataForTableBodyRow2,
     dataForTableBodyRow2,
     dataForTableBodyRow2,
-  ]; */
+  ];
 
   const accountPictureLink = "src/Images/brown.png";
 
@@ -104,7 +102,7 @@ function ClientsView(props) {
         </div>
         <ClientEntriesAndHeader
           headerData={headerData}
-          clientEntries={clientList}
+          clientEntries={clientEntries}
         />
       </div>
       <div className="popup-and-close-area-container"></div>

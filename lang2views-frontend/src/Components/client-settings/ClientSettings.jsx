@@ -26,7 +26,7 @@ function ClientSettings() {
       ></div>
       <div className="client-settings-popup">
         <div id="client-settings-header" className="ms-4">
-          <ClientSettingsHeader clientName={clientNameContext.Provider} />
+          <ClientSettingsHeader clientName={""} />
         </div>
         <div className="client-settings-button-section">
           <button

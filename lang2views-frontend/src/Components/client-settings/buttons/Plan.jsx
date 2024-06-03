@@ -7,19 +7,27 @@ import "../clientSettings.css";
 import Save from "./PlanStepSave";
 import { useState, createContext, useEffect } from "react";
 import { UseMonthlyPlanContext } from "./UseMonthlyPlanContext";
+import TrelloListId from "./trelloListId";
 
 function Plan() {
   const [plan, setPlan] = useState({});
 
-  useEffect(() => {
+  /* useEffect(() => {
     fetch("http://localhost:3000/client/updateSettings", {
     method: "GET",
   }).then((response) => response.json().then((value) => setPlan(value)));
-  }, [])
+  }, []) */
+
+  plan.monthlyPlanInput = true;
+  plan.numLongFormatInput = 1;
+  plan.numShortsInput = 1;
+  plan.levelOfPostProcessing = 2;
+  plan.trelloListId = 1;
+  plan.estimatedPriceInput = 2;
 
   return (
     <div>
-      <UseMonthlyPlanContext.Provider value={value.monthlyPlanInput}>
+      <UseMonthlyPlanContext.Provider value={plan.monthlyPlanInput}>
         <MonthlyPlanTogglesWithLabel />
       </UseMonthlyPlanContext.Provider>
       <div id="num-long-formats-and-shorts-container" className="ms-5 mb-5">
@@ -27,6 +35,7 @@ function Plan() {
         <NumShortsInput props={plan.numShortsInput}/>
       </div>
       <ProcessingAmountSlider props={plan.levelOfPostProcessing}/>
+      <TrelloListId props={plan.trelloListId}/>
       <EstimatedPriceInput props={plan.estimatedPriceInput}/>
       <div className="horizontal-line"></div>
       <Save />
