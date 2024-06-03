@@ -2,6 +2,7 @@ import ClientEntriesAndHeader from "./ClientEntriesAndHeader";
 import ClientsViewSearch from "./ClientsViewSearch";
 import AccountSettingsButton from "../Utilities/AccoutSettingsButton";
 import AddClientButton from "./AddClientButton";
+import DropboxAuthButton from "../Utilities/DropboxAuthButton"
 import "./clientsViewHeader.css";
 import "./clientsViewSearchAndAddButton.css";
 import "./otherClientsViewFunctionality.css";
@@ -82,7 +83,7 @@ function ClientsView(props) {
       accountNameText: props.currentUser,
       accountPictureLink: accountPictureLink,
     }
-  );
+    );
 
   return (
     <div id="clients-view">
@@ -98,6 +99,7 @@ function ClientsView(props) {
       <div id="clients-view-functionality-container">
         <div id="client-search-and-add-client-button">
           <ClientsViewSearch />
+          <DropboxAuthButton />
           <AddClientButton />
         </div>
         <ClientEntriesAndHeader

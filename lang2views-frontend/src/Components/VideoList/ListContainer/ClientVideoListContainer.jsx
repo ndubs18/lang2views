@@ -10,6 +10,7 @@ import OrganizePanel from "../Organize/Organize";
 import PostProductionPanel from "../PostProduction/PostProduction";
 import UploadPanel from "../Upload/Upload";
 import { GlobalContextProvider } from "../../../Context/globalContext";
+import DropboxAuthButton from "../../Utilities/DropboxAuthButton";
 
 function ClientVideoListContainer({initialFormat}) {
     const [checkbox, setCheckbox] = useState(false);
@@ -145,6 +146,7 @@ function ClientVideoListContainer({initialFormat}) {
         >
             Short
         </button>
+        <DropboxAuthButton />
       </div>
       <hr />
       <div className="icon-with-channel-name-content">
