@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Video from "./Video";
 import Save from "./Buttons/LongFormatStepSave";
 import "../clientPlan.css";
@@ -7,8 +7,7 @@ import {
   sortViewsMostToLeast,
   sortViewsPerMinuteMostToLeast,
 } from "../../Utilities/sortAscending";
-import handlePreviousPageButtonClicked from "./Buttons/PreviousPageButtonClicked";
-import handleNextPageButtonClicked from "./Buttons/NextPageButtonClicked";
+import storeSelectedVideos from "./Buttons/StoreSelectedVideos";
 
 const ACTIVE_BUTTON_CLASS = "filter-button-active";
 const INACTIVE_BUTTON_CLASS = "filter-button-inactive";
@@ -169,7 +168,7 @@ function ClientPlanVideoList({ channelId, format }) {
           className="btn btn-primary"
           onClick={() => {
             setPreviousButtonClicked("true");
-            handlePreviousPageButtonClicked();
+            storeSelectedVideos();
             //setPageToken(pageOf50Node.prevPageToken);
           }}
         >
@@ -179,7 +178,7 @@ function ClientPlanVideoList({ channelId, format }) {
           className="btn btn-primary"
           onClick={() => {
             setNextButtonClicked("true");
-            handleNextPageButtonClicked();
+            storeSelectedVideos();
             //setPageToken(pageOf50Node.nextPageToken);
           }}
         >
