@@ -10,6 +10,7 @@ function EstimatedPriceInput(props) {
         id="estimated-price-input"
         placeholder="$"
         defaultValue={props.estimatedPriceInput}
+        type="number"
       ></input>
     </div>
   );
