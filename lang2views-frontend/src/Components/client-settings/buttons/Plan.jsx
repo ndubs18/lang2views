@@ -1,7 +1,6 @@
 import EstimatedPriceInput from "./EstimatedPrice";
 import MonthlyPlanTogglesWithLabel from "./MonthlyPlanTogglesWithLabel";
-import NumLongFormatInput from "./NumLongFormatInput";
-import NumShortsInput from "./NumShortsInput";
+import NumFormatInput from "./NumFormatInput";
 import ProcessingAmountSlider from "./ProcessingAmountSlider";
 import "../clientSettings.css";
 import Save from "./PlanStepSave";
@@ -34,8 +33,8 @@ function Plan() {
         <MonthlyPlanTogglesWithLabel />
       </UseMonthlyPlanContext.Provider>
       <div id="num-long-formats-and-shorts-container" className="ms-5 mb-5">
-        <NumLongFormatInput numLongFormatInput={plan.numLongFormatInput}/>
-        <NumShortsInput numShortsInput={plan.numShortsInput}/>
+        <NumFormatInput format={"long"} value={plan.numLongFormatInput}/>
+        <NumFormatInput format={"short"} value={plan.numShortsInput}/>
       </div>
       <ProcessingAmountSlider levelOfPostProcessing={plan.levelOfPostProcessing}/>
       <TrelloListId trelloListId={plan.trelloListId}/>
