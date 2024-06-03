@@ -1,21 +1,14 @@
 import "../videos.css"
+
 function handleSelectButton(event) {
     const currentVideoSelectButton = document.querySelector(`#${event.target.id}`);
-
     if (currentVideoSelectButton.textContent === "") {
         const currentNumber = document.querySelector("#current-number-to-process");
 
         currentNumber.value = Number.parseInt(currentNumber.value) + 1;
-
-        const buttonsWithSameIdAsCurrent = document.querySelectorAll(`#${event.target.id}`);
-
-        buttonsWithSameIdAsCurrent[0].textContent = currentNumber.value;
-        buttonsWithSameIdAsCurrent[1].textContent = currentNumber.value;
-        buttonsWithSameIdAsCurrent[2].textContent = currentNumber.value;
-        buttonsWithSameIdAsCurrent[3].textContent = currentNumber.value;
     }
     else {
-        const allVideosButtons = document.querySelectorAll(".long-format-video-select-button");
+        const allVideosButtons = document.querySelectorAll(".video-select-button");
 
         const currentNumber = document.querySelector("#current-number-to-process");
 
@@ -52,7 +45,7 @@ function Video({ format, video }) {
     return (
         <div className={`d-flex flex-column video-container ${format}-seperation ${format=="short" ? "short-container" : ""}`}>
             <div style={{ width: "100%", height: "100%", backgroundImage: `url(${thumbnailSrc})`}}>
-                <button className={`rounded rounded-circle ${format}-select-button`} onClick={handleSelectButton} id={videoId} disabled={finalized}></button>
+                <button className={`rounded rounded-circle ${format}-select-button video-select-button`} onClick={handleSelectButton} id={videoId} disabled={finalized}></button>
                 <div id={videoId + "-thumbnail"}>{thumbnailSrc}</div>
             </div>
             <p>{videoName}</p>

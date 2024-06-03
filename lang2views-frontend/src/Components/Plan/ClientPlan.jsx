@@ -46,7 +46,7 @@ function ClientPlan({ channelId, channelName }) {
       ></div>
       <div className="client-plan-popup">
         <div id="client-plan-header" className="ms-4">
-          <ClientPlanHeader clientName={clientNameContext.Provider} />
+                  <ClientPlanHeader clientName={channelName} />
         </div>
         <div className="client-plan-button-section">
           <button
