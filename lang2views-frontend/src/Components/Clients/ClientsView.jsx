@@ -27,8 +27,6 @@ function ClientsView(props) {
     );
   }, []);
 
-  console.log(clientList)
-
   const headerData = [
     "",
     "NAME",
@@ -40,7 +38,7 @@ function ClientsView(props) {
     "",
     "",
   ];
-   /* const dataForTableBodyRow1 = {
+   /*const dataForTableBodyRow1 = {
     clientId: "12cd7",
     clientYoutubePictureLink: "src/Images/brown.png",
     clientName: "B",
@@ -70,7 +68,7 @@ function ClientsView(props) {
     dataForTableBodyRow2,
     dataForTableBodyRow2,
     dataForTableBodyRow2,
-  ]; */
+  ];*/
 
   const accountPictureLink = "src/Images/brown.png";
 

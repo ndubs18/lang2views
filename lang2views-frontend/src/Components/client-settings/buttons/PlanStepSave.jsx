@@ -1,9 +1,8 @@
 import { useContext } from "react";
 import { clientIdContext } from "../../Clients/clientIdContext";
-import { currentClientSettingsContext } from "../currentClientSettings";
 import "./save.css";
 
-function handleSubmit() {
+function handleSubmit(clientId, plan) {
   let sliderValue = "no processing";
 
   const monthlyPlan = document.querySelector(".monthly-plan-section-value");
@@ -11,14 +10,11 @@ function handleSubmit() {
   const numShortsInput = document.querySelector("#num-shorts-input");
   const slider = document.querySelector(".slider");
   const estimatedPriceInput = document.querySelector("#estimated-price-input");
+  const trelloListIdInput = document.querySelector("#trello-list-id-input");
 
   let monthlyPlanInput = monthlyPlan.textContent;
 
   if (monthlyPlan.textContent === "") monthlyPlanInput = "enable monthly plan";
-
-  console.log(monthlyPlanInput);
-  console.log(numLongFormatInput.value);
-  console.log(numShortsInput.value);
 
   if (slider.value === "1") {
     sliderValue = "no processing";
@@ -28,26 +24,19 @@ function handleSubmit() {
     sliderValue = "high processing";
   }
 
-  console.log(sliderValue);
-  console.log(estimatedPriceInput.value);
-
-  const currentClientSettings = useContext(currentClientSettingsContext);
-
   const updatedClientSettings = {
     monthlyPlanInput: monthlyPlanInput,
-    numLongFormatInput: numLongFormatInput,
-    numShortsInput: numShortsInput,
+    numLongFormatInput: numLongFormatInput.value,
+    numShortsInput: numShortsInput.value,
     levelOfPostProcessing: sliderValue,
-    estimatedPriceInput: estimatedPriceInput,
-    tags: currentClientSettingsContext.tags,
-    youtubeAccessSectionValue: currentClientSettings.youtubeAccessSectionValue,
-    useSameDescriptionSectionValue:
-      currentClientSettings.useSameDescriptionSectionValue,
-    useSameTagsSectionValue: currentClientSettings.useSameTagsSectionValue,
-    description: currentClientSettings.description,
+    estimatedPriceInput: estimatedPriceInput.value,
+    tags: plan.tags,
+    youtubeAccessSectionValue: plan.youtubeAccessSectionValue,
+    useSameDescriptionSectionValue: plan.useSameDescriptionSectionValue,
+    useSameTagsSectionValue: plan.useSameTagsSectionValue,
+    description: plan.description,
+    trelloListId: trelloListIdInput.value,
   };
-
-  const clientId = useContext(clientIdContext);
 
   fetch("http://localhost:3000/client/updateSettings", {
     method: "POST",
@@ -60,9 +49,15 @@ function handleSubmit() {
     .then((value) => console.log(value));
 }
 
-function Save() {
+function Save(props) {
   return (
-    <button id="save" className="btn btn-primary" onClick={handleSubmit}>
+    <button
+      id="save"
+      className="btn btn-primary"
+      onClick={() => {
+        handleSubmit(props.clientId, props.plan);
+      }}
+    >
       Save
     </button>
   );

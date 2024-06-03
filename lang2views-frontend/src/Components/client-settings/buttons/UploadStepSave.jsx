@@ -3,7 +3,7 @@ import { currentClientSettingsContext } from "../currentClientSettings";
 import "./save.css";
 import { clientIdContext } from "../../Clients/clientIdContext";
 
-function handleSubmit() {
+function handleSubmit(clientId, currentClientSettings) {
   const youtubeAccessSectionValueContainer = document.querySelector(
     ".grant-youtube-access-section-value"
   );
@@ -30,14 +30,6 @@ function handleSubmit() {
   if (useSameTagsSectionValueContainer.textContent === "")
     useSameTagsSectionValue = "do not use same tags";
 
-  console.log(youtubeAccessSectionValue);
-  console.log(useSameDescriptionSectionValue);
-  console.log(useSameTagsSectionValue);
-  console.log(description.value);
-  console.log(tags.value);
-
-  const currentClientSettings = useContext(currentClientSettingsContext);
-
   const updatedClientSettings = {
     monthlyPlanInput: currentClientSettings.monthlyPlanInput,
     numLongFormatInput: currentClientSettings.numLongFormatInput,
@@ -49,11 +41,8 @@ function handleSubmit() {
     useSameDescriptionSectionValue: useSameDescriptionSectionValue,
     useSameTagsSectionValue: useSameTagsSectionValue,
     description: description.value,
+    trelloListId: currentClientSettings.trelloListId,
   };
-
-  const clientId = useContext(clientIdContext);
-
-  console.log(clientId);
 
   fetch("http://localhost:3000/client/updateSettings", {
     method: "POST",
@@ -66,9 +55,15 @@ function handleSubmit() {
     .then((value) => console.log(value));
 }
 
-function Save() {
+function Save(props) {
   return (
-    <button id="save" className="btn btn-primary" onClick={handleSubmit}>
+    <button
+      id="save"
+      className="btn btn-primary"
+      onClick={() => {
+        handleSubmit(props.clientId, props.currentClientSettings);
+      }}
+    >
       Save
     </button>
   );
