@@ -10,6 +10,7 @@ import fs from 'fs';
 import { DropboxConnection } from './dropboxConnection.js'
 import { GoogleDocs } from './googledoc.js'
 import dotenv from 'dotenv'
+import {spawn} from 'child_process'
 
 dotenv.config();
 
@@ -350,6 +351,7 @@ app.post('/client/organizeVideo', async (req,res) => {
 
             let filePath = await clients.getClientVideoPath(channelId, videoId) + '.mp3';
             let video = await clients.getClientVideo(channelId, videoId);
+            let outputFilePath = `./clients/${channelId}/${video.id}/`;
             console.log("Starting video download.")
             await clients.downloadClientVideo(channelId, videoId);
             console.log("Video downloaded.");
@@ -365,6 +367,49 @@ app.post('/client/organizeVideo', async (req,res) => {
             const videoContentFilePath = `./clients/${channelId}/${video.id}`;
             await fs.writeFileSync(videoContentFilePath + '/transcription.txt', transcriptions.join('\n'));
             await fs.writeFileSync(videoContentFilePath + '/translation.txt', translation.join('\n'));
+
+            // Python process to remove vocals
+            try{
+
+                // Function to properly escape special characters in file paths
+                const escapePath = (filePath) => {
+                    // Escape spaces and pipes
+                    return filePath.replace(/ /g, '\\ ').replace(/\|/g, '\\|');
+                };
+
+                const escapedFilePath = escapePath(filePath);
+                const escapedOutputFilePath = escapePath(outputFilePath);
+
+                const pythonProcess = spawn('~/.pyenv/versions/spleeter-env/bin/python', ['./src/remove_vocals.py', escapedFilePath, escapedOutputFilePath], {shell:true});
+
+                pythonProcess.stdout.on('data', (data) => {
+                    console.log(`stdout: ${data}`);
+                });
+            
+                pythonProcess.stderr.on('data', (data) => {
+                    console.error(`stderr: ${data}`);
+                });
+            
+                await pythonProcess.on('close', (code) => {
+                    if (code === 0) {
+                        // res.download(outputFilePath, 'no_vocals.wav', (err) => {
+                        //     if (err) {
+                        //         console.error(err);
+                        //     }
+                        //     // Clean up files
+                        //     // fs.unlinkSync(filePath);
+                        //     // fs.unlinkSync(outputFilePath);
+                        // });
+                        console.log(res);
+                    } else {
+                        res.status(500).send('Error processing file');
+                    }
+                });
+
+            } catch(err) {
+                console.log(err);
+            }
+            // Python process finish
 
             const docs = new GoogleDocs();
             docs.writeToGoogleDoc(video.documentId, translation.join('\n'));
