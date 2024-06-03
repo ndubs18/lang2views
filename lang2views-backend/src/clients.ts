@@ -11,7 +11,7 @@ export interface ClientSettings {
     monthlyPlanInput: null | boolean,
     numLongFormatInput: null | number,
     numShortsInput: null | number,
-    levelOfPostProcessing: null | string,
+    levelOfPostProcessing: null | number,
     estimatedPriceInput: null | string,
     trelloListId: null | string,
 }
