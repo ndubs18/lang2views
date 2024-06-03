@@ -4,12 +4,12 @@ import LogoutButton from "./LogoutButton";
 import SampleCreationViewButton from "./SampleCreationViewButton";
 import './sidebar.css';
 
-function Sidebar() {
+function Sidebar(props) {
   return (
     <div id="sidebar" className="d-flex flex-column">
       <AppLogo />
-      <ClientsViewButton />
-      <SampleCreationViewButton />
+          <ClientsViewButton default={props.default} />
+          <SampleCreationViewButton default={props.default} />
       <LogoutButton />
     </div>
   );
