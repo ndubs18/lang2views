@@ -166,6 +166,9 @@ export class Clients {
                 if(!fs.existsSync('clients/'+client.channelId)){
                     fs.mkdirSync('clients/'+client.channelId);
                 }
+                if (!fs.existsSync('clients/' + client.channelId)) {
+                    fs.mkdirSync('clients/' + client.channelId + '/videos.json');
+                }
                 let videoNumber = 0;
                 if(client.videos == null){
                     client.videos = new Videos('clients/'+client.channelId+'/videos.json');
