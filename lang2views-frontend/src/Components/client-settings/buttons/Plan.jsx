@@ -4,28 +4,18 @@ import NumFormatInput from "./NumFormatInput";
 import ProcessingAmountSlider from "./ProcessingAmountSlider";
 import "../clientSettings.css";
 import Save from "./PlanStepSave";
-import { useState, createContext, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { UseMonthlyPlanContext } from "./UseMonthlyPlanContext";
 import TrelloListId from "./trelloListId";
-import { clientIdContext } from "../../Clients/clientIdContext";
-import { channelIdContext } from "../../Clients/channelIdContext";
 
-function Plan() {
+function Plan({ channelId }) {
   const [plan, setPlan] = useState({});
   
   useEffect(() => {
-    fetch("http://localhost:3000/client/getSettings?channelId=" + channelIdContext.Provider, {
+    fetch("http://localhost:3000/client/getSettings?channelId=" + channelId, {
     method: "GET",
   }).then((response) => response.json().then((value) => setPlan(value)));
   }, [])
-
-  /*plan.monthlyPlanInput = true;
-  plan.numLongFormatInput = 1;
-  plan.numShortsInput = 1;
-  plan.levelOfPostProcessing = 2;
-  plan.trelloListId = 1;
-  plan.estimatedPriceInput = 2;
-  */
 
   return (
     <div>
@@ -40,7 +30,7 @@ function Plan() {
       <TrelloListId trelloListId={plan.trelloListId}/>
       <EstimatedPriceInput estimatedPriceInput={plan.estimatedPriceInput}/>
       <div className="horizontal-line"></div>
-      <Save clientId={clientIdContext.Provider} plan={plan}/>
+      <Save channelId={channelId} plan={plan}/>
     </div>
   );
 }

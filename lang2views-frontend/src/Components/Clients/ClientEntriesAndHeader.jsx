@@ -135,12 +135,7 @@ function ClientEntriesAndHeader(props) {
         className="client-entry-action-button btn rounded-circle client-entry-settings-button"
         id={`client-${row + 1}`}
         onClick={() => {
-          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
-          channelNameContext.Provider = dataForCurrentClientEntry.channelName;
-          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
-          channelIdContext.Provider = dataForCurrentClientEntry.channelId;
-
-            ClientSettingsButtonClickProcessor();
+            ClientSettingsButtonClickProcessor(dataForCurrentClientEntry.channelId, dataForCurrentClientEntry.channelName);
         }}
         title="Settings"
       >
