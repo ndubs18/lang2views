@@ -126,13 +126,15 @@ function ClientPlanVideoList({ channelId, format }) {
     <>
       <div className="d-flex flex-row ms-5 mb-5 filter-buttons-container">
         <p className="align-middle fs-4 mt-2 me-4">Filters:</p>
-        <button
-          id={"duration-button"}
-          className={durationFilterActive + " btn"}
-          onClick={handleDurationClick}
-        >
-          Duration
-        </button>
+        {(format == "long") ? (
+            <button
+              id={"duration-button"}
+              className={durationFilterActive + " btn"}
+              onClick={handleDurationClick}
+            >
+              Duration
+            </button>
+          ) : null}
         <button
           id={"views-button"}
           className={viewsFilterActive + " btn"}
@@ -140,20 +142,24 @@ function ClientPlanVideoList({ channelId, format }) {
         >
           Views
         </button>
-        <button
-          id={"views-per-min-button"}
-          className={viewsPerMinuteFilterActive + " btn"}
-          onClick={handleViewsPerMinClick}
-        >
-          Views per minute
-        </button>
+        {(format == "long") ? (
+            <button
+              id={"views-per-min-button"}
+              className={viewsPerMinuteFilterActive + " btn"}
+              onClick={handleViewsPerMinClick}
+            >
+              Views per minute
+            </button>
+          ) : null}
       </div>
+          {(format == "long") ? (
+              <div id="sorted-by-duration" style={{ display: "none" }} className="scrollable-video-list">{videosByDuration}</div>
+              /*<div id="sorted-by-views-per-min" style={{ display: "none" }} className="scrollable-video-list">{videosByViewsPerMin}</div>*/
+          ) : null}
         {/*
         TODO : uncomment once videos can return views
         <div id="sorted-by-views" style={{ display: "none" }} className="scrollable-video-list">{videosByViews}</div>
-        <div id="sorted-by-views-per-min" style={{ display: "none" }} className="scrollable-video-list">{videosByViewsPerMin}</div>
         */}
-        <div id="sorted-by-duration" style={{ display: "none" }} className="scrollable-video-list">{videosByDuration}</div>
         <div id="sorted-by-unsorted" className="scrollable-video-list">{videosUnsorted}</div>
       <div
         className="d-flex flex-row justify-content-center"

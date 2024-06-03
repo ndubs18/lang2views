@@ -1,7 +1,7 @@
 import "./ClientVideoListContainer.css";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import LongFormatIndividualVideo from "../IndividualVideo/IndividualVideo";
+import IndividualVideo from "../IndividualVideo/IndividualVideo";
 import DefaultChannelIcon from "../../../Icons/profile.svg";
 import SearchIcon from "../../../Icons/search.svg";
 import BlankCheckbox from "../../../Icons/blank_check_box.svg";
@@ -59,7 +59,7 @@ function ClientVideoListContainer({initialFormat}) {
     let individualLongVideos = [];
 
     videoList.forEach((video) => {
-        let newVideo = <LongFormatIndividualVideo
+        let newVideo = <IndividualVideo
             key={video.id}
             videoNumber={video.number}
             videoName={video.name}
