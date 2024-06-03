@@ -6,6 +6,8 @@ function handleSelectButton(event) {
         const currentNumber = document.querySelector("#current-number-to-process");
 
         currentNumber.value = Number.parseInt(currentNumber.value) + 1;
+        const buttonsWithSameIdAsCurrent = document.querySelectorAll(`#${event.target.id}`);
+        buttonsWithSameIdAsCurrent.forEach((button) => button.textContent = currentNumber.value) 
     }
     else {
         const allVideosButtons = document.querySelectorAll(".video-select-button");
