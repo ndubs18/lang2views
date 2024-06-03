@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Video from "./Video";
-import Save from "./Buttons/LongFormatStepSave";
+import Save from "./Buttons/StepSave";
 import "../clientPlan.css";
 import {
   sortDurationMostToLeast,
@@ -192,7 +192,7 @@ function ClientPlanVideoList({ channelId, format }) {
         type="number"
         value={currentNumberToProcess ? currentNumberToProcess.value : 0}
       />
-      <Save />
+          <Save channelId={channelId} />
     </>
   );
 }
