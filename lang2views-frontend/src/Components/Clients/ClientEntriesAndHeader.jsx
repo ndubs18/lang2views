@@ -4,6 +4,8 @@ import ClientSettingsButtonClickProcessor from "./ClientSettingsButtonClickProce
 import ClientDeleteButtonClickProcessor from "./ClientDeleteButtonClickProcessor";
 import { clientIdContext } from "./clientIdContext";
 import { clientNameContext } from "../client-settings/clientNameContext";
+import { channelNameContext } from "../client-settings/channelNameContext";
+import { channelIdContext } from "./channelIdContext";
 
 function ClientEntriesAndHeader(props) {
 
@@ -133,11 +135,12 @@ function ClientEntriesAndHeader(props) {
         className="client-entry-action-button btn rounded-circle client-entry-settings-button"
         id={`client-${row + 1}`}
         onClick={() => {
-          //clientIdContext.Provider = dataForCurrentClientEntry.clientId;
-          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
-          //clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
+          channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+          channelIdContext.Provider = dataForCurrentClientEntry.channelId;
 
-          ClientSettingsButtonClickProcessor();
+            ClientSettingsButtonClickProcessor();
         }}
         title="Settings"
       >
@@ -159,8 +162,9 @@ function ClientEntriesAndHeader(props) {
         id={`client-${row + 1}`}
         onClick={() => {
           clientIdContext.Provider = dataForCurrentClientEntry.clientId;
-          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+          channelNameContext.Provider = dataForCurrentClientEntry.channelName;
           clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+          channelIdContext.Provider = dataForCurrentClientEntry.channelId;
 
           ClientPlanButtonClickProcessor();
         }}
@@ -204,8 +208,9 @@ function ClientEntriesAndHeader(props) {
         id={`client-${row + 1}`}
         onClick={() => {
           clientIdContext.Provider = dataForCurrentClientEntry.clientId;
-          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+          channelNameContext.Provider = dataForCurrentClientEntry.channelName;
           clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+          channelIdContext.Provider = dataForCurrentClientEntry.channelId;
 
           ClientDeleteButtonClickProcessor();
         }}

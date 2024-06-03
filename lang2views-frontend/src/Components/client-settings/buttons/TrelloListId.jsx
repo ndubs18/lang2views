@@ -8,7 +8,7 @@ function TrelloListId(props) {
       <input
         className="form-control form-control-lg"
         id="trello-list-id-input"
-        placeholder={props.trelloListId}
+        defaultValue={props.trelloListId}
       ></input>
     </div>
   );

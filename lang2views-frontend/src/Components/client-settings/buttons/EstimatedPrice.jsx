@@ -8,8 +8,8 @@ function EstimatedPriceInput(props) {
       <input
         className="form-control form-control-lg"
         id="estimated-price-input"
-        readOnly=""
-        placeholder={"$" + props.estimatedPriceInput}
+        placeholder="$"
+        defaultValue={props.estimatedPriceInput}
       ></input>
     </div>
   );

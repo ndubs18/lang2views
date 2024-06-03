@@ -28,7 +28,7 @@ function Login() {
     console.log(email);
     console.log(password);
 
-/*     fetch("http://localhost:3000/user/login", {
+     fetch("http://localhost:3000/user/login", {
       method: "POST",
       body: JSON.stringify({
         email: email,
@@ -39,7 +39,7 @@ function Login() {
       },
     }).then((response) =>
       response.text().then((value) => setLoginResponse(value))
-    ); */
+    );
 
     if (loginResponse !== "Invalid request body: Please send email and password") {
       const root = document.querySelector("#root");
