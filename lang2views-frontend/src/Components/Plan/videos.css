@@ -1,8 +1,8 @@
-.video-seperation {
+.long-seperation {
     margin-left: 5em;
 }
 
-.shorts-seperation {
+.short-seperation {
     margin-left: 2em;
 }
 
@@ -11,7 +11,7 @@
     height: 20em;
 }
 
-.long-format-video-select-button {
+.long-select-button {
     width: 10%;
     height: 10%;
     margin-left: 90%;
