@@ -147,6 +147,7 @@ export class Clients {
             if(client.channelId == channelId){
                 match = true;
                 client.clientSettings = settings;
+                break;
             }
         }
         if(!match){
