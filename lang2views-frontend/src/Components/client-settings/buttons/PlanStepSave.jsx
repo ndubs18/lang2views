@@ -1,34 +1,20 @@
-import { useContext } from "react";
-import { clientIdContext } from "../../Clients/clientIdContext";
 import "./save.css";
 
-function handleSubmit(clientId, plan) {
-  let sliderValue = "no processing";
-
+function handleSubmit(channelId, plan) {
   const monthlyPlan = document.querySelector(".monthly-plan-section-value");
   const numLongFormatInput = document.querySelector("#num-long-format-input");
-  const numShortsInput = document.querySelector("#num-shorts-input");
-  const slider = document.querySelector(".slider");
+  const numShortsInput = document.querySelector("#num-short-format-input");
+  const sliderInput = document.querySelector(".slider");
   const estimatedPriceInput = document.querySelector("#estimated-price-input");
   const trelloListIdInput = document.querySelector("#trello-list-id-input");
 
-  let monthlyPlanInput = monthlyPlan.textContent;
-
-  if (monthlyPlan.textContent === "") monthlyPlanInput = "enable monthly plan";
-
-  if (slider.value === "1") {
-    sliderValue = "no processing";
-  } else if (slider.value === "2") {
-    sliderValue = "medium processing";
-  } else if (slider.value === "3") {
-    sliderValue = "high processing";
-  }
+  let monthlyPlanInput = monthlyPlan.textContent === "true" ? true : false;
 
   const updatedClientSettings = {
     monthlyPlanInput: monthlyPlanInput,
     numLongFormatInput: numLongFormatInput.value,
     numShortsInput: numShortsInput.value,
-    levelOfPostProcessing: sliderValue,
+    levelOfPostProcessing: sliderInput.value,
     estimatedPriceInput: estimatedPriceInput.value,
     tags: plan.tags,
     youtubeAccessSectionValue: plan.youtubeAccessSectionValue,
@@ -36,26 +22,29 @@ function handleSubmit(clientId, plan) {
     useSameTagsSectionValue: plan.useSameTagsSectionValue,
     description: plan.description,
     trelloListId: trelloListIdInput.value,
-  };
-
-  fetch("http://localhost:3000/client/updateSettings", {
-    method: "POST",
-    body: {
-      settings: updatedClientSettings,
-      clientId: clientId,
-    },
-  })
+    };
+ 
+    fetch("http://localhost:3000/client/updateSettings", {
+        method: "POST",
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        settings: updatedClientSettings,
+        channelId: channelId,
+        }),
+    })
     .then((response) => response.json())
     .then((value) => console.log(value));
 }
 
-function Save(props) {
+function Save({ channelId, plan }) {
   return (
     <button
       id="save"
       className="btn btn-primary"
       onClick={() => {
-        handleSubmit(props.clientId, props.plan);
+          handleSubmit(channelId, plan);
       }}
     >
       Save

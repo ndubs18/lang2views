@@ -148,7 +148,7 @@ app.get("/client/getSettings", (req, res) => {
 
 // WIP
 // API to update client settings from client settings page
-app.post('/client/updateSettings', (req, res) => {
+app.post('/client/updateSettings', async (req, res) => {
     /*
     export interface ClientSettings {
     youtubeAccessSectionValue: null | string,
@@ -167,9 +167,12 @@ app.post('/client/updateSettings', (req, res) => {
 
     if (settings && channelId) {
         let clients = new Clients(clientFile);
-        clients.updateClientSettings(channelId, settings)
+        let result = clients.updateClientSettings(channelId, settings)
+        res.send({ message: result })
+        console.log(result)
+        await clients.writeClientsToFile();
     } else {
-        res.send('Invalid request body. Please send client settings and channelId');
+        res.send({ message: 'Invalid request body. Please send client settings and channelId' });
     }
 });
 

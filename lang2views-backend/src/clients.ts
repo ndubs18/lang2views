@@ -11,7 +11,7 @@ export interface ClientSettings {
     monthlyPlanInput: null | boolean,
     numLongFormatInput: null | number,
     numShortsInput: null | number,
-    levelOfPostProcessing: null | string,
+    levelOfPostProcessing: null | number,
     estimatedPriceInput: null | string,
     trelloListId: null | string,
 }
@@ -147,6 +147,7 @@ export class Clients {
             if(client.channelId == channelId){
                 match = true;
                 client.clientSettings = settings;
+                break;
             }
         }
         if(!match){

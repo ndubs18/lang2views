@@ -1,5 +1,5 @@
 import "./clientSettings.css";
-import React, { useContext, useState } from "react";
+import { useState } from "react";
 import CloseClientSettingsPopup from "./CloseClientSettingsPopup";
 import ClientSettingsPlanButtonClickProcessor from "./buttons/ClientSettingsPlanButtonClickProcessor";
 import ClientSettingsTranscriptionButtonClickProcessor from "./buttons/ClientSettingsTranscriptionButtonClickProcessor";
@@ -7,15 +7,11 @@ import Plan from "./buttons/Plan";
 import ClientSettingsTranslationButtonClickProcessor from "./buttons/ClientSettingsTranslationButtonClickProcessor";
 import ClientSettingsUploadButtonClickProcessor from "./buttons/ClientSettingsUploadButtonClickProcessor";
 import ClientSettingsHeader from "./ClientSettingsHeader";
-import { channelNameContext } from "./channelNameContext";
-import { clientNameContext } from "./clientNameContext";
 
-function ClientSettings() {
+function ClientSettings({ channelId, channelName }) {
   const [planButtonActive, setPlanButtonActive] = useState("active-step-button");
-  const [translationButtonActive, setTranslationButtonActive] =
-    useState("normal");
-  const [transcriptionButtonActive, setTranscriptionButtonActive] =
-    useState("normal");
+  const [translationButtonActive, setTranslationButtonActive] = useState("normal");
+  const [transcriptionButtonActive, setTranscriptionButtonActive] = useState("normal");
   const [uploadButtonActive, setUploadButtonActive] = useState("normal");
 
   return (
@@ -26,7 +22,7 @@ function ClientSettings() {
       ></div>
       <div className="client-settings-popup">
         <div id="client-settings-header" className="ms-4">
-          <ClientSettingsHeader clientName={clientNameContext.Provider} />
+          <ClientSettingsHeader channelName={channelName} />
         </div>
         <div className="client-settings-button-section">
           <button
@@ -97,11 +93,11 @@ function ClientSettings() {
         <div className="not-full-width-horizontal-line ms-5"></div>
         <p className="mt-5 mb-3 fs-4 ms-5">
           <img className="me-3" src="../brown.png" />
-          channelName
+          {channelName}
         </p>
         <div className="not-full-width-horizontal-line ms-5"></div>
         <div className="popup-menus-step-area">
-          <Plan />
+          <Plan channelId={channelId} channelName={channelName} />
         </div>
       </div>
     </>
