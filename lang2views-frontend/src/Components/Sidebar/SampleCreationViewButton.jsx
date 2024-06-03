@@ -26,10 +26,16 @@ function renderSampleCreationView() {
     viewContainerHook.render(<SampleCreationView currentUser={"Alexander"}/>);
 }
 
-function SampleCreationViewButton() {
-    const sampleCreationViewLogo = <img id="sample-creation-view-button-icon" src="src/Images/sample.png"></img>;
+function SampleCreationViewButton(props) {
 
-    return <button onClick={renderSampleCreationView} className="btn buttonInactive" id="sample-creation-view-button">{sampleCreationViewLogo}</button>;
+    if (props.default === "client") {
+        const sampleCreationViewLogo = <img id="sample-creation-view-button-icon" src="src/Images/sample.png"></img>;
+        return <button onClick={renderSampleCreationView} className="btn buttonInactive" id="sample-creation-view-button">{sampleCreationViewLogo}</button>;
+    }
+    else {
+        const sampleCreationViewLogo = <img id="sample-creation-view-button-icon" src="src/Images/sampleActive.png"></img>;
+        return <button onClick={renderSampleCreationView} className="btn buttonActive" id="sample-creation-view-button">{sampleCreationViewLogo}</button>;
+    }
 }
 
 export default SampleCreationViewButton;

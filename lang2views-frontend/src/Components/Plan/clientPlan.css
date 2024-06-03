@@ -55,7 +55,7 @@
     width: 100em;
 }
 
-.active-step-button {
+.current-tab {
     font-weight: bold;
     border-bottom: blue solid 1px;
 }
@@ -65,11 +65,11 @@
 }
 
 .scrollable-video-list {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto auto;
     overflow-y: auto;
     position: relative;
     height: 48vh;
-    flex-direction: column;
     width: 100%;
 }
 
