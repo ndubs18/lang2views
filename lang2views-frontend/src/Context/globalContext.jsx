@@ -27,6 +27,7 @@ export const GlobalContextProvider = ({ children }) => {
   const [isOrganizeVisible, setIsOrganizeVisible] = useState(false);
   const [isPostProductionVisible, setIsPostProductionVisible] = useState(false);
   const [isUploadVisible, setIsUploadVisible] = useState(false);
+  const [isDeleteVisible, setIsDeleteVisible] = useState(false);
 
   return (
     <GlobalContext.Provider
@@ -39,6 +40,8 @@ export const GlobalContextProvider = ({ children }) => {
         setIsPostProductionVisible,
         isUploadVisible,
         setIsUploadVisible,
+        isDeleteVisible,
+        setIsDeleteVisible,
       }}
     >
       {children}

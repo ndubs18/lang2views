@@ -10,40 +10,50 @@ import { useState } from "react";
 import { useGlobalContext } from "../../../Context/globalContext";
 
 function IndividualVideo({ videoNumber, videoName, thumbnailImage, videoId, sendVideoId }) {
-  const [checkbox, setCheckbox] = useState(false);
-  const {
-    isOrganizeVisible,
-    setIsOrganizeVisible,
-    isPostProductionVisible,
-    setIsPostProductionVisible,
-    isUploadVisible,
-    setIsUploadVisible,
-  } = useGlobalContext();
+    const [checkbox, setCheckbox] = useState(false);
+    const {
+        isOrganizeVisible,
+        setIsOrganizeVisible,
+        isPostProductionVisible,
+        setIsPostProductionVisible,
+        isUploadVisible,
+        setIsUploadVisible,
+        isDeleteVisible,
+        setIsDeleteVisible,
+    } = useGlobalContext();
 
-  function toggleOrganizeModal() {
-    if (isOrganizeVisible) {
-      setIsOrganizeVisible(false);
-    } else {
-      sendVideoId(videoId);
-      setIsOrganizeVisible(true);
+    function toggleOrganizeModal() {
+        if (isOrganizeVisible) {
+            setIsOrganizeVisible(false);
+        } else {
+            sendVideoId(videoId);
+            setIsOrganizeVisible(true);
+        }
     }
-  }
 
-  function togglePostProductionModal() {
-    if (isPostProductionVisible) {
-      setIsPostProductionVisible(false);
-    } else {
-      setIsPostProductionVisible(true);
+    function togglePostProductionModal() {
+        if (isPostProductionVisible) {
+            setIsPostProductionVisible(false);
+        } else {
+            setIsPostProductionVisible(true);
     }
-  }
+    }
 
-  function toggleUploadModal() {
-    if (isUploadVisible) {
-      setIsUploadVisible(false);
-    } else {
-      setIsUploadVisible(true);
+    function toggleUploadModal() {
+        if (isUploadVisible) {
+            setIsUploadVisible(false);
+        } else {
+            setIsUploadVisible(true);
+        }
     }
-  }
+
+    function toggleDeleteModal() {
+        if (isDeleteVisible) {
+            setIsDeleteVisible(false);
+        } else {
+            setIsDeleteVisible(true);
+        }
+    }
 
   return (
     <div className="video-container">
@@ -90,7 +100,7 @@ function IndividualVideo({ videoNumber, videoName, thumbnailImage, videoId, send
           src={TrashIcon}
           alt="Delete button"
           title="Delete"
-          //onClick={}
+          onClick={toggleDeleteModal}
         />
       </div>
     </div>
