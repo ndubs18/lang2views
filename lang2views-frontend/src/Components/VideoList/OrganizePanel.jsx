@@ -25,7 +25,7 @@ function OrganizePanel({ channelId, channelName, video }) {
         }).then((response) => {
             response
                 .json()
-                .then((value) => setOrganizeData(value))
+                .then((value) => { setOrganizeData(value); console.log(organizeData) })
                 .catch((err) => {
                     throw new Error(err);
                 })
@@ -54,29 +54,17 @@ function OrganizePanel({ channelId, channelName, video }) {
     const panelContent = (<>
         <div className="text-with-input-information">
             <p className="widget-text">Dropbox Location</p>
-            <input
-                className="widget-input"
-                type="text"
-                placeholder={dropboxUrl}
-                value={dropboxUrl} />
+            <p className="widget-input">{dropboxUrl}</p>
             <button className="arrow-diagonal">↗</button>
         </div>
         <div className="text-with-input-information">
             <p className="widget-text">Script Link</p>
-            <input
-                className="widget-input"
-                type="text"
-                placeholder={scriptUrl}
-                value={scriptUrl} />
+            <p className="widget-input">{scriptUrl}</p>
             <button className="arrow-diagonal">↗</button>
         </div>
         <div className="text-with-input-information">
             <p className="widget-text">Trello Ticket</p>
-            <input
-                className="widget-input"
-                type="text"
-                placeholder={trelloUrl}
-                value={trelloUrl} />
+            <p className="widget-input">{trelloUrl}</p>
             <button className="arrow-diagonal">↗</button>
         </div>
         <button onClick={organizeVideo} className="panel-action-button">ORGANIZE</button>
