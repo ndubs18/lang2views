@@ -378,6 +378,7 @@ app.post('/client/upload',upload.single('file'), async (req, res) => {
 
 // Export FCPXML timeline file for editing in DaVinci
 app.post('/client/postProcess', async (req,res) => {
+    logEndpointCalled(req.url);
     const channelId = req.body.channelId;
     const videoId = req.body.videoId;
 
@@ -409,20 +410,19 @@ app.post('/client/postProcess', async (req,res) => {
             );
 
             const dropboxPath = dropbox.getPathFromVideoFolderUrl(video.dropboxURL);
-            await dropbox.uploadFile(dropboxPath + '/davinciTimeline.fcpxml',
+            let response = await dropbox.uploadFile(dropboxPath + '/davinciTimeline.fcpxml',
                 videoContentFilePath + '/davinciTimeline.fcpxml',
                 fs.createReadStream(videoContentFilePath + `/davinciTimeline.fcpxml`)
             );
 
             console.log("Files uploaded to Dropbox.")
 
-            // Temp
-            res.send('davinciTimeline.fcpxml uploaded to Dropbox.');
+            res.send({ dropboxUrl: response, message: 'davinciTimeline.fcpxml uploaded to Dropbox.' });
         } else {
-            res.send('Please authenticate Dropbox first.');
+            res.send({ message: 'Please authenticate Dropbox first.' });
         }
     } else {
-        res.send('Invalid request body. Please send channelId and videoId.');
+        res.send({ message: 'Invalid request body. Please send channelId and videoId.' });
     }
 })
 

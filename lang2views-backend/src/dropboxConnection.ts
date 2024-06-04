@@ -49,7 +49,6 @@ export class DropboxConnection {
         const path = this.basePath + '/' + clientName;
         let response = await this.dbx.filesCreateFolderV2({ path: path })
             .then(function (response) {
-                console.log(response);
                 return 'https://www.dropbox.com/home' + response.result.metadata.path_lower;
             })
             .catch(function (error) {
@@ -78,7 +77,6 @@ export class DropboxConnection {
 
                     return "Could not create subfolders"
                 });
-            console.log(batchResponse);
         }
         
         return response;
@@ -91,11 +89,9 @@ export class DropboxConnection {
         const videoFormat = video.format == 'short' ? 'Shorts' : 'Long Formats'
 
         const path = `${this.basePath}/${client.channelName}/${videoFormat}/${videoNumber}. ${videoTitle}`
-        console.log(path)
 
         let response = await this.dbx.filesCreateFolderV2({ path: path })
             .then(function (response) {
-                console.log(response);
                 return 'https://www.dropbox.com/home' + response.result.metadata.path_lower;
             })
             .catch(function (error) {
@@ -117,15 +113,15 @@ export class DropboxConnection {
         const UPLOAD_FILE_SIZE_LIMIT = 150 * 1024 * 1024;
         let fileSize = fs.statSync(filePath).size
         if (fileSize < UPLOAD_FILE_SIZE_LIMIT) { // File is smaller than 150 MB - use filesUpload API
-            await this.dbx.filesUpload({ path: dropboxPath, contents: contents })
+            let response = await this.dbx.filesUpload({ path: dropboxPath, contents: contents })
                 .then(function (response) {
-                    console.log(response);
                     return 'https://www.dropbox.com/home' + response.result.path_lower;
                 })
                 .catch(function (error) {
                     console.error(error.error || error);
                     return "Could not upload file at path " + dropboxPath
                 });
+            return response;
         } else { // File is bigger than 150 MB - use filesUploadSession API
             const maxBlob = 12 * 1024 * 1024; // 8MB - Dropbox JavaScript API suggested chunk size
 
@@ -186,7 +182,6 @@ export class DropboxConnection {
             }, Promise.resolve());
 
             return task.then(function (response) {
-                console.log(response)
                 return response;
             })
             .catch(function (error) {
