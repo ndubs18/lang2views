@@ -50,10 +50,8 @@ export class YouTube {
         }
         return false;
     }
-    upload(filePath:string, callback:Function){
+    upload(file:Buffer, callback:Function){
         const youtube = google.youtube({ version: 'v3', auth: this.oAuth2Client });
-        const videoFilePath = filePath;
-        const fileSize = fs.statSync(videoFilePath).size;
         youtube.videos.insert(
             {
             part: ['snippet,status'],
@@ -69,13 +67,12 @@ export class YouTube {
                 },
             },
             media: {
-                body: fs.createReadStream(videoFilePath),
+                body: file
             },
             },
             {
             onUploadProgress: (evt) => {
-                const progress = (evt.bytesRead / fileSize) * 100;
-                console.log(`${Math.round(progress)}% complete`);
+                console.log(evt);
             },
             },
             (err, response) => {
