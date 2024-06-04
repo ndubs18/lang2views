@@ -1,3 +1,4 @@
+import { channelIdContext } from "../../Clients/channelIdContext";
 import "../clientSettings.css";
 import Save from "./UploadStepSave";
 import { useState } from "react";
@@ -232,6 +233,14 @@ function NumTags() {
 }
 
 function Upload() {
+  const [upload, setUpload] = useState({});
+  
+  useEffect(() => {
+    fetch("http://localhost:3000/client/getSettings?channelId=" + channelIdContext.Provider, {
+    method: "GET",
+  }).then((response) => response.json().then((value) => setUpload(value)));
+  }, [])
+
   return (
     <div>
       <GrantYoutubeAccess />

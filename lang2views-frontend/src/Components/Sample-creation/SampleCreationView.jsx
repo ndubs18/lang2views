@@ -1,5 +1,3 @@
-// needs work
-
 import SampleCreationEntriesAndHeader from './SampleCreationEntriesAndHeader';
 import SampleCreationViewSearch from './SampleCreationViewSearch';
 import AccountSettingsButton from '../Utilities/AccoutSettingsButton';
@@ -12,14 +10,9 @@ import "./otherSampleCreationViewFunctionality.css";
 import { useEffect, useState } from 'react';
 
 function SampleCreationView(props) {
+  window.history.replaceState({}, "sampleCreationView", "/sampleCreationView");
 
   const [sampleVideos, setSampleVideos] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:3000/client/getAll", {
-    method: "GET",
-  }).then((response) => response.json().then((value) => setSampleVideos(value)));
-  }, [])
 
   const headerData = [
     "NAME",
@@ -32,7 +25,7 @@ function SampleCreationView(props) {
     "",
   ];
 
-  const dataForTableBodyRow1 = {
+  /* const dataForTableBodyRow1 = {
     name: 'A',
     videoType: "Long format",
     thumbnailLink: "src/Images/brown.png",
@@ -57,7 +50,7 @@ function SampleCreationView(props) {
     dataForTableBodyRow2,
     dataForTableBodyRow2,
     dataForTableBodyRow2,
-  ];
+  ]; */
 
   const accountPictureLink = 'src/Images/brown.png';
 
@@ -86,7 +79,7 @@ function SampleCreationView(props) {
           </div>
           <SampleCreationEntriesAndHeader
             headerData={headerData}
-            sampleCreationEntries={sampleVideosManual}
+            sampleCreationEntries={sampleVideos}
           />
         </div>
       <div className="popup-and-close-area-container"></div>

@@ -11,8 +11,9 @@ export interface ClientSettings {
     monthlyPlanInput: null | boolean,
     numLongFormatInput: null | number,
     numShortsInput: null | number,
-    levelOfPostProcessing: null | string,
-    estimatedPriceInput: null | string
+    levelOfPostProcessing: null | number,
+    estimatedPriceInput: null | string,
+    trelloListId: null | string,
 }
 
 export interface Client {
@@ -146,6 +147,7 @@ export class Clients {
             if(client.channelId == channelId){
                 match = true;
                 client.clientSettings = settings;
+                break;
             }
         }
         if(!match){
@@ -163,6 +165,9 @@ export class Clients {
                 }
                 if(!fs.existsSync('clients/'+client.channelId)){
                     fs.mkdirSync('clients/'+client.channelId);
+                }
+                if (!fs.existsSync('clients/' + client.channelId)) {
+                    fs.mkdirSync('clients/' + client.channelId + '/videos.json');
                 }
                 let videoNumber = 0;
                 if(client.videos == null){

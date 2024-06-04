@@ -1,14 +1,15 @@
-import React from "react";
 import "./clientEntriesAndHeader.css";
-import ClientVideoListProcessor from "./ClientVideoListProcessor";
 import ClientPlanButtonClickProcessor from "./ClientPlanButtonClickProcessor";
 import ClientSettingsButtonClickProcessor from "./ClientSettingsButtonClickProcessor";
 import ClientDeleteButtonClickProcessor from "./ClientDeleteButtonClickProcessor";
 import { clientIdContext } from "./clientIdContext";
-import { channelNameContext } from "../client-settings/channelNameContext";
 import { clientNameContext } from "../client-settings/clientNameContext";
+import { channelNameContext } from "../client-settings/channelNameContext";
+import { channelIdContext } from "./channelIdContext";
 
 function ClientEntriesAndHeader(props) {
+
+
   const typeOfClientData = [
     "client-photo-client-entry-data",
     "name-client-entry-data",
@@ -81,7 +82,7 @@ function ClientEntriesAndHeader(props) {
           " client-entry-and-header-individual-pieces-of-data-divs"
         }
       >
-        {dataForCurrentClientEntry.clientName}
+        {dataForCurrentClientEntry.channelName}
       </div>
     );
     clientEntryDataArray.push(clientName);
@@ -134,12 +135,9 @@ function ClientEntriesAndHeader(props) {
         className="client-entry-action-button btn rounded-circle client-entry-settings-button"
         id={`client-${row + 1}`}
         onClick={() => {
-          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
-          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
-          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
-
-          ClientSettingsButtonClickProcessor();
+            ClientSettingsButtonClickProcessor(dataForCurrentClientEntry.channelId, dataForCurrentClientEntry.channelName);
         }}
+        title="Settings"
       >
         {settingsButtonIcon}
       </button>
@@ -158,12 +156,9 @@ function ClientEntriesAndHeader(props) {
         className="client-entry-action-button btn rounded-circle client-entry-plan-button"
         id={`client-${row + 1}`}
         onClick={() => {
-          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
-          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
-          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
-
-          ClientPlanButtonClickProcessor();
+          ClientPlanButtonClickProcessor(dataForCurrentClientEntry.channelId, dataForCurrentClientEntry.channelName);
         }}
+        title="Plan"
       >
         {planButtonIcon}
       </button>
@@ -178,19 +173,15 @@ function ClientEntriesAndHeader(props) {
       ></img>
     );
     const videoListButton = (
-      <button
-        className="client-entry-action-button btn rounded-circle client-entry-video-list-button"
-        id={`client-${row + 1}`}
-        onClick={() => {
-          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
-          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
-          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
-
-          ClientVideoListProcessor();
-        }}
-      >
-        {videoListButtonIcon}
-      </button>
+      <a href={`/processvideolist/${dataForCurrentClientEntry.channelId}`}>
+        <button
+          className="client-entry-action-button btn rounded-circle client-entry-video-list-button"
+          id={`client-${row + 1}`}
+          title="Video list"
+        >
+          {videoListButtonIcon}
+        </button>
+        </a>
     );
     clientEntryDataArray.push(videoListButton);
 
@@ -207,11 +198,13 @@ function ClientEntriesAndHeader(props) {
         id={`client-${row + 1}`}
         onClick={() => {
           clientIdContext.Provider = dataForCurrentClientEntry.clientId;
-          //channelNameContext.Provider = dataForCurrentClientEntry.channelName;
+          channelNameContext.Provider = dataForCurrentClientEntry.channelName;
           clientNameContext.Provider = dataForCurrentClientEntry.clientName;
+          channelIdContext.Provider = dataForCurrentClientEntry.channelId;
 
           ClientDeleteButtonClickProcessor();
         }}
+        title="Delete"
       >
         {deleteButtonIcon}
       </button>

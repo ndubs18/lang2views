@@ -117,7 +117,6 @@ export class DropboxConnection {
         // https://github.com/dropbox/dropbox-sdk-js/blob/main/examples/javascript/upload/index.html
         const UPLOAD_FILE_SIZE_LIMIT = 150 * 1024 * 1024;
         let fileSize = fs.statSync(filePath).size
-
         if (fileSize < UPLOAD_FILE_SIZE_LIMIT) { // File is smaller than 150 MB - use filesUpload API
             await this.dbx.filesUpload({ path: dropboxPath, contents: contents })
                 .then(function (response) {
@@ -128,18 +127,39 @@ export class DropboxConnection {
                     console.error(error.error || error);
                     return "Could not upload file at path " + dropboxPath
                 });
-        // TODO: THIS IS CURRENTLY UNTESTED. Hypothetically this will work to upload a video > 150MB,
-        // but currently we can't *transcribe* videos larger than 25MB due to Whisper API limits.
-        // Need to revisit, test, and possibly fix this after we have workarounds for Whisper limits.
         } else { // File is bigger than 150 MB - use filesUploadSession API
             const maxBlob = 12 * 1024 * 1024; // 8MB - Dropbox JavaScript API suggested chunk size
+
+            // Stream-to-blob code from https://github.com/feross/stream-to-blob/blob/master/index.js
+            // Not able to actually import and use module as-is, the direct code is a workaround
+            var contentBlob: Blob = await new Promise((resolve, reject) => {
+                const chunks = []
+                contents
+                    .on('data', chunk => chunks.push(chunk))
+                    .once('end', () => {
+                        const blob = new Blob(chunks)
+                        resolve(blob)
+                    })
+                    .once('error', reject)
+            });
 
             var workItems = [];
             var offset = 0;
 
+            // node-fetch runs into issues, so we need to pass fetch: fetch. But for some reason
+            // this is only an issue for file upload sessions, not single uploads (and in fact
+            // passing fetch: fetch and trying to use that for single file uploads also causes
+            // issues) - that's why we use a different Dropbox object here instead of this.dbx
+            var dbx: any = new Dropbox({
+                accessToken: this.dbx.auth.accessToken,
+                clientId: this.clientId,
+                clientSecret: this.clientSecret,
+                fetch: fetch,
+            });
+
             while (offset < fileSize) {
                 var chunkSize = Math.min(maxBlob, fileSize - offset);
-                workItems.push(contents.slice(offset, offset + chunkSize));
+                workItems.push(contentBlob.slice(offset, offset + chunkSize));
                 offset += chunkSize;
             }
 
@@ -147,32 +167,32 @@ export class DropboxConnection {
                 if (idx == 0) {
                     // Starting multipart upload of file
                     return acc.then(function () {
-                        return this.dbx.filesUploadSessionStart({ close: false, contents: blob })
+                        return dbx.filesUploadSessionStart({ close: false, contents: blob })
                             .then(response => response.result.session_id)
                     });
                 } else if (idx < items.length - 1) {
                     // Append part to the upload session
                     return acc.then(function (sessionId) {
                         var cursor = { session_id: sessionId, offset: idx * maxBlob };
-                        return this.dbx.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob }).then(() => sessionId);
+                        return dbx.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob }).then(() => sessionId);
                     });
                 } else {
                     // Last chunk of data, close session
                     return acc.then(function (sessionId) {
                         var cursor = { session_id: sessionId, offset: fileSize - blob.size };
                         var commit = { path: dropboxPath, mode: 'add', autorename: true, mute: false };
-                        return this.dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });
+                        return dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });
                     });
                 }
             }, Promise.resolve());
 
-            task.then(function (response) {
-                console.log(response);
-                return 'https://www.dropbox.com/home' + response.result.path_lower;
+            return task.then(function (response) {
+                console.log(response)
+                return response;
             })
-                .catch(function (error) {
-                    console.error(error);
-                    return "Could not upload file at path " + dropboxPath
+            .catch(function (error) {
+                console.error(error);
+                return "Could not upload large file at path " + dropboxPath
             });
         }
     }

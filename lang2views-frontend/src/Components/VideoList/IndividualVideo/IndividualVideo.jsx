@@ -1,4 +1,4 @@
-import "./longFormatIndividualVideo.css";
+import "./IndividualVideo.css";
 import PlaceholderIcon from "../../../Images/brown.png";
 import BlankCheckbox from "../../../Icons/blank_check_box.svg";
 import BlackCheckbox from "../../../Icons/check_box.svg";
@@ -9,9 +9,8 @@ import TrashIcon from "../../../Icons/trash.svg";
 import { useState } from "react";
 import { useGlobalContext } from "../../../Context/globalContext";
 
-function LongFormatIndividualVideo({ videoNumber, videoName, thumbnailImage }) {
+function IndividualVideo({ videoNumber, videoName, thumbnailImage, videoId, sendVideoId }) {
   const [checkbox, setCheckbox] = useState(false);
-  const [thumbnail, setThumbnail] = useState("");
   const {
     isOrganizeVisible,
     setIsOrganizeVisible,
@@ -25,6 +24,7 @@ function LongFormatIndividualVideo({ videoNumber, videoName, thumbnailImage }) {
     if (isOrganizeVisible) {
       setIsOrganizeVisible(false);
     } else {
+      sendVideoId(videoId);
       setIsOrganizeVisible(true);
     }
   }
@@ -68,24 +68,33 @@ function LongFormatIndividualVideo({ videoNumber, videoName, thumbnailImage }) {
           className="widget-buttons"
           src={FolderIcon}
           alt="Organize button"
+          title="Organize"
           onClick={toggleOrganizeModal}
         />
         <img
           className="widget-buttons"
           src={ProjectIcon}
           alt="Post production button"
+          title="Post-produce"
           onClick={togglePostProductionModal}
         />
         <img
           className="widget-buttons"
           src={YouTubeIcon}
           alt="Upload button"
+          title="Upload"
           onClick={toggleUploadModal}
         />
-        <img className="widget-buttons" src={TrashIcon} alt="Delete button" />
+        <img
+          className="widget-buttons"
+          src={TrashIcon}
+          alt="Delete button"
+          title="Delete"
+          //onClick={}
+        />
       </div>
     </div>
   );
 }
 
-export default LongFormatIndividualVideo;
+export default IndividualVideo;

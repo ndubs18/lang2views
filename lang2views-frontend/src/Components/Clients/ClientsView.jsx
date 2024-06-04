@@ -2,6 +2,7 @@ import ClientEntriesAndHeader from "./ClientEntriesAndHeader";
 import ClientsViewSearch from "./ClientsViewSearch";
 import AccountSettingsButton from "../Utilities/AccoutSettingsButton";
 import AddClientButton from "./AddClientButton";
+import DropboxAuthButton from "../Utilities/DropboxAuthButton"
 import "./clientsViewHeader.css";
 import "./clientsViewSearchAndAddButton.css";
 import "./otherClientsViewFunctionality.css";
@@ -10,11 +11,13 @@ import CreateAccountPictureAndNameContainer from "../Utilities/CreateAccountPict
 import { useEffect, useState } from "react";
 
 function ClientsView(props) {
+  window.history.replaceState({}, "clientsView", "/clientsView");
+
   const [clientList, setClientList] = useState([]);
 
-  useEffect(() => {
+   useEffect(() => {
     fetch("http://localhost:3000/client/getAll", {
-      method: "POST",
+      method: "GET",
     }).then((response) =>
       response
         .json()
@@ -36,7 +39,7 @@ function ClientsView(props) {
     "",
     "",
   ];
-  const dataForTableBodyRow1 = {
+   /*const dataForTableBodyRow1 = {
     clientId: "12cd7",
     clientYoutubePictureLink: "src/Images/brown.png",
     clientName: "B",
@@ -66,7 +69,7 @@ function ClientsView(props) {
     dataForTableBodyRow2,
     dataForTableBodyRow2,
     dataForTableBodyRow2,
-  ];
+  ];*/
 
   const accountPictureLink = "src/Images/brown.png";
 
@@ -80,7 +83,7 @@ function ClientsView(props) {
       accountNameText: props.currentUser,
       accountPictureLink: accountPictureLink,
     }
-  );
+    );
 
   return (
     <div id="clients-view">
@@ -96,6 +99,7 @@ function ClientsView(props) {
       <div id="clients-view-functionality-container">
         <div id="client-search-and-add-client-button">
           <ClientsViewSearch />
+          <DropboxAuthButton />
           <AddClientButton />
         </div>
         <ClientEntriesAndHeader

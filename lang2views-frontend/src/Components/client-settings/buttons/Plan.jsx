@@ -1,35 +1,36 @@
 import EstimatedPriceInput from "./EstimatedPrice";
 import MonthlyPlanTogglesWithLabel from "./MonthlyPlanTogglesWithLabel";
-import NumLongFormatInput from "./NumLongFormatInput";
-import NumShortsInput from "./NumShortsInput";
+import NumFormatInput from "./NumFormatInput";
 import ProcessingAmountSlider from "./ProcessingAmountSlider";
 import "../clientSettings.css";
 import Save from "./PlanStepSave";
-import { useState, createContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { UseMonthlyPlanContext } from "./UseMonthlyPlanContext";
+import TrelloListId from "./trelloListId";
 
-function Plan() {
+function Plan({ channelId }) {
   const [plan, setPlan] = useState({});
-
+  
   useEffect(() => {
-    fetch("http://localhost:3000/client/updateSettings", {
+    fetch("http://localhost:3000/client/getSettings?channelId=" + channelId, {
     method: "GET",
   }).then((response) => response.json().then((value) => setPlan(value)));
   }, [])
 
   return (
     <div>
-      <UseMonthlyPlanContext.Provider value={value.monthlyPlanInput}>
+      <UseMonthlyPlanContext.Provider value={plan.monthlyPlanInput}>
         <MonthlyPlanTogglesWithLabel />
       </UseMonthlyPlanContext.Provider>
       <div id="num-long-formats-and-shorts-container" className="ms-5 mb-5">
-        <NumLongFormatInput props={plan.numLongFormatInput}/>
-        <NumShortsInput props={plan.numShortsInput}/>
+        <NumFormatInput format={"long"} value={plan.numLongFormatInput}/>
+        <NumFormatInput format={"short"} value={plan.numShortsInput}/>
       </div>
-      <ProcessingAmountSlider props={plan.levelOfPostProcessing}/>
-      <EstimatedPriceInput props={plan.estimatedPriceInput}/>
+      <ProcessingAmountSlider levelOfPostProcessing={plan.levelOfPostProcessing}/>
+      <TrelloListId trelloListId={plan.trelloListId}/>
+      <EstimatedPriceInput estimatedPriceInput={plan.estimatedPriceInput}/>
       <div className="horizontal-line"></div>
-      <Save />
+      <Save channelId={channelId} plan={plan}/>
     </div>
   );
 }
