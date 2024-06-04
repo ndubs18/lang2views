@@ -3,7 +3,7 @@ import storeSelectedVideos from "./StoreSelectedVideos";
 
 
 function StepSave({ channelId }) {
-    function handleSubmit() {
+    async function handleSubmit() {
         storeSelectedVideos();
         const currentVideosForProcessingContainer = document.querySelector(
             "#videos-for-processing-json"
@@ -12,7 +12,7 @@ function StepSave({ channelId }) {
             currentVideosForProcessingContainer.textContent
         );
         for (let i = 0; i < currentVideosForProcessing.length; ++i) {
-            fetch("http://localhost:3000/client/addVideo", {
+            let response = await fetch("http://localhost:3000/client/addVideo", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -22,9 +22,8 @@ function StepSave({ channelId }) {
                     video: currentVideosForProcessing[i]
                 }),
             }).then((response) => {
-                response
+                return response
                     .json()
-                    .then((value) => console.log(value))
                     .catch((error) => console.error(error))
             });
         }

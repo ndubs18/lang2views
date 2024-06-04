@@ -216,8 +216,9 @@ app.post('/client/addVideo', async (req, res) => {
     let clients = new Clients(clientFile);
     if (channelId && video) {
         if (clients.getClientVideo(channelId, video.id) == null) {
-            let clientTrelloListId = clients.getClient(channelId).clientSettings.trelloListId
-            if (clientTrelloListId) {
+            let client = clients.getClient(channelId);
+            if (client.clientSettings && client.clientSettings.trelloListId) {
+                let clientTrelloListId = client.clientSettings.trelloListId
                 if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
                     if (await dropbox.isAuthenticated()) {
                         const docs = new GoogleDocs();
@@ -233,6 +234,7 @@ app.post('/client/addVideo', async (req, res) => {
                         let documentId = await docs.createGoogleDoc(`${videoNumber}. ${video.name} - Script`)
                         const card = await trello.createCard(cardData/*, getCustomFields(video)*/);
 
+                        video.number = videoNumber;
                         video.trelloCard = card.id;
                         video.dropboxURL = dropboxUrl;
                         video.documentId = documentId
