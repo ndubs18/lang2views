@@ -1,11 +1,6 @@
 import "./clientEntriesAndHeader.css";
 import ClientPlanButtonClickProcessor from "./ClientPlanButtonClickProcessor";
 import ClientSettingsButtonClickProcessor from "./ClientSettingsButtonClickProcessor";
-import ClientDeleteButtonClickProcessor from "./ClientDeleteButtonClickProcessor";
-import { clientIdContext } from "./clientIdContext";
-import { clientNameContext } from "../client-settings/clientNameContext";
-import { channelNameContext } from "../client-settings/channelNameContext";
-import { channelIdContext } from "./channelIdContext";
 
 function ClientEntriesAndHeader(props) {
 
@@ -181,7 +176,7 @@ function ClientEntriesAndHeader(props) {
         >
           {videoListButtonIcon}
         </button>
-        </a>
+      </a>
     );
     clientEntryDataArray.push(videoListButton);
 
@@ -193,21 +188,15 @@ function ClientEntriesAndHeader(props) {
       ></img>
     );
     const deleteButton = (
-      <button
-        className="client-entry-action-button btn rounded-circle client-entry-delete-button"
-        id={`client-${row + 1}`}
-        onClick={() => {
-          clientIdContext.Provider = dataForCurrentClientEntry.clientId;
-          channelNameContext.Provider = dataForCurrentClientEntry.channelName;
-          clientNameContext.Provider = dataForCurrentClientEntry.clientName;
-          channelIdContext.Provider = dataForCurrentClientEntry.channelId;
-
-          ClientDeleteButtonClickProcessor();
-        }}
-        title="Delete"
-      >
-        {deleteButtonIcon}
-      </button>
+       <a href={`/delete/${dataForCurrentClientEntry.channelId}`}>
+        <button
+          className="client-entry-action-button btn rounded-circle client-entry-delete-button"
+          id={`client-${row + 1}`}
+          title="Delete"
+        >
+          {deleteButtonIcon}
+        </button>
+      </a>
     );
     clientEntryDataArray.push(deleteButton);
 

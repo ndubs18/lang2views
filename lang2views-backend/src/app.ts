@@ -96,7 +96,7 @@ app.post('/client/remove', async (req, res) => {
         let clients = new Clients(clientFile);
         clients.removeClient(channelId);
         await clients.writeClientsToFile();
-        res.send({ message: 'Client removed' });
+        res.send({ message: 'Client removed.' });
     } else {
         res.send({ message: 'Invalid request body: Please send clientId.' })
     }

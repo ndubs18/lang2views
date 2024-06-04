@@ -2,6 +2,7 @@ import ClientAndSampleCreationViews from "./Pages/clientAndSampleCreationViews";
 import Login from "./Components/Login/Login.jsx";
 import { Routes, Route } from "react-router-dom";
 import ClientVideoListContainer from "./Components/VideoList/ListContainer/ClientVideoListContainer";
+import DeleteConfirmationPage from "./Components/Clients/DeleteConfirmationPage";
 
 function App() {
   return (
@@ -20,12 +21,16 @@ function App() {
             element={<ClientVideoListContainer />}
           />
         <Route
-          path="/add"
-          element={<ClientAndSampleCreationViews />}
+          path="/delete/:channelId"
+          element={<DeleteConfirmationPage />}
         />
         <Route
           path="/clientsView"
           element={<ClientAndSampleCreationViews />}
+        />
+        <Route
+            path="/clientsView"
+            element={<ClientAndSampleCreationViews />}
         />
       </Routes>
     </>
