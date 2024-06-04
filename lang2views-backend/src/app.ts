@@ -75,13 +75,13 @@ app.post('/client/add', async (req, res) => {
                     message: 'Client created: ' + JSON.stringify(result)
                 });
             } else {
-                res.send('Channel not found.')
+                res.send({ message: 'Channel not found.' })
             }
         } else {
-            res.send('Please authenticate Dropbox first.');
+            res.send({ message: 'Please authenticate Dropbox first.' });
         }
     } else {
-        res.send('Invalid request body: Please send url.')
+        res.send({ message: 'Invalid request body: Please send url.' })
     }
 })
 
@@ -96,9 +96,9 @@ app.post('/client/remove', async (req, res) => {
         let clients = new Clients(clientFile);
         clients.removeClient(channelId);
         await clients.writeClientsToFile();
-        res.send('client removed');
+        res.send({ message: 'Client removed' });
     } else {
-        res.send('Invalid request body: Please send clientId.')
+        res.send({ message: 'Invalid request body: Please send clientId.' })
     }
 })
 
@@ -112,7 +112,7 @@ app.post('/client/get', async (req, res) => {
         let clients = new Clients(clientFile);
         res.send(JSON.stringify(clients.getClient(channelId)));
     } else {
-        res.send('Invalid request body: Please send clientId.')
+        res.send({ message: 'Invalid request body: Please send clientId.' })
     }
 })
 
@@ -237,16 +237,16 @@ app.post('/client/addVideo', async (req, res) => {
                         message: "Video added."
                     });
                 } else {
-                    res.send('Please authenticate Dropbox first.');
+                    res.send({ message: 'Please authenticate Dropbox first.' });
                 }
             } else {
-                res.send('Invalid request body. Video format invalid.');
+                res.send({ message: 'Invalid request body. Video format invalid.' });
             }
         } else {
-            res.send('No Trello list ID found for this client. Make sure to set a Trello list ID in this client\'s settings.');
+            res.send({ message: 'No Trello list ID found for this client. Make sure to set a Trello list ID in this client\'s settings.' });
         }
     } else {
-        res.send('Invalid request body.')
+        res.send({ message: 'Invalid request body.' });
     }
 })
 
@@ -262,9 +262,9 @@ app.post('/client/removeVideo', (req, res) => {
     if(channelId && videoId){
         let clients = new Clients(clientFile);
         clients.removeClientVideo(channelId,videoId);
-        res.send('Video removed.');
+        res.send({ message: 'Video removed.' });
     } else {
-        res.send('Invalid request body. Please send channelId and videoId');
+        res.send({ message: 'Invalid request body. Please send channelId and videoId' });
     }
 });
 
@@ -278,7 +278,7 @@ app.post('/client/getAddedVideos', async (req, res) => {
         console.log(result)
         res.send(JSON.stringify(result));
     } else {
-        res.send('Invalid request body: Please send channelId.');
+        res.send({ message: 'Invalid request body: Please send channelId.' });
     }
 
 })
@@ -300,7 +300,7 @@ app.post('/client/getVideoPage', async (req, res) => {
         res.send(JSON.stringify(result));
     } else {
         // res.send('Invalid request body: Please send apiKey and channelId.');
-        res.send('Invalid request body: Please send channelId.');
+        res.send({ message: 'Invalid request body: Please send channelId.' });
     }
 
 })
@@ -320,17 +320,17 @@ app.post('/client/upload', async (req, res) => {
         if (filePath) {
             await youtube.upload(filePath, (err, response) => {
                 if (err) {
-                    res.send('Error uploading video');
+                    res.send({ message: 'Error uploading video' });
                 } else {
                     clients.markClientVideoComplete(channelId, videoId);
                     res.send(response);
                 }
             })
         } else {
-            res.send('Video path not found');
+            res.send({ message: 'Video path not found' });
         }
     } else {
-        res.send('Please authorize the youtube channel first.');
+        res.send({ message: 'Please authorize the youtube channel first.' });
     }
 });
 
@@ -399,10 +399,10 @@ app.post('/client/organizeVideo', async (req,res) => {
                 trelloUrl: video.trelloCard,
             }));
         } else {
-            res.send('Please authenticate Dropbox first.');
+            res.send({ message: 'Please authenticate Dropbox first.' });
         }
     } else {
-        res.send('Invalid request body. Please send channelId, videoId, and lang (desired translation language).');
+        res.send({ message: 'Invalid request body. Please send channelId, videoId, and lang (desired translation language).' });
     }
 })
 
@@ -412,7 +412,7 @@ app.post('/client/organizeVideo', async (req,res) => {
 */
 app.get('/dropbox/auth', async (req, res) => {
     const authUrl = await dropbox.getAuthUrl();
-    res.redirect(authUrl);
+    res.send({ authUrl: authUrl });
 });
 
 /*
@@ -437,7 +437,7 @@ app.post('/dropbox/createClientFolders', async (req, res) => {
 
         res.send({ url: result });
     } else {
-        res.send('Invalid request body.')
+        res.send({ message: 'Invalid request body.' })
     }
 });
 
@@ -515,7 +515,7 @@ app.post('/user/login', (req, res) => {
         let result = users.authenticate({username:email,password:password});
         res.send(result);
     } else {
-        res.send('Invalid request body: Please send email and password');
+        res.send({ message: 'Invalid request body: Please send email and password' });
     }
 })
 
@@ -533,7 +533,7 @@ app.post('/user/createUser', (req,res) => {
         users.writeUsersToFile();
         res.send(result);
     } else {
-        res.send('Invalid request body: Please send email and password');
+        res.send({ message: 'Invalid request body: Please send email and password' });
     }
 })
 
@@ -554,7 +554,7 @@ app.post('/user/updateUser', (req, res) => {
         users.writeUsersToFile();
         res.send(result);
     } else {
-        res.send('Invalid request body: Please send email and password');
+        res.send({ message: 'Invalid request body: Please send email and password' });
     }
 })
 
@@ -570,13 +570,13 @@ app.post('/user/removeUser', (req, res) => {
         let users = new Users(userFile);
         let result = users.removeUser({username:username, password:password});
         if(result){
-            res.send('User removed.')
+            res.send({ message: 'User removed.' })
             users.writeUsersToFile();
         } else {
-            res.send('User not found.')
+            res.send({ message: 'User not found.' })
         }
     } else {
-        res.send('Invalid request body: Please send email and password');
+        res.send({ message: 'Invalid request body: Please send email and password' });
     }
 })
 

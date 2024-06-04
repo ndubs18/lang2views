@@ -16,20 +16,22 @@ function ClientPlanVideoList({ channelId, format }) {
     const [getVideosResult, setGetVideosResult] = useState([]);
     const [previousButtonClicked, setPreviousButtonClicked] = useState("");
     const [nextButtonClicked, setNextButtonClicked] = useState("");
-
+    const [pageClicked, setPageClicked] = useState(false)
     let currentFilter = "unsorted"
-    let pageToken = ""
-    useEffect(() => {
-        const currentNumberToProcess = document.querySelector(
-            "#current-number-to-process"
-        );
 
-        const currentVideosForProcessingContainer = document.querySelector(
-            "#videos-for-processing-json"
-        );
-        if (nextButtonClicked === "" && previousButtonClicked === "") {
-            currentVideosForProcessingContainer.textContent = JSON.stringify([]);
-            currentNumberToProcess.value = 0;
+    useEffect(() => {
+        let pageToken = ""
+
+        if (previousButtonClicked === "true") {
+            setPreviousButtonClicked("false");
+            if (getVideosResult && getVideosResult.previousPageToken) {
+                pageToken = getVideosResult.previousPageToken;
+            }
+        } else if (nextButtonClicked === "true") {
+            setNextButtonClicked("false");
+            if (getVideosResult && getVideosResult.nextPageToken) {
+                pageToken = getVideosResult.nextPageToken;
+            }
         }
 
         fetch("http://localhost:3000/client/getVideoPage", {
@@ -43,20 +45,15 @@ function ClientPlanVideoList({ channelId, format }) {
             }),
         })
             .then((response) => {
-                response.json().then((value) => setGetVideosResult(value)
-                )
+                response.json().then((value) => {
+                    setGetVideosResult(value);
+                })
             }
         )
         .catch((err) => {
         throw new Error(err);
         });
-
-    if (previousButtonClicked === "true") {
-        setPreviousButtonClicked("false");
-    } else if (nextButtonClicked === "true") {
-        setNextButtonClicked("false");
-    }
-    }, [previousButtonClicked, nextButtonClicked]);
+    }, [pageClicked]);
 
     const currentNumberToProcess = document.querySelector(
     "#current-number-to-process"
@@ -168,8 +165,8 @@ function ClientPlanVideoList({ channelId, format }) {
           className="btn btn-primary"
           onClick={() => {
             setPreviousButtonClicked("true");
+            setPageClicked(!pageClicked);
             storeSelectedVideos();
-            //setPageToken(pageOf50Node.prevPageToken);
           }}
         >
           Previous
@@ -178,8 +175,8 @@ function ClientPlanVideoList({ channelId, format }) {
           className="btn btn-primary"
           onClick={() => {
             setNextButtonClicked("true");
+            setPageClicked(!pageClicked);
             storeSelectedVideos();
-            //setPageToken(pageOf50Node.nextPageToken);
           }}
         >
           Next
