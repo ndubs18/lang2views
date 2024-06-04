@@ -35,6 +35,7 @@ function IndividualVideo({ videoNumber, videoName, thumbnailImage, videoId, send
         if (isPostProductionVisible) {
             setIsPostProductionVisible(false);
         } else {
+            sendVideoId(videoId);
             setIsPostProductionVisible(true);
     }
     }
@@ -43,6 +44,7 @@ function IndividualVideo({ videoNumber, videoName, thumbnailImage, videoId, send
         if (isUploadVisible) {
             setIsUploadVisible(false);
         } else {
+            sendVideoId(videoId);
             setIsUploadVisible(true);
         }
     }
@@ -51,6 +53,7 @@ function IndividualVideo({ videoNumber, videoName, thumbnailImage, videoId, send
         if (isDeleteVisible) {
             setIsDeleteVisible(false);
         } else {
+            sendVideoId(videoId);
             setIsDeleteVisible(true);
         }
     }
