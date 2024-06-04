@@ -53,7 +53,6 @@ function Video({ format, video }) {
                     onClick={handleSelectButton}
                     disabled={finalized}/>
                 <div id={`data-${videoId}`} style={{ display:"none" }}>{JSON.stringify(video)}</div>
-                <div id={videoId + "-thumbnail"}>{thumbnailSrc}</div>
             </div>
             <p>{videoName}</p>
             <div className="d-flex flex-row">
