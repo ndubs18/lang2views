@@ -7,8 +7,16 @@
 }
 
 .short-container {
-    width: 12em;
-    height: 20em;
+    width: 20em;
+    height: 30em;
+}
+
+.long-container {
+    width: 20em;
+}
+
+.thumbnail {
+    align-self: center;
 }
 
 .long-select-button {

@@ -45,8 +45,8 @@ function Video({ format, video }) {
     }
 
     return (
-        <div className={`d-flex flex-column video-container ${format}-seperation ${format=="short" ? "short-container" : ""}`}>
-            <div style={{ width: "100%", height: "100%", backgroundImage: `url(${thumbnailSrc})`}}>
+        <div className={`d-flex flex-column video-container ${format}-seperation ${format=="short" ? "short-container" : "long-container"}`}>
+            <div style={{ width: "100%", height: "100%", backgroundImage: `url(${thumbnailSrc})`, backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize: "14vw"}}>
                 <button
                     id={`button-${videoId}`}
                     className={`rounded rounded-circle ${format}-select-button video-select-button`}
