@@ -168,7 +168,7 @@ function ClientEntriesAndHeader(props) {
       ></img>
     );
     const videoListButton = (
-      <a href={`/processvideolist/${dataForCurrentClientEntry.channelId}`}>
+        <a style={{ alignSelf: "center" }} href={`/processvideolist/${dataForCurrentClientEntry.channelId}`}>
         <button
           className="client-entry-action-button btn rounded-circle client-entry-video-list-button"
           id={`client-${row + 1}`}
@@ -188,7 +188,7 @@ function ClientEntriesAndHeader(props) {
       ></img>
     );
     const deleteButton = (
-       <a href={`/delete/${dataForCurrentClientEntry.channelId}`}>
+        <a style={{alignSelf:"center"}} href={`/delete/${dataForCurrentClientEntry.channelId}`}>
         <button
           className="client-entry-action-button btn rounded-circle client-entry-delete-button"
           id={`client-${row + 1}`}
