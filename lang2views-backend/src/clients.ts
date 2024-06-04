@@ -39,9 +39,11 @@ export class Clients {
             if(client.channelId == channelId){
                 if(client.videos){
                     client.videos.markComplete(videoId);
+                    client.videos.removeVideo(videoId);
                 } else {
                     client.videos = new Videos('clients/'+client.channelId+'/videos.json');
                     client.videos.markComplete(videoId);
+                    client.videos.removeVideo(videoId);
                 }
                 client.videos.writeVideosToFile();
             }
