@@ -209,41 +209,44 @@ app.post('/client/addVideo', async (req, res) => {
 
     let clients = new Clients(clientFile);
     if (channelId && video) {
-        let clientTrelloListId = clients.getClient(channelId).clientSettings.trelloListId
-        if (clientTrelloListId) {
-            // TODO: add extra error check to ensure we're not re-adding something already added
-            if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
-                if (await dropbox.isAuthenticated()) {
-                    const docs = new GoogleDocs();
+        if (clients.getClientVideo(channelId, video.id) == null) {
+            let clientTrelloListId = clients.getClient(channelId).clientSettings.trelloListId
+            if (clientTrelloListId) {
+                if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
+                    if (await dropbox.isAuthenticated()) {
+                        const docs = new GoogleDocs();
 
-                    const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
-                        idList: clientTrelloListId,
-                        name: video.name,
-                        pos: 'bottom',
-                    };
+                        const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
+                            idList: clientTrelloListId,
+                            name: video.name,
+                            pos: 'bottom',
+                        };
 
-                    let videoNumber = await clients.addClientVideo(channelId, video)
-                    let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
-                    let documentId = await docs.createGoogleDoc(`${videoNumber}. ${video.name} - Script`)
-                    const card = await trello.createCard(cardData/*, getCustomFields(video)*/);
+                        let videoNumber = await clients.addClientVideo(channelId, video)
+                        let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
+                        let documentId = await docs.createGoogleDoc(`${videoNumber}. ${video.name} - Script`)
+                        const card = await trello.createCard(cardData/*, getCustomFields(video)*/);
 
-                    video.trelloCard = card.id;
-                    video.dropboxURL = dropboxUrl;
-                    video.documentId = documentId
-                    clients.updateClientVideo(channelId, video)
-                    res.send({
-                        trelloCard: card,
-                        dropboxUrl: dropboxUrl,
-                        message: "Video added."
-                    });
+                        video.trelloCard = card.id;
+                        video.dropboxURL = dropboxUrl;
+                        video.documentId = documentId
+                        clients.updateClientVideo(channelId, video)
+                        res.send({
+                            trelloCard: card,
+                            dropboxUrl: dropboxUrl,
+                            message: "Video added."
+                        });
+                    } else {
+                        res.send({ message: 'Please authenticate Dropbox first.' });
+                    }
                 } else {
-                    res.send({ message: 'Please authenticate Dropbox first.' });
+                    res.send({ message: 'Invalid request body. Video format invalid.' });
                 }
             } else {
-                res.send({ message: 'Invalid request body. Video format invalid.' });
+                res.send({ message: 'No Trello list ID found for this client. Make sure to set a Trello list ID in this client\'s settings.' });
             }
         } else {
-            res.send({ message: 'No Trello list ID found for this client. Make sure to set a Trello list ID in this client\'s settings.' });
+            res.send({ message: 'Video is already added.' })
         }
     } else {
         res.send({ message: 'Invalid request body.' });
