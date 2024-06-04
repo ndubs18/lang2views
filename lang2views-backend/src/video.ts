@@ -9,7 +9,8 @@ export interface Video {
     duration:any,
     format: string,
     number: number | string,
-    finalized:boolean,
+    finalized: boolean,
+    views: number | string,
     trelloCard:string | null,
     dropboxURL: string | null,
     documentId: string | null,
@@ -147,6 +148,21 @@ export class Videos {
                 })
             }
         })
+    }
+
+    public getFinishedNumbers() {
+        let numShortsFinished = 0;
+        let numLongsFinished = 0;
+        for (let video of this._videos) {
+            if (video.finalized) {
+                video.format == "short" ? numShortsFinished += 1 : numLongsFinished += 1;
+            }
+        }
+
+        return {
+            numShortsFinished: numShortsFinished,
+            numLongsFinished: numLongsFinished
+        }
     }
 
     // Function to read users from the JSON file

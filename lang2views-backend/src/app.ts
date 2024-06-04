@@ -127,7 +127,13 @@ app.post('/client/get', async (req, res) => {
 app.get('/client/getAll', async (req, res) => {
     logEndpointCalled(req.url);
     let clients = new Clients(clientFile);
-    res.send(JSON.stringify(clients.clients));
+    let clientsWithFinishedVideoNumbers = [];
+    for (let i = 0; i < clients.clients.length; ++i) {
+        let finishedVideos = clients.getFinishedVideoNumbers(clients.clients[i].channelId);
+        clientsWithFinishedVideoNumbers.push(Object.assign(finishedVideos, clients.clients[i]));
+    }
+        
+    res.send(JSON.stringify(clientsWithFinishedVideoNumbers));
 })
 
 /*
@@ -675,7 +681,8 @@ function getFormattedDuration(duration: any) {
 }
 
 function logEndpointCalled(endpoint) {
-    console.log("Endpoint " + endpoint + " called.");
+    const now = new Date();
+    console.log(`Endpoint ${endpoint} called at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.`);
 }
 
 /*

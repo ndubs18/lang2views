@@ -112,7 +112,7 @@ export class YouTube {
             let videos = [];
             if (videoIds.length > 0) {
                 const videoDetailsResponse = await youtube.videos.list({
-                  part: ['snippet', 'contentDetails'],
+                  part: ['snippet', 'contentDetails', 'statistics'],
                   id: [ videoIds.join(',') ]
                   
                 });
@@ -138,7 +138,8 @@ export class YouTube {
                         thumbnail: video.snippet.thumbnails.default,
                         duration: parseISODuration(video.contentDetails.duration),
                         format: classifyVideoDuration(video.contentDetails.duration, 60),
-                        finalized: finalized
+                        finalized: finalized,
+                        views: video.statistics.viewCount
                     })
                 }
 
