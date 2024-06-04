@@ -39,9 +39,13 @@ export class Clients {
             if(client.channelId == channelId){
                 if(client.videos){
                     client.videos.markComplete(videoId);
+                    client.videos.removeVideo(videoId);
+                    this.deleteFolderRecursive(`clients/${client.channelId}/${videoId}`);
                 } else {
                     client.videos = new Videos('clients/'+client.channelId+'/videos.json');
                     client.videos.markComplete(videoId);
+                    client.videos.removeVideo(videoId);
+                    this.deleteFolderRecursive(`clients/${client.channelId}/${videoId}`);
                 }
                 client.videos.writeVideosToFile();
             }

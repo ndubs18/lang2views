@@ -11,6 +11,28 @@ import fs from 'fs';
 import { DropboxConnection } from './dropboxConnection.js'
 import { GoogleDocs } from './googledoc.js'
 import dotenv from 'dotenv'
+import multer from 'multer';
+
+import { Request } from 'express';
+
+interface MulterFile {
+    fieldname: string;
+    originalname: string;
+    encoding: string;
+    mimetype: string;
+    buffer: Buffer;
+    size: number;
+}
+
+declare global {
+    namespace Express {
+        interface Request {
+            file: MulterFile;
+        }
+    }
+}
+
+const upload = multer();
 
 dotenv.config();
 
@@ -330,16 +352,18 @@ app.post('/client/getVideoPage', async (req, res) => {
 * Requires channelId and videoId
 * checks for authorization then trys to upload desired video to authorized channel
 */
-app.post('/client/upload', async (req, res) => {
+app.post('/client/upload',upload.single('file'), async (req, res) => {
     logEndpointCalled(req.url);
     const channelId = req.body.channelId;
     const videoId = req.body.videoId;
     let youtube = new YouTube();
     let clients = new Clients(clientFile);
+
     if (youtube.checkAuth()) {
-        let filePath = clients.getClientVideoPath(channelId, videoId);
-        if (filePath) {
-            await youtube.upload(filePath, (err, response) => {
+        if(!req.file){
+            res.status(400).send('No file uploaded.');
+        }
+            await youtube.upload(req.file.buffer, (err, response) => {
                 if (err) {
                     res.send({ message: 'Error uploading video' });
                 } else {
@@ -347,9 +371,6 @@ app.post('/client/upload', async (req, res) => {
                     res.send(response);
                 }
             })
-        } else {
-            res.send({ message: 'Video path not found' });
-        }
     } else {
         res.send({ message: 'Please authorize the youtube channel first.' });
     }
