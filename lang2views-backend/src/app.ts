@@ -623,7 +623,8 @@ function getFormattedDuration(duration: any) {
 }
 
 function logEndpointCalled(endpoint) {
-    console.log("Endpoint " + endpoint + " called.");
+    const now = new Date();
+    console.log(`Endpoint ${endpoint} called at ${now.getHours()}:${now.getMinutes()}.`);
 }
 
 /*
