@@ -66,7 +66,7 @@ function IndividualVideo({ videoNumber, videoName, thumbnailImage, videoId, send
           src={!checkbox ? BlankCheckbox : BlackCheckbox}
           alt="Checkbox"
         />
-        <p className="video-number">{videoNumber}</p>
+        <p className="video-number">{videoNumber < 10 ? `0${videoNumber}.` : `${videoNumber}.`}</p>
         <p className="video-name">{videoName}</p>
       </div>
       <div className="thumbnail">

@@ -30,18 +30,23 @@ function handleSelectButton(event) {
 }
 
 function Video({ format, video }) {
-    let videoId = ""
-    let videoName = ""
-    let duration = ""
-    let finalized = ""
-    let thumbnailSrc = ""
+    let videoId, videoName, duration, finalized, thumbnailSrc, views, viewsPerMin = ""
 
     if (video) {
         videoId = video.id
         videoName = video.name
-        duration = `${video.duration.minutes}:${video.duration.seconds}`
         finalized = video.finalized
         thumbnailSrc = video.thumbnail.url
+        views = video.views
+        if (format == "long") {
+            let hours = video.duration.hours;
+            let min = video.duration.minutes;
+            let sec = video.duration.seconds;
+            duration = `${hours != 0 ? `0${hours}:` : ""}${min < 10 ? `0${min}` : min}:${sec < 10 ? `0${sec}` : sec}`
+            const totalSec = hours * 60 * 60 + min * 60 + sec;
+            console.log("totalsec for "+ videoName + ":" + totalSec)
+            viewsPerMin = Math.trunc((views / totalSec) * 60);
+        }
     }
 
     return (
@@ -60,11 +65,11 @@ function Video({ format, video }) {
                 {format == "long" ? (
                     <>
                         <p className="me-2 text-secondary">{duration} Min</p>
-                        <p className="me-2 text-secondary">{/*video.views*/0} Views</p>
-                        <p className="me-2 text-secondary">{/*video.viewsPerMinute*/0} Views/Min</p>
+                        <p className="me-2 text-secondary">{views} Views</p>
+                        <p className="me-2 text-secondary">{viewsPerMin} Views/Min</p>
                     </>
                 ) : (
-                        <p className="fs-4 me-2 text-secondary">{/*video.views*/0} Views</p>
+                        <p className="fs-4 me-2 text-secondary">{views} Views</p>
                 )}
 
             </div>

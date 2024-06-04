@@ -624,7 +624,7 @@ function getFormattedDuration(duration: any) {
 
 function logEndpointCalled(endpoint) {
     const now = new Date();
-    console.log(`Endpoint ${endpoint} called at ${now.getHours()}:${now.getMinutes()}.`);
+    console.log(`Endpoint ${endpoint} called at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.`);
 }
 
 /*
