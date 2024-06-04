@@ -45,12 +45,11 @@ function Video({ format, video }) {
     }
 
     return (
-        <div className={`d-flex flex-column video-container ${format}-seperation ${format=="short" ? "short-container" : ""}`}>
-            <div style={{ width: "100%", height: "100%", backgroundImage: `url(${thumbnailSrc})`}}>
+        <div className={`d-flex flex-column video-container ${format}-seperation ${format=="short" ? "short-container" : "long-container"}`}>
+            <div style={{ width: "100%", height: "100%", backgroundImage: `url(${thumbnailSrc})`, backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize: "14vw"}}>
                 <button className={`rounded rounded-circle ${format}-select-button video-select-button`} onClick={handleSelectButton} id={videoId} disabled={finalized}>
                 </button>
                 <div id={`${videoId}-data`} style={{ display:"none" }}>{JSON.stringify(video)}</div>
-                <div id={videoId + "-thumbnail"}>{thumbnailSrc}</div>
             </div>
             <p>{videoName}</p>
             <div className="d-flex flex-row">
