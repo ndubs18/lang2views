@@ -44,6 +44,7 @@ app.get('/', (req, res) => {
 * Adds client to server and to JSON file based on the youtube url recieved
 */
 app.post('/client/add', async (req, res) => {
+    logEndpointCalled(req.url);
     const url = req.body.url;
     const apiKey = process.env.GOOGLE_KEY;
     if (url) {
@@ -92,12 +93,13 @@ app.post('/client/add', async (req, res) => {
 * Removes client from server and from JSON file.
 */
 app.post('/client/remove', async (req, res) => {
+    logEndpointCalled(req.url);
     const channelId = req.body.channelId;
     if (channelId) {
         let clients = new Clients(clientFile);
         clients.removeClient(channelId);
         await clients.writeClientsToFile();
-        res.send({ message: 'Client removed' });
+        res.send({ message: 'Client removed.' });
     } else {
         res.send({ message: 'Invalid request body: Please send clientId.' })
     }
@@ -108,6 +110,7 @@ app.post('/client/remove', async (req, res) => {
 * Used to send single client to front end
 */
 app.post('/client/get', async (req, res) => {
+    logEndpointCalled(req.url);
     const channelId = req.body.channelId;
     if (channelId) {
         let clients = new Clients(clientFile);
@@ -122,6 +125,7 @@ app.post('/client/get', async (req, res) => {
 * Used to send all clients to front end when client page loads or the data changes (add client or remove client)
 */
 app.get('/client/getAll', async (req, res) => {
+    logEndpointCalled(req.url);
     let clients = new Clients(clientFile);
     res.send(JSON.stringify(clients.clients));
 })
@@ -130,6 +134,7 @@ app.get('/client/getAll', async (req, res) => {
 * Get client settings
 */
 app.get("/client/getSettings", (req, res) => {
+    logEndpointCalled(req.url);
     const channelId: string = req.query.channelId as string;
   
     if (channelId) {
@@ -163,6 +168,7 @@ app.post('/client/updateSettings', async (req, res) => {
     levelOfPostProcessing: null | string,
     estimatedPriceInput: null | string
     */
+    logEndpointCalled(req.url);
     const settings: ClientSettings = req.body.settings;
     const channelId: string = req.body.channelId;
 
@@ -170,7 +176,6 @@ app.post('/client/updateSettings', async (req, res) => {
         let clients = new Clients(clientFile);
         let result = clients.updateClientSettings(channelId, settings)
         res.send({ message: result })
-        console.log(result)
         await clients.writeClientsToFile();
     } else {
         res.send({ message: 'Invalid request body. Please send client settings and channelId' });
@@ -184,6 +189,7 @@ app.post('/client/updateSettings', async (req, res) => {
 // - The trello ticket
 // - the empty google doc (for transcription)
 app.post('/client/addVideo', async (req, res) => {
+    logEndpointCalled(req.url);
     const channelId = req.body.channelId;
     let video = req.body.video
     /*
@@ -210,41 +216,46 @@ app.post('/client/addVideo', async (req, res) => {
 
     let clients = new Clients(clientFile);
     if (channelId && video) {
-        let clientTrelloListId = clients.getClient(channelId).clientSettings.trelloListId
-        if (clientTrelloListId) {
-            // TODO: add extra error check to ensure we're not re-adding something already added
-            if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
-                if (await dropbox.isAuthenticated()) {
-                    const docs = new GoogleDocs();
+        if (clients.getClientVideo(channelId, video.id) == null) {
+            let client = clients.getClient(channelId);
+            if (client.clientSettings && client.clientSettings.trelloListId) {
+                let clientTrelloListId = client.clientSettings.trelloListId
+                if (video.name && video.url && video.id && video.thumbnail && video.duration && video.format) {
+                    if (await dropbox.isAuthenticated()) {
+                        const docs = new GoogleDocs();
 
-                    const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
-                        idList: clientTrelloListId,
-                        name: video.name,
-                        pos: 'bottom',
-                    };
+                        const cardData: Omit<CreateCardRequest, 'key' | 'token'> = {
+                            idList: clientTrelloListId,
+                            name: video.name,
+                            pos: 'bottom',
+                        };
 
-                    let videoNumber = await clients.addClientVideo(channelId, video)
-                    let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
-                    let documentId = await docs.createGoogleDoc(`${videoNumber}. ${video.name} - Script`)
-                    const card = await trello.createCard(cardData/*, getCustomFields(video)*/);
+                        let videoNumber = await clients.addClientVideo(channelId, video)
+                        let dropboxUrl = await dropbox.createVideoFolder(channelId, video, videoNumber);
+                        let documentId = await docs.createGoogleDoc(`${videoNumber}. ${video.name} - Script`)
+                        const card = await trello.createCard(cardData/*, getCustomFields(video)*/);
 
-                    video.trelloCard = card.id;
-                    video.dropboxURL = dropboxUrl;
-                    video.documentId = documentId
-                    clients.updateClientVideo(channelId, video)
-                    res.send({
-                        trelloCard: card,
-                        dropboxUrl: dropboxUrl,
-                        message: "Video added."
-                    });
+                        video.number = videoNumber;
+                        video.trelloCard = card.id;
+                        video.dropboxURL = dropboxUrl;
+                        video.documentId = documentId
+                        clients.updateClientVideo(channelId, video)
+                        res.send({
+                            trelloCard: card,
+                            dropboxUrl: dropboxUrl,
+                            message: "Video added."
+                        });
+                    } else {
+                        res.send({ message: 'Please authenticate Dropbox first.' });
+                    }
                 } else {
-                    res.send({ message: 'Please authenticate Dropbox first.' });
+                    res.send({ message: 'Invalid request body. Video format invalid.' });
                 }
             } else {
-                res.send({ message: 'Invalid request body. Video format invalid.' });
+                res.send({ message: 'No Trello list ID found for this client. Make sure to set a Trello list ID in this client\'s settings.' });
             }
         } else {
-            res.send({ message: 'No Trello list ID found for this client. Make sure to set a Trello list ID in this client\'s settings.' });
+            res.send({ message: 'Video is already added.' })
         }
     } else {
         res.send({ message: 'Invalid request body.' });
@@ -257,6 +268,7 @@ app.post('/client/addVideo', async (req, res) => {
 * removes video from client and cleans up any remaining files on server
 */
 app.post('/client/removeVideo', (req, res) => {
+    logEndpointCalled(req.url);
     const channelId = req.body.channelId;
     const videoId = req.body.videoId;
 
@@ -273,10 +285,10 @@ app.post('/client/removeVideo', (req, res) => {
 * Get videos that have been added for a client
 */
 app.post('/client/getAddedVideos', async (req, res) => {
+    logEndpointCalled(req.url);
     const channelId = req.body.channelId;
     if (channelId) {
         const result = new Clients(clientFile).getClientVideos(channelId);
-        console.log(result)
         res.send(JSON.stringify(result));
     } else {
         res.send({ message: 'Invalid request body: Please send channelId.' });
@@ -291,6 +303,7 @@ app.post('/client/getAddedVideos', async (req, res) => {
 * Also sends next and prev page tokens to navigate back or forwards 50 videos
 */
 app.post('/client/getVideoPage', async (req, res) => {
+    logEndpointCalled(req.url);
     const apiKey = process.env.GOOGLE_KEY;
     const channelId = req.body.channelId;
     const pageToken = req.body.pageToken;
@@ -312,6 +325,7 @@ app.post('/client/getVideoPage', async (req, res) => {
 * checks for authorization then trys to upload desired video to authorized channel
 */
 app.post('/client/upload', async (req, res) => {
+    logEndpointCalled(req.url);
     const channelId = req.body.channelId;
     const videoId = req.body.videoId;
     let youtube = new YouTube();
@@ -391,7 +405,8 @@ app.post('/client/postProcess', async (req,res) => {
 // Translates video and adds it to google doc
 // updates trello ticket
 // adds all video files to dropbox (transcription and tranlsation text files, mp4, mp3)
-app.post('/client/organizeVideo', async (req,res) => {
+app.post('/client/organizeVideo', async (req, res) => {
+    logEndpointCalled(req.url);
     const channelId = req.body.channelId;
     const videoId = req.body.videoId;
     const lang = req.body.lang;
@@ -422,6 +437,7 @@ app.post('/client/organizeVideo', async (req,res) => {
 
             const docs = new GoogleDocs();
             docs.writeToGoogleDoc(video.documentId, translation.join('\n'));
+            console.log("Docs script written to.");
 
             const videoNameInFilePath = video.name.replaceAll(' ', '_');
 
@@ -463,6 +479,7 @@ app.post('/client/organizeVideo', async (req,res) => {
 * Authorizes creation of client/video folders to the lang2views DB account
 */
 app.get('/dropbox/auth', async (req, res) => {
+    logEndpointCalled(req.url);
     const authUrl = await dropbox.getAuthUrl();
     res.send({ authUrl: authUrl });
 });
@@ -505,7 +522,6 @@ app.post('/trello/create', async (req, res) => {
 
     const card = await trello.createCard(cardData/*, getCustomFields(video)*/);
 
-    console.log(card)
     res.send(card)
 });
 
@@ -528,6 +544,7 @@ app.put('/trello/update', async (req, res) => {
 * Authorizes uploading to client's localized youtube channel
 */
 app.get('/youtube/auth', (req, res) => {
+    logEndpointCalled(req.url);
     let youtube = new YouTube();
     const oauth = youtube.loadAuthClient();
     const authUrl = oauth.generateAuthUrl({
@@ -560,6 +577,7 @@ app.get('/youtube/oauth2callback', (req, res) => {
 * Checks all user emails for match, then verifies passwords match.
 */
 app.post('/user/login', (req, res) => {
+    logEndpointCalled(req.url);
     const email = req.body.email;
     const password = req.body.password;
     if(email && password){
@@ -577,6 +595,7 @@ app.post('/user/login', (req, res) => {
 * Creates new user in server and JSON file based on information recieved
 */
 app.post('/user/createUser', (req,res) => {
+    logEndpointCalled(req.url);
     const username = req.body.email;
     const password = req.body.password;
     if(username && password){
@@ -596,6 +615,7 @@ app.post('/user/createUser', (req,res) => {
 * Updates server and JSON file
 */
 app.post('/user/updateUser', (req, res) => {
+    logEndpointCalled(req.url);
     const oldUsername = req.body.oldEmail;
     const oldPassword = req.body.oldPassword;
     const username = req.body.email;
@@ -616,6 +636,7 @@ app.post('/user/updateUser', (req, res) => {
 * Removes user from server and JSON file
 */
 app.post('/user/removeUser', (req, res) => {
+    logEndpointCalled(req.url);
     const username = req.body.email;
     const password = req.body.password;
     if(username && password){
@@ -651,6 +672,10 @@ function getFormattedDuration(duration: any) {
          + `${duration.hours == 0 && duration.days == 0 ? '' : duration.hours + ':'}`
          + `${duration.minutes + ':'}`
          + `${duration.seconds}`;
+}
+
+function logEndpointCalled(endpoint) {
+    console.log("Endpoint " + endpoint + " called.");
 }
 
 /*

@@ -11,31 +11,36 @@ function storeSelectedVideos() {
     "#videos-for-processing-json"
     );
     const currentVideosForProcessing = JSON.parse(
-    currentVideosForProcessingContainer.textContent
+        currentVideosForProcessingContainer.textContent
     );
 
     let videoProcessingList = currentVideosForProcessing;
 
-    const videoSelectButtonsWithDuplicates = document.querySelectorAll(".video-select-button");
-    const videoSelectButtons = [...new Set(videoSelectButtonsWithDuplicates)];
+    // Get all buttons, filter to those with text content (i.e. selected), then grab just the id
+    const selectedVideos = Array.from(document.querySelectorAll(".video-select-button")).filter((button) => {
+        return button.textContent != ""
+    }).map(button => button.id);
+    
+    const videoIds = [...new Set(selectedVideos)];
 
-    for (let i = 0; i < videoSelectButtons.length; i++) {
-        if (videoSelectButtons[i].textContent !== "") {
-            const videoId = videoSelectButtons[i].id;
-            if (videoProcessingList.find((video) => video.id === videoSelectButtons[i].id) === undefined) {
-                const videoData = document.getElementById(`${videoId}-data`).textContent
+    for (let i = 0; i < videoIds.length; i++) {
+        if (videoIds[i].textContent !== "") {
+            const videoId = videoIds[i].slice(7); //Chop off the "button-" part of the id
+            console.log(videoId)
+            if (videoProcessingList.find((video) => video.id === videoIds[i]) === undefined) {
+                const videoData = document.getElementById(`data-${videoId}`).textContent
                 const videoToStore = JSON.parse(videoData)
 
                 videoProcessingList.push(videoToStore);
             }
         } else {
             const removedVideo = videoProcessingList.find(
-            (video) => video.id === videoSelectButtons[i].id
+            (video) => video.id === videoIds[i]
             );
       
             if (removedVideo !== undefined) {
             videoProcessingList = videoProcessingList.filter(
-                (video) => video.id !== videoSelectButtons[i].id
+                (video) => video.id !== videoIds[i]
             );
 
             videoProcessingList.map((video) => {

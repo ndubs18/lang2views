@@ -6,9 +6,10 @@ import DefaultChannelIcon from "../../../Icons/profile.svg";
 import SearchIcon from "../../../Icons/search.svg";
 import BlankCheckbox from "../../../Icons/blank_check_box.svg";
 import BlackCheckbox from "../../../Icons/check_box.svg";
-import OrganizePanel from "../Organize/Organize";
+import OrganizePanel from "../OrganizePanel";
 import PostProductionPanel from "../PostProduction/PostProduction";
-import UploadPanel from "../Upload/Upload";
+import UploadPanel from "../UploadPanel";
+import DeletePanel from "../DeletePanel"
 import { GlobalContextProvider } from "../../../Context/globalContext";
 import DropboxAuthButton from "../../Utilities/DropboxAuthButton";
 
@@ -169,7 +170,8 @@ function ClientVideoListContainer({initialFormat}) {
       </div>
       <OrganizePanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
       <PostProductionPanel />
-      <UploadPanel />
+      <UploadPanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
+      <DeletePanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
       <div className="header-for-video-list">
         <img
           className="check-box"

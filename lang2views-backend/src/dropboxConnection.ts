@@ -34,7 +34,6 @@ export class DropboxConnection {
     async isAuthenticated() {
         return await this.dbx.usersGetCurrentAccount()
             .then(function (response) {
-                console.log(response);
                 return true;
             })
             .catch((error) => {

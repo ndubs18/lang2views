@@ -129,6 +129,7 @@ export class Clients {
                 }
             }
         }
+        return null;
     }
 
     public getClient(channelId:string):Client{

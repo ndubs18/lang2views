@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-.upload-overlay {
+.panel-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -16,7 +16,7 @@
     align-items: center;
 }
 
-.upload-content {
+.panel-content {
     background: white;
     padding: 20px;
     border-radius: 5px;
@@ -24,7 +24,7 @@
     text-align: center;
 }
 
-.video-name-in-organize {
+.panel-video-name {
     color: #8A8A8A;
     font-weight: bold;
 }
@@ -62,7 +62,7 @@
     border: none;
 }
 
-.upload-button {
+.panel-action-button {
     background-color: #4285F4;
     color: white;
     font-size: 14px;
@@ -71,4 +71,16 @@
     width: 125px;
     height: 40px;
     margin-top: 20px;
+}
+
+.go-back-button {
+    background-color: #4285F4;
+    color: white;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    width: 125px;
+    height: 40px;
+    margin-top: 20px;
+    margin-left: 10px;
 }
