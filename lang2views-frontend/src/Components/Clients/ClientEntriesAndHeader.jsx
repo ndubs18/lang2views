@@ -82,38 +82,48 @@ function ClientEntriesAndHeader(props) {
     );
     clientEntryDataArray.push(clientName);
 
-    const numLongFormatVideosDone = (
-      <div
-        className={
-          typeOfClientData[2] +
-          " client-entry-and-header-individual-pieces-of-data-divs"
-        }
-      >
-        {dataForCurrentClientEntry.numLongFormatVideosDone}
+    // This is really kind of ugly, if anyone can think of a better way to do it be my guest
+    let longFormatLimit = "";
+    let shortFormatLimit = "";
+    let percentage = "";
+    if (dataForCurrentClientEntry.clientSettings && dataForCurrentClientEntry.clientSettings.numLongFormatInput) {
+        longFormatLimit = dataForCurrentClientEntry.clientSettings.numLongFormatInput;
+    } else {
+        longFormatLimit = "N/A";
+    }
+    if (dataForCurrentClientEntry.clientSettings && dataForCurrentClientEntry.clientSettings.numShortsInput) {
+        shortFormatLimit = dataForCurrentClientEntry.clientSettings.numShortsInput;
+    } else {
+        shortFormatLimit = "N/A";
+    }
+    let totalLimit = 0;
+    let totalFinished = 0;
+    if (longFormatLimit != "N/A") {
+        totalFinished += dataForCurrentClientEntry.numLongsFinished;
+        totalLimit += dataForCurrentClientEntry.clientSettings.numLongFormatInput;
+    }
+    if (longFormatLimit != "N/A") {
+        totalFinished += dataForCurrentClientEntry.numShortsFinished;
+        totalLimit += dataForCurrentClientEntry.clientSettings.numShortsInput;
+    }
+    totalLimit != 0 ? percentage = `${Math.trunc(totalFinished / totalLimit)}%` : percentage = "N/A"
+    const numLongsFinished = (
+      <div className={typeOfClientData[2] + " client-entry-and-header-individual-pieces-of-data-divs"}>
+        {`${dataForCurrentClientEntry.numLongsFinished} of ${longFormatLimit}`}
       </div>
     );
-    clientEntryDataArray.push(numLongFormatVideosDone);
+    clientEntryDataArray.push(numLongsFinished);
 
-    const numShortsDone = (
-      <div
-        className={
-          typeOfClientData[3] +
-          " client-entry-and-header-individual-pieces-of-data-divs"
-        }
-      >
-        {dataForCurrentClientEntry.numShortsDone}
+    const numShortsFinished = (
+      <div className={typeOfClientData[3] + " client-entry-and-header-individual-pieces-of-data-divs"}>
+        {`${dataForCurrentClientEntry.numShortsFinished} of ${shortFormatLimit}`}
       </div>
     );
-    clientEntryDataArray.push(numShortsDone);
+    clientEntryDataArray.push(numShortsFinished);
 
     const percentageDone = (
-      <div
-        className={
-          typeOfClientData[4] +
-          " client-entry-and-header-individual-pieces-of-data-divs"
-        }
-      >
-        {dataForCurrentClientEntry.percentageDone}%
+      <div className={typeOfClientData[4] + " client-entry-and-header-individual-pieces-of-data-divs"}>
+        {percentage}
       </div>
     );
     clientEntryDataArray.push(percentageDone);

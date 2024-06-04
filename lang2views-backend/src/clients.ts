@@ -220,6 +220,17 @@ export class Clients {
         }
     }
 
+    public getFinishedVideoNumbers(channelId: string) {
+        for (let client of this._clients) {
+            if (client.channelId == channelId) {
+                if (client.videos == null) {
+                    client.videos = new Videos('clients/' + client.channelId + '/videos.json');
+                }
+                return client.videos.getFinishedNumbers();
+            }
+        }
+    }
+
     get clients():Client[]{
         return this._clients;
     }
