@@ -5,7 +5,7 @@
     position: fixed;
     background-color: white;
     border-right: 1px solid grey;
-    z-index: 100;
+    z-index: 1;
 }
 
 #app-logo {

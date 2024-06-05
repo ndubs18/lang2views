@@ -72,7 +72,7 @@ function OrganizePanel({ channelId, channelName, video }) {
     </>);
 
     return (
-        <Panel channelName={channelName} videoName={videoName}>{panelContent}</Panel>
+        <Panel channelName={channelName} panelName="Organize" videoName={videoName}>{panelContent}</Panel>
     );
 }
 

@@ -52,12 +52,13 @@ function UploadPanel({ channelId, channelName, video }) {
 
     const panelContent = (<>
         <div className="text-with-input-information">
+            <p className="widget-text">File to Upload:</p>
+            <input type="file" name="uploadFile" accept="video/*" onChange={handleFileChange} />
+        </div>
+        <div className="text-with-input-information">
             <p className="widget-text">Link To Uploaded Video</p>
             <p className="widget-input">{youtubeUrl}</p>
         <button className="arrow-diagonal">↗</button>
-        </div>
-        <div className="text-with-input-information">
-            <input type="file" name="uploadFile" accept="video/*" onChange={handleFileChange} />
         </div>
         <button onClick={uploadVideo} className="panel-action-button">UPLOAD</button>
         <button onClick={toggleUploadModal} className="go-back-button">
@@ -66,7 +67,7 @@ function UploadPanel({ channelId, channelName, video }) {
     </>)
 
     return (
-        <Panel channelName={channelName} videoName={videoName}>{panelContent}</Panel>
+        <Panel channelName={channelName} panelName="Upload" videoName={videoName}>{panelContent}</Panel>
   );
 }
 

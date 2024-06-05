@@ -57,7 +57,7 @@ function PostProductionPanel({ channelId, channelName, video }) {
     </>);
 
     return (
-        <Panel channelName={channelName} videoName={videoName}>{panelContent}</Panel>
+        <Panel channelName={channelName} panelName="Post Production" videoName={videoName}>{panelContent}</Panel>
     );
 }
 

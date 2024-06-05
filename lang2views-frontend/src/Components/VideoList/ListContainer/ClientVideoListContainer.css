@@ -12,6 +12,12 @@
     font-size: 15px;
 }
 
+.video-list-header {
+    color: #8A8A8A;
+    font-weight: bold;
+    font-size: 16px;
+}
+
 .current-tab {
     font-weight: bold;
     border-bottom: blue 1px solid;
