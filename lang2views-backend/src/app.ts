@@ -265,7 +265,7 @@ app.post('/client/addVideo', async (req, res) => {
                         const card = await trello.createCard(cardData/*, getCustomFields(video)*/);
 
                         video.number = videoNumber;
-                        video.trelloCard = card.id;
+                        video.trelloCard = card;
                         video.dropboxURL = dropboxUrl;
                         video.documentId = documentId
                         clients.updateClientVideo(channelId, video)
