@@ -578,7 +578,7 @@ app.get('/youtube/auth', (req, res) => {
         access_type: 'offline',
         scope: ['https://www.googleapis.com/auth/youtube.upload'],
     });
-    res.redirect(authUrl);
+    res.send({ authUrl: authUrl });
 });
 
 /*

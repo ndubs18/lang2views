@@ -1,4 +1,3 @@
-import { channelIdContext } from "../../Clients/channelIdContext";
 import "../clientSettings.css";
 import Save from "./UploadStepSave";
 import { useState } from "react";
@@ -50,12 +49,25 @@ function enableUseSameTags() {
 */
 
 function GrantYoutubeAccess() {
+    const youtubeHandler = async () => {
+        fetch("http://localhost:3000/youtube/auth", {
+            method: "GET",
+        }).then((response) =>
+            response
+                .json()
+                .then((value) => window.open(value.authUrl, '_blank'))
+                .catch((err) => {
+                    throw new Error(err);
+                })
+        )
+    };
+
   return (
     <div className="mb-3">
       <h2 className="ms-5 mb-2">Grant YouTube Access</h2>
       <div className="d-flex flex-row justify-content-between ms-5">
         <div className="d-flex flex-row">
-          <button className="pale-green-button youtube-login px-3 py-2">
+          <button onClick={youtubeHandler} className="pale-green-button youtube-login px-3 py-2">
             <span className="d-flex flex-row justify-content-center">
               <p className="align-self-center mb-0 me-2">Log in</p>
             </span>
@@ -235,15 +247,15 @@ function NumTags() {
 function Upload() {
     /*const [upload, setUpload] = useState({});
   
-  useEffect(() => {
-    fetch("http://localhost:3000/client/getSettings?channelId=" + channelIdContext.Provider, {
-    method: "GET",
-  }).then((response) => response.json().then((value) => setUpload(value)));
-  }, [])
+    useEffect(() => {
+        fetch("http://localhost:3000/client/getSettings?channelId=" + channelIdContext.Provider, {
+        method: "GET",
+        }).then((response) => response.json().then((value) => setUpload(value)));
+    }, [])
     */
   return (
     <div>
-      <GrantYoutubeAccess />
+          <GrantYoutubeAccess />
       {/*
       <UseSameDescription />
       <UseSameTags />
