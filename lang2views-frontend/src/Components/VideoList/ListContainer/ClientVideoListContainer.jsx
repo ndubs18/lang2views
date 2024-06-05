@@ -173,11 +173,10 @@ function ClientVideoListContainer({initialFormat}) {
       <UploadPanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
       <DeletePanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
       <div className="header-for-video-list">
-        <img
-          className="check-box"
-          src={!checkbox ? BlankCheckbox : BlackCheckbox}
-        />
+      <div className="check-and-video-name">        
+        <img className="check-box" src={!checkbox ? BlankCheckbox : BlackCheckbox}/>
         <p className="name-header">NAME</p>
+      </div>
         <p className="thumbnail-header">THUMBNAIL</p>
       </div>
               <div id="short-list-container" className="all-videos" style={{ display: "none" } }>

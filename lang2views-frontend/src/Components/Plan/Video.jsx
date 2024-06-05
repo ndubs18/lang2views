@@ -44,7 +44,6 @@ function Video({ format, video }) {
             let sec = video.duration.seconds;
             duration = `${hours != 0 ? `0${hours}:` : ""}${min < 10 ? `0${min}` : min}:${sec < 10 ? `0${sec}` : sec}`
             const totalSec = hours * 60 * 60 + min * 60 + sec;
-            console.log("totalsec for "+ videoName + ":" + totalSec)
             viewsPerMin = Math.trunc((views / totalSec) * 60);
         }
     }

@@ -132,10 +132,10 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    margin-left: 50px;
-    margin-right: 50px;
     margin-top: 20px;
     margin-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .check-box {
@@ -143,13 +143,22 @@
     width: 15px;
 }
 
+.check-and-video-name {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    width: 50%;
+}
+
 .name-header {
-    margin-left: 20px;
+    width: 50%;
     margin-bottom: 0;
+    margin-left: 7px;
 }
 
 .thumbnail-header {
-    margin-left: 400px;
+    width: 25%;
+    text-align: center;
     margin-bottom: 0;
 }
 
