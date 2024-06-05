@@ -7,7 +7,7 @@ import SearchIcon from "../../../Icons/search.svg";
 import BlankCheckbox from "../../../Icons/blank_check_box.svg";
 import BlackCheckbox from "../../../Icons/check_box.svg";
 import OrganizePanel from "../OrganizePanel";
-import PostProductionPanel from "../PostProduction/PostProduction";
+import PostProductionPanel from "../PostProductionPanel";
 import UploadPanel from "../UploadPanel";
 import DeletePanel from "../DeletePanel"
 import { GlobalContextProvider } from "../../../Context/globalContext";
@@ -169,7 +169,7 @@ function ClientVideoListContainer({initialFormat}) {
         <button className="modify-plan-button">Modify plan</button>
       </div>
       <OrganizePanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
-      <PostProductionPanel />
+      <PostProductionPanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
       <UploadPanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
       <DeletePanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
       <div className="header-for-video-list">

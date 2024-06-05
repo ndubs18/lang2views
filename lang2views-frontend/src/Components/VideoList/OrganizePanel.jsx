@@ -12,7 +12,7 @@ function OrganizePanel({ channelId, channelName, video }) {
     let videoName = ""
 
     const organizeVideo = async () => {
-        fetch("http://localhost:3000/client/organizeVideo", {
+        await fetch("http://localhost:3000/client/organizeVideo", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
