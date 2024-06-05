@@ -23,6 +23,7 @@
     border: 1px solid grey;
     border-radius: 7px;
     padding: 10px;
+    position: relative;
 }
 
 .check-and-video-name {

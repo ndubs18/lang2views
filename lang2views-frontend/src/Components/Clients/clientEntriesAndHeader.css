@@ -50,14 +50,17 @@
 }
 
 .long-format-client-entry-data {
+    text-align: center;
     width: 12%;
 }
 
 .shorts-client-entry-data {
+    text-align: center;
     width: 13%;
 }
 
 .percentage-done-client-entry-data {
+    text-align: center;
     width: 25%;
 }
 

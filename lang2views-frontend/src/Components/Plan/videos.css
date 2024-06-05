@@ -1,39 +1,57 @@
 .long-seperation {
-    margin-left: 5em;
+    margin: 5px 5px 5px 5px;
 }
 
 .short-seperation {
-    margin-left: 2em;
+    margin: 5px 5px 5px 5px;
 }
 
 .short-container {
     width: 20em;
     height: 30em;
+    max-height: 21em;
 }
 
 .long-container {
     width: 20em;
 }
 
-.thumbnail {
-    align-self: center;
+.video-thumbnail {
+    width: 100%;
+}
+
+.video-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1;
+    margin: 5px 0px 5px 0px;
+    width: 100%;
+}
+
+.video-details-container {
+    justify-content: space-between;
+    width: 100%;
+}
+
+.video-details {
+    font-size: 0.9rem;
+    margin-bottom: 0;
 }
 
 .long-select-button {
-    width: 10%;
-    height: 10%;
-    margin-left: 90%;
-    margin-bottom: 95%;
+    width: 20px;
+    height: 20px;
     background-color: white;
+    position: absolute;
+    right: 10px;
 }
 
 .short-select-button {
-    width: 14%;
-    height: 14%;
-    margin-left: 85%;
-    margin-bottom: 85%;
-    margin-top: 3%;
+    width: 20px;
+    height: 20px;
     background-color: white;
+    position: absolute;
+    right: 10px;
 }
 
 #previous-next-videos-buttons-container {

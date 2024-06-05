@@ -6,7 +6,7 @@
     z-index: 1;
     left: 0;
     top: 0;
-    width: 100%;
+    width: 50%;
     height: 100%;
     background-color: #FFF;
     margin-left: 50%;
@@ -15,7 +15,7 @@
 .client-plan-close-area {
     display: flex;
     position: fixed;
-    z-index: 1;
+    z-index: 100;
     left: 0;
     top: 0;
     width: 50%;
@@ -34,7 +34,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 70em;
     margin-top: 3%;
 }
 
@@ -42,7 +41,6 @@
     margin-top: 1em;
     border-bottom: 1px solid grey;
     height: 2px;
-    width: 70em;
 }
 
 .horizontal-line {
@@ -51,7 +49,6 @@
     height: 2px;
     bottom: 0;
     margin-bottom: 6em;
-    width: 100em;
 }
 
 .current-tab {
@@ -66,13 +63,15 @@
 .scrollable-video-list {
     display: grid;
     grid-template-columns: auto auto auto;
+    height: 1000px;
+    margin-top: 10px;
+    padding-bottom: 30px;
     overflow-y: auto;
-    position: relative;
-    height: 48vh;
     width: 100%;
 }
 
 .filter-button-inactive {
+    margin: 0px 5px 0px 5px;
     background-color: white;
     border: grey solid 1px;
     width: 15%;
@@ -85,6 +84,7 @@
 }
 
 .filter-button-active {
+    margin: 0px 5px 0px 5px;
     background-color: #8dda8d;
     width: 15%;
 }
@@ -95,7 +95,8 @@
 }
 
 .filter-buttons-container {
-    margin-top: -5%;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .channel-icon-dimensions {

@@ -6,7 +6,8 @@ import ClientSettingsTranscriptionButtonClickProcessor from "./buttons/ClientSet
 import Plan from "./buttons/Plan";
 import ClientSettingsTranslationButtonClickProcessor from "./buttons/ClientSettingsTranslationButtonClickProcessor";
 import ClientSettingsUploadButtonClickProcessor from "./buttons/ClientSettingsUploadButtonClickProcessor";
-import ClientSettingsHeader from "./ClientSettingsHeader";
+import ClientPopupHeader from "../Clients/ClientPopupHeader";
+import DefaultChannelIcon from "../../Icons/profile.svg";
 
 function ClientSettings({ channelId, channelName }) {
   const [planButtonActive, setPlanButtonActive] = useState("active-step-button");
@@ -20,10 +21,8 @@ function ClientSettings({ channelId, channelName }) {
         className="client-settings-close-area"
         onClick={CloseClientSettingsPopup}
       ></div>
-      <div className="client-settings-popup">
-        <div id="client-settings-header" className="ms-4">
-          <ClientSettingsHeader channelName={channelName} />
-        </div>
+      <div className="client-popup">
+          <ClientPopupHeader channelName={channelName} headerText={"Settings"} />
         <div className="client-settings-button-section">
           <button
             id="client-settings-plan-button"
@@ -90,12 +89,17 @@ function ClientSettings({ channelId, channelName }) {
             Upload
           </button>
         </div>
-        <div className="not-full-width-horizontal-line ms-5"></div>
-        <p className="mt-5 mb-3 fs-4 ms-5">
-          <img className="me-3" src="../brown.png" />
-          {channelName}
-        </p>
-        <div className="not-full-width-horizontal-line ms-5"></div>
+        <hr />
+        <div className="icon-with-channel-name-content">
+            <div className="default-channel-icon-div">
+                <img
+                    className="default-channel-icon"
+                    src={DefaultChannelIcon}
+                    alt="Default channel icon" />
+            </div>
+            <p className="channel-name">{channelName}</p>
+        </div>
+        <hr />
         <div className="popup-menus-step-area">
           <Plan channelId={channelId} channelName={channelName} />
         </div>
