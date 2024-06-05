@@ -12,6 +12,7 @@ import { DropboxConnection } from './dropboxConnection.js'
 import { GoogleDocs } from './googledoc.js'
 import dotenv from 'dotenv'
 import multer from 'multer';
+import { Readable } from 'stream'
 
 import { Request } from 'express';
 
@@ -43,7 +44,7 @@ const userFile = 'users.json';
 export const clientFile = 'clients.json';
 
 const dropbox = new DropboxConnection()
-
+const authenticatedYoutube = new YouTube();
 const trello = new Trello(process.env.TRELLO_API_KEY, process.env.TRELLO_TOKEN);
 
 // Middleware to parse JSON bodies
@@ -356,23 +357,30 @@ app.post('/client/upload',upload.single('file'), async (req, res) => {
     logEndpointCalled(req.url);
     const channelId = req.body.channelId;
     const videoId = req.body.videoId;
-    let youtube = new YouTube();
     let clients = new Clients(clientFile);
+    let file = req.file;
 
-    if (youtube.checkAuth()) {
-        if(!req.file){
-            res.status(400).send('No file uploaded.');
+    if (channelId && videoId && file && file.buffer) {
+        if (file) {
+            if (authenticatedYoutube.checkAuth()) {
+                console.log("Starting upload.")
+                await authenticatedYoutube.upload(Readable.from(file.buffer), (err, response) => {
+                    if (err) {
+                        res.send({ message: 'Error uploading video', error: err });
+                    } else {
+                        console.log(`Video ${videoId} uploaded! Marking as complete.`)
+                        clients.markClientVideoComplete(channelId, videoId);
+                        res.send({ message: 'Video uploaded!', youtubeUrl: `https://www.youtube.com/watch?v=${response.data.id}` });
+                    }
+                })
+            } else {
+                res.send({ message: 'Please authorize the youtube channel first.' });
+            }
+        } else {
+            res.status(400).send({ message: 'No file uploaded.' });
         }
-            await youtube.upload(req.file.buffer, (err, response) => {
-                if (err) {
-                    res.send({ message: 'Error uploading video' });
-                } else {
-                    clients.markClientVideoComplete(channelId, videoId);
-                    res.send(response);
-                }
-            })
     } else {
-        res.send({ message: 'Please authorize the youtube channel first.' });
+        res.send({ message: 'Invalid request body.' })
     }
 });
 
@@ -572,8 +580,7 @@ app.put('/trello/update', async (req, res) => {
 */
 app.get('/youtube/auth', (req, res) => {
     logEndpointCalled(req.url);
-    let youtube = new YouTube();
-    const oauth = youtube.loadAuthClient();
+    const oauth = authenticatedYoutube.loadAuthClient();
     const authUrl = oauth.generateAuthUrl({
         access_type: 'offline',
         scope: ['https://www.googleapis.com/auth/youtube.upload'],
@@ -587,9 +594,9 @@ app.get('/youtube/auth', (req, res) => {
 * NOT USED BY US
 */
 app.get('/youtube/oauth2callback', (req, res) => {
+    logEndpointCalled(req.url);
     const code = req.query.code;
-    let youtube = new YouTube();
-    const oauth = youtube.loadAuthClient();
+    const oauth = authenticatedYoutube.loadAuthClient();
     oauth.getToken(code, (err, token) => {
         if (err) return res.status(400).send('Error retrieving access token');
         oauth.setCredentials(token);
