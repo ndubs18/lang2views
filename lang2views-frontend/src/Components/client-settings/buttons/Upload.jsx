@@ -3,6 +3,7 @@ import "../clientSettings.css";
 import Save from "./UploadStepSave";
 import { useState } from "react";
 
+/*
 function disableGrantYoutubeAccess() {
   const sectionValue = document.querySelector(
     ".grant-youtube-access-section-value"
@@ -46,6 +47,7 @@ function enableUseSameTags() {
 
   sectionValue.textContent = "use same tags";
 }
+*/
 
 function GrantYoutubeAccess() {
   return (
@@ -56,17 +58,15 @@ function GrantYoutubeAccess() {
           <button className="pale-green-button youtube-login px-3 py-2">
             <span className="d-flex flex-row justify-content-center">
               <p className="align-self-center mb-0 me-2">Log in</p>
-              <img className="" src="./brown.png" />
             </span>
           </button>
         </div>
-        <GrantYoutubeAccessToggles />
       </div>
       <div className="grant-youtube-access-section-value" hidden></div>
     </div>
   );
 }
-
+/*
 function GrantYoutubeAccessToggles() {
   const [disableYoutubeAccessActive, setDisableYoutubeAccessActive] = useState(
     "upload-step-toggle-not-active"
@@ -231,23 +231,26 @@ function NumTags() {
     </div>
   );
 }
-
+*/
 function Upload() {
-  const [upload, setUpload] = useState({});
+    /*const [upload, setUpload] = useState({});
   
   useEffect(() => {
     fetch("http://localhost:3000/client/getSettings?channelId=" + channelIdContext.Provider, {
     method: "GET",
   }).then((response) => response.json().then((value) => setUpload(value)));
   }, [])
-
+    */
   return (
     <div>
       <GrantYoutubeAccess />
+      {/*
       <UseSameDescription />
       <UseSameTags />
       <Description />
-      <NumTags />
+      <NumTags />*/
+      }
+
       <div className="horizontal-line"></div>
       <Save />
     </div>
