@@ -9,10 +9,10 @@ function renderSampleCreationView() {
     "#sample-creation-view-button-icon"
     );
 
-    sampleCreationViewIcon.src = "src/Images/sampleActive.png";
+    sampleCreationViewIcon.src = "/src/Images/sampleActive.png";
 
     const clientsViewIcon = document.querySelector("#clients-view-button-icon");
-    clientsViewIcon.src = "src/Images/client.png";
+    clientsViewIcon.src = "/src/Images/client.png";
 
     if (viewContainer === null)
         throw new Error("Cannot display the sample creation view if the view container is null, the sample creation view is supposed to be rendered on the same page");
@@ -29,11 +29,11 @@ function renderSampleCreationView() {
 function SampleCreationViewButton(props) {
 
     if (props.default === "client") {
-        const sampleCreationViewLogo = <img id="sample-creation-view-button-icon" src="src/Images/sample.png"></img>;
+        const sampleCreationViewLogo = <img id="sample-creation-view-button-icon" src="/src/Images/sample.png"></img>;
         return <button onClick={renderSampleCreationView} className="btn buttonInactive" id="sample-creation-view-button">{sampleCreationViewLogo}</button>;
     }
     else {
-        const sampleCreationViewLogo = <img id="sample-creation-view-button-icon" src="src/Images/sampleActive.png"></img>;
+        const sampleCreationViewLogo = <img id="sample-creation-view-button-icon" src="/src/Images/sampleActive.png"></img>;
         return <button onClick={renderSampleCreationView} className="btn buttonActive" id="sample-creation-view-button">{sampleCreationViewLogo}</button>;
     }
 }

@@ -6,13 +6,13 @@ function renderClientsView() {
   const viewContainer = document.querySelector("#view-container");
 
   const clientsViewIcon = document.querySelector("#clients-view-button-icon");
-  clientsViewIcon.src = "src/Images/clientActive.png";
+  clientsViewIcon.src = "/src/Images/clientActive.png";
 
   const sampleCreationViewIcon = document.querySelector(
     "#sample-creation-view-button-icon"
   );
 
-  sampleCreationViewIcon.src = "src/Images/sample.png";
+  sampleCreationViewIcon.src = "/src/Images/sample.png";
 
   if (viewContainer === null)
     throw new Error(
@@ -30,7 +30,7 @@ function ClientsViewButton(props) {
   
     if (props.default === "client") {
         const accountPicture = (
-            <img id="clients-view-button-icon" src="src/Images/clientActive.png"></img>
+            <img id="clients-view-button-icon" src="/src/Images/clientActive.png"></img>
         );
 
         return (
@@ -45,7 +45,7 @@ function ClientsViewButton(props) {
     }
     else {
         const accountPicture = (
-            <img id="clients-view-button-icon" src="src/Images/client.png"></img>
+            <img id="clients-view-button-icon" src="/src/Images/client.png"></img>
         );
 
         return (
