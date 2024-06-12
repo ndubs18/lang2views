@@ -1,8 +1,10 @@
-import ClientAndSampleCreationViews from "./Pages/clientAndSampleCreationViews";
+import ClientAndSampleCreationViews, { SampleAndClientCreationViews } from "./Pages/clientAndSampleCreationViews";
 import Login from "./Components/Login/Login.jsx";
 import { Routes, Route } from "react-router-dom";
 import ClientVideoListContainer from "./Components/VideoList/ListContainer/ClientVideoListContainer";
 import DeleteConfirmationPage from "./Components/Clients/DeleteConfirmationPage";
+import AddClient from "./Components/Clients/AddClient";
+import AddSample from "./Components/Sample-creation/AddSample";
 
 function App() {
   return (
@@ -25,12 +27,20 @@ function App() {
           element={<DeleteConfirmationPage />}
         />
         <Route
-          path="/clientsView"
-          element={<ClientAndSampleCreationViews />}
+          path="/add"
+          element={<AddClient />}
         />
         <Route
             path="/clientsView"
             element={<ClientAndSampleCreationViews />}
+        />
+        <Route
+            path="/sampleCreationView"
+            element={<SampleAndClientCreationViews />}
+        />
+        <Route
+            path="/addSample"
+            element={<AddSample />}
         />
       </Routes>
     </>
