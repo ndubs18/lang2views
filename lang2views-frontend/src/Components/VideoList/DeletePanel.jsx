@@ -46,7 +46,7 @@ function DeletePanel({ channelId, channelName, video }) {
     </>);
 
     return (
-        <Panel channelName={channelName} videoName={videoName}>{panelContent}</Panel>
+        <Panel channelName={channelName} panelName="Delete" videoName={videoName}>{panelContent}</Panel>
     );
 }
 

@@ -9,21 +9,21 @@
     display: flex;
     flex-direction: row;
     justify-content: start;
-    margin-bottom: 10px;
-    padding-left: 1%;
-    padding-right: 1%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .client-entry {
+    border: 1px solid grey;
+    border-radius: 7px;
     display: flex;
     flex-direction: row;
     justify-content: start;
-    border: 1px solid black;
     margin-bottom: 15px;
-    border-radius: 5px;
-    padding-left: 1%;
-    padding-right: 1%;
     height: 50px;
+    padding: 10px;
 }
 
 #client-entries-and-header {
@@ -45,19 +45,22 @@
 }
 
 .name-client-entry-data {
-    margin-left: 1%;
-    width: 35%;
+    padding-left: 7px;
+    width: 25%;
 }
 
 .long-format-client-entry-data {
+    text-align: center;
     width: 12%;
 }
 
 .shorts-client-entry-data {
-    width: 14%;
+    text-align: center;
+    width: 13%;
 }
 
 .percentage-done-client-entry-data {
+    text-align: center;
     width: 25%;
 }
 
@@ -66,12 +69,29 @@
     flex-direction: row;
     align-self: center;
     justify-content: center;
-    width: 2vw;
-    height: 2vw;
+    margin-top: 25%;
+    margin-bottom: 25%;
+    height: auto;
+    padding: 0;
+    width: auto;
+}
+
+.four-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    width: 25%;
+    gap: 10px;
+}
+
+.widget-buttons {
+    height: 22px;
+    width: 22px;
+    cursor: pointer;
 }
 
 .client-entry-action-icon {
-    width: 1.3vw;
+    max-width: 100%;
     height: auto;
     align-self: center;
 }

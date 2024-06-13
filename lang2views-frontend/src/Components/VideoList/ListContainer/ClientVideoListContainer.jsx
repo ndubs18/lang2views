@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import IndividualVideo from "../IndividualVideo/IndividualVideo";
 import DefaultChannelIcon from "../../../Icons/profile.svg";
-import SearchIcon from "../../../Icons/search.svg";
+import Search from "../../Utilities/Search";
 import BlankCheckbox from "../../../Icons/blank_check_box.svg";
 import BlackCheckbox from "../../../Icons/check_box.svg";
 import OrganizePanel from "../OrganizePanel";
@@ -12,6 +12,7 @@ import UploadPanel from "../UploadPanel";
 import DeletePanel from "../DeletePanel"
 import { GlobalContextProvider } from "../../../Context/globalContext";
 import DropboxAuthButton from "../../Utilities/DropboxAuthButton";
+import Sidebar from "../../Sidebar/Sidebar";
 
 function ClientVideoListContainer({initialFormat}) {
     const [checkbox, setCheckbox] = useState(false);
@@ -125,69 +126,67 @@ function ClientVideoListContainer({initialFormat}) {
         }
     }
 
-  return (
-    <GlobalContextProvider>
-      <div className="video-list">
-      <div className="top-details">
-        <p className="client-name">{channelName}</p>{" "}
-        <p className="video-list-header"></p>
-      </div>
-      <div className="video-list-tabs">
-        <button
-        id="long-tab"
-            className="long-format btn btn-link bg-white fs-2 text-decoration-none rounded-0 current-tab"
-            onClick={switchToLongFormat}
-        >
-            Long Format
-        </button>
-        <button
-        id="short-tab"
-            className="short-format btn btn-link bg-white fs-2 text-decoration-none rounded-0"
-            onClick={switchToShortFormat}
-        >
-            Short
-        </button>
-        <DropboxAuthButton />
-      </div>
-      <hr />
-      <div className="icon-with-channel-name-content">
-        <div className="default-channel-icon-div">
-          <img
-            className="default-channel-icon"
-            src={DefaultChannelIcon}
-            alt="Default channel icon"
-          />
-        </div>
-        <p className="channel-name">{channelName}</p>
-      </div>
-      <hr />
-      <div className="search-and-modify">
-        <div className="search-content">
-          <img className="search-icon" src={SearchIcon} alt="Search icon" />
-          <input className="search-bar" />
-        </div>
-        <button className="modify-plan-button">Modify plan</button>
-      </div>
-      <OrganizePanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
-      <PostProductionPanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
-      <UploadPanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
-      <DeletePanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
-      <div className="header-for-video-list">
-        <img
-          className="check-box"
-          src={!checkbox ? BlankCheckbox : BlackCheckbox}
-        />
-        <p className="name-header">NAME</p>
-        <p className="thumbnail-header">THUMBNAIL</p>
-      </div>
-              <div id="short-list-container" className="all-videos" style={{ display: "none" } }>
-                  {individualShortVideos}
+    return (
+        <>
+            <Sidebar />
+            <GlobalContextProvider>
+            <div className="video-list">
+                <div className="top-details">
+                    <p className="client-name">{channelName}</p>
+                    <p className="video-list-header"></p>
+                </div>
+                <div className="video-list-tabs">
+                    <button
+                        id="long-tab"
+                        className="long-format btn btn-link bg-white fs-2 text-decoration-none rounded-0 current-tab"
+                        onClick={switchToLongFormat}
+                    >
+                        Long Format
+                    </button>
+                    <button
+                        id="short-tab"
+                        className="short-format btn btn-link bg-white fs-2 text-decoration-none rounded-0"
+                        onClick={switchToShortFormat}
+                    >
+                        Short
+                    </button>
+                    <DropboxAuthButton />
+                </div>
+                <hr />
+                <div className="icon-with-channel-name-content">
+                    <div className="default-channel-icon-div">
+                        <img
+                            className="default-channel-icon"
+                            src={DefaultChannelIcon}
+                            alt="Default channel icon" />
+                    </div>
+                    <p className="channel-name">{channelName}</p>
+                </div>
+                <hr />
+                <div className="search-and-modify">
+                    <Search />
+                    <button className="btn btn-primary modify-plan-button">Modify plan</button>
+                </div>
+                <OrganizePanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
+                <PostProductionPanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
+                <UploadPanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
+                <DeletePanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />
+                <div className="header-for-video-list">
+                    <div className="check-and-video-name">
+                        <img className="check-box" src={!checkbox ? BlankCheckbox : BlackCheckbox} />
+                        <p className="name-header">NAME</p>
+                    </div>
+                    <p className="thumbnail-header">THUMBNAIL</p>
+                </div>
+                <div id="short-list-container" className="all-videos" style={{ display: "none" }}>
+                    {individualShortVideos}
+                </div>
+                <div id="long-list-container" className="all-videos">
+                    {individualLongVideos}
+                </div>
             </div>
-              <div id="long-list-container" className="all-videos">
-                  {individualLongVideos}
-            </div>
-    </div>
-    </GlobalContextProvider>
+            </GlobalContextProvider>
+        </>
   );
 }
 

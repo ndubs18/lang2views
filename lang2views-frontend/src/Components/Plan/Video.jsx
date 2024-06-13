@@ -44,31 +44,29 @@ function Video({ format, video }) {
             let sec = video.duration.seconds;
             duration = `${hours != 0 ? `0${hours}:` : ""}${min < 10 ? `0${min}` : min}:${sec < 10 ? `0${sec}` : sec}`
             const totalSec = hours * 60 * 60 + min * 60 + sec;
-            console.log("totalsec for "+ videoName + ":" + totalSec)
             viewsPerMin = Math.trunc((views / totalSec) * 60);
         }
     }
 
     return (
         <div className={`d-flex flex-column video-container ${format}-seperation ${format=="short" ? "short-container" : "long-container"}`}>
-            <div style={{ width: "100%", height: "100%", backgroundImage: `url(${thumbnailSrc})`, backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize: "14vw"}}>
+            <img className="video-thumbnail" src={thumbnailSrc} />
                 <button
                     id={`button-${videoId}`}
                     className={`rounded rounded-circle ${format}-select-button video-select-button`}
                     onClick={handleSelectButton}
                     disabled={finalized}/>
                 <div id={`data-${videoId}`} style={{ display:"none" }}>{JSON.stringify(video)}</div>
-            </div>
-            <p>{videoName}</p>
-            <div className="d-flex flex-row">
+            <p className="video-title">{videoName}</p>
+            <div className="d-flex flex-row video-details-container">
                 {format == "long" ? (
                     <>
-                        <p className="me-2 text-secondary">{duration} Min</p>
-                        <p className="me-2 text-secondary">{views} Views</p>
-                        <p className="me-2 text-secondary">{viewsPerMin} Views/Min</p>
+                        <p className="video-details">{duration} Min</p>
+                        <p className="video-details">{views} Views</p>
+                        <p className="video-details">{viewsPerMin} Views/Min</p>
                     </>
                 ) : (
-                        <p className="fs-4 me-2 text-secondary">{views} Views</p>
+                        <p className="video-details">{views} Views</p>
                 )}
 
             </div>

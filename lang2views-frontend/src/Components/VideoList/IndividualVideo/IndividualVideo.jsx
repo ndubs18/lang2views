@@ -59,7 +59,7 @@ function IndividualVideo({ videoNumber, videoName, thumbnailImage, videoId, send
     }
 
   return (
-    <div className="video-container">
+    <div className="video-container border border-secondary">
       <div className="check-and-video-name">
         <img
           className="check-box"

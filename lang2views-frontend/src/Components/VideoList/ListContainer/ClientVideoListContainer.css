@@ -5,12 +5,17 @@
 }
 
 .video-list {
-    margin: 50px 40px 50px 40px;
+    margin: 0px 25px 0px 85px;
 }
 
 .video-list-tabs {
     font-size: 15px;
-    font-family: arial;
+}
+
+.video-list-header {
+    color: #8A8A8A;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 .current-tab {
@@ -42,14 +47,13 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
 }
 
 .client-name {
     color: #8A8A8A;
     font-weight: bold;
     font-size: 16px;
-    font-family: arial; 
+    margin-top: 15px;
 }
 
 .video-list-tabs {
@@ -66,7 +70,8 @@
     justify-content: flex-start;
     align-items: center;
     gap: 30px;
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .default-channel-icon {
@@ -76,6 +81,7 @@
 
 .channel-name {
     margin-bottom: 0;
+    font-weight: 600;
 }
 
 .search-and-modify {
@@ -95,36 +101,10 @@
     align-items: center;
 }
 
-.search-icon {
-    height: 15px;
-    width: 15px;
-    position: relative;
-    left: 25px;
-    z-index: 999;
-    cursor: pointer;
-}
-
-.search-bar {
-    width: 175px;
-    height: 35px;;
-    background-color: white;
-    color: black;
-    border-radius: 4px;
-    border-width: 1px;
-    border-color: grey;
-    padding-left: 30px;
-    font-size: 12px;
-}
-
 .modify-plan-button {
     /*background-color: darkblue;*/
-    background-color: #4285F4;
-    color: white;
     font-size: 14px;
-    border-radius: 10px;
-    border: none;
-    width: 150px;
-    height: 50px;
+    height: 35px;
 }
 
 .header-for-video-list {
@@ -132,10 +112,10 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    margin-left: 50px;
-    margin-right: 50px;
     margin-top: 20px;
     margin-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .check-box {
@@ -143,13 +123,22 @@
     width: 15px;
 }
 
+.check-and-video-name {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    width: 50%;
+}
+
 .name-header {
-    margin-left: 20px;
+    width: 50%;
     margin-bottom: 0;
+    margin-left: 7px;
 }
 
 .thumbnail-header {
-    margin-left: 400px;
+    width: 25%;
+    text-align: center;
     margin-bottom: 0;
 }
 
