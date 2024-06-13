@@ -50,10 +50,10 @@ function PostProductionPanel({ channelId, channelName, video }) {
         <div className="text-with-input-information">
             <p className="widget-text">Link To Project</p>
             <p className="widget-input">{dropboxUrl}</p>
-            <button className="arrow-diagonal">↗</button>
+            <button className="arrow-diagonal" onClick={() => window.open(dropboxUrl, '_blank')}>↗</button>
         </div>
-        <button onClick={postProduceVideo} className="panel-action-button">POST-PRODUCE</button>
-        <button onClick={togglePostProductionModal} className="go-back-button">GO BACK</button>
+        <button onClick={postProduceVideo} className="btn btn-primary panel-action-button">POST-PRODUCE</button>
+        <button onClick={togglePostProductionModal} className="btn btn-primary panel-action-button">GO BACK</button>
     </>);
 
     return (

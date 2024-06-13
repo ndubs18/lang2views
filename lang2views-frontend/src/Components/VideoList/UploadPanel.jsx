@@ -58,12 +58,10 @@ function UploadPanel({ channelId, channelName, video }) {
         <div className="text-with-input-information">
             <p className="widget-text">Link To Uploaded Video</p>
             <p className="widget-input">{youtubeUrl}</p>
-        <button className="arrow-diagonal">↗</button>
+            <button className="arrow-diagonal" onClick={() => window.open(youtubeUrl, '_blank')}>↗</button>
         </div>
-        <button onClick={uploadVideo} className="panel-action-button">UPLOAD</button>
-        <button onClick={toggleUploadModal} className="go-back-button">
-            GO BACK
-        </button>
+        <button onClick={uploadVideo} className="btn btn-primary panel-action-button">UPLOAD</button>
+        <button onClick={toggleUploadModal} className="btn btn-primary panel-action-button">GO BACK</button>
     </>)
 
     return (

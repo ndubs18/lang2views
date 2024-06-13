@@ -73,7 +73,7 @@ function ClientEntriesAndHeader(props) {
         totalFinished += dataForCurrentClientEntry.numShortsFinished;
         totalLimit += dataForCurrentClientEntry.clientSettings.numShortsInput;
     }
-    totalLimit != 0 ? percentage = `${Math.trunc(totalFinished / totalLimit)}%` : percentage = "N/A"
+    totalLimit != 0 ? percentage = `${Math.trunc(totalFinished / totalLimit*100)}%` : percentage = "N/A"
     const numLongsFinished = (
       <div className={typeOfClientData[2] + " client-entry-and-header-individual-pieces-of-data-divs"}>
         {`${dataForCurrentClientEntry.numLongsFinished} of ${longFormatLimit}`}
@@ -166,10 +166,10 @@ function ClientEntriesAndHeader(props) {
                   NAME
               </div>
               <div className="long-format-client-entry-data text-secondary">
-                  SHORTS
+                  LONG FORMAT
               </div>
               <div className="shorts-client-entry-data text-secondary">
-                  LONG FORMAT
+                  SHORTS
               </div>
               <div className="percentage-done-client-entry-data text-secondary">
                   PERCENTAGE DONE

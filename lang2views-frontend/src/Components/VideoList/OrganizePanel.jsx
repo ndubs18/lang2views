@@ -55,20 +55,20 @@ function OrganizePanel({ channelId, channelName, video }) {
         <div className="text-with-input-information">
             <p className="widget-text">Dropbox Location</p>
             <p className="widget-input">{dropboxUrl}</p>
-            <button className="arrow-diagonal">↗</button>
+            <button className="arrow-diagonal" onClick={() => window.open(dropboxUrl, '_blank')}>↗</button>
         </div>
         <div className="text-with-input-information">
             <p className="widget-text">Script Link</p>
             <p className="widget-input">{scriptUrl}</p>
-            <button className="arrow-diagonal">↗</button>
+            <button className="arrow-diagonal" onClick={() => window.open(scriptUrl, '_blank')}>↗</button>
         </div>
         <div className="text-with-input-information">
             <p className="widget-text">Trello Ticket</p>
             <p className="widget-input">{trelloUrl}</p>
-            <button className="arrow-diagonal">↗</button>
+            <button className="arrow-diagonal" onClick={() => window.open(trelloUrl, '_blank')}>↗</button>
         </div>
-        <button onClick={organizeVideo} className="panel-action-button">ORGANIZE</button>
-        <button onClick={toggleOrganizeModal} className="go-back-button">GO BACK</button>
+        <button onClick={organizeVideo} className="btn btn-primary panel-action-button">ORGANIZE</button>
+        <button onClick={toggleOrganizeModal} className="btn btn-primary panel-action-button">GO BACK</button>
     </>);
 
     return (
