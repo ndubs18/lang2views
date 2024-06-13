@@ -1,3 +1,15 @@
+import clientSearchExpressionContext from "../../Context/ClientSearchExpressionContext";
+
+function handleKeyPress(event) {
+  if (event.key === "Enter") {
+    const clientSearchInput = document.querySelector("#client-search-input");
+    clientSearchExpressionContext.Provider = clientSearchInput.value;
+  }
+
+  //setClientList(clientList.filter((client) => client.channelName === clientSearchExpressionContext.Provider));
+}
+
+
 function ClientsViewSearch() {
   const searchLogo = (
     <svg
@@ -13,7 +25,7 @@ function ClientsViewSearch() {
   );
 
   const searchInput = (
-    <input id="client-search-input"></input>
+    <input id="client-search-input" onKeyDown={(event) => {handleKeyPress(event)}}></input>
   );
 
   const searchContainer = (

@@ -9,6 +9,7 @@ import "./otherClientsViewFunctionality.css";
 import "../Utilities/views.css";
 import CreateAccountPictureAndNameContainer from "../Utilities/CreateAccountPictureAndNameContainer";
 import { useEffect, useState } from "react";
+import clientSearchExpressionContext from "../../Context/ClientSearchExpressionContext";
 
 function ClientsView(props) {
   window.history.replaceState({}, "clientsView", "/clientsView");
@@ -39,7 +40,7 @@ function ClientsView(props) {
     "",
     "",
   ];
-   /*const dataForTableBodyRow1 = {
+   const dataForTableBodyRow1 = {
     clientId: "12cd7",
     clientYoutubePictureLink: "src/Images/brown.png",
     clientName: "B",
@@ -69,7 +70,7 @@ function ClientsView(props) {
     dataForTableBodyRow2,
     dataForTableBodyRow2,
     dataForTableBodyRow2,
-  ];*/
+  ];
 
   const accountPictureLink = "src/Images/brown.png";
 
@@ -104,7 +105,7 @@ function ClientsView(props) {
         </div>
         <ClientEntriesAndHeader
           headerData={headerData}
-          clientEntries={clientList}
+          clientEntries={clientEntries}
         />
       </div>
       <div className="popup-and-close-area-container"></div>
