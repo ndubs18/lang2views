@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import "../../Utilities/popup.css";
 import Upload from "./Upload";
 
 function SampleSettingsUploadButtonClickProcessor() {

@@ -1,3 +1,7 @@
+.popup-and-close-area-container {
+    display: flex;
+}
+
 .client-settings-popup {
     display: flex;
     flex-direction: column;
@@ -6,22 +10,22 @@
     z-index: 1;
     left: 0;
     top: 0;
-    width: 100%;
+    width: 50%;
     height: 100%;
     background-color: #FFF;
     margin-left: 50%;
+    padding: 20px;
 }
 
 .client-settings-close-area {
     display: flex;
     position: fixed;
-    z-index: 1;
+    z-index: 100;
     left: 0;
     top: 0;
-    width: 45%;
+    width: 50%;
     height: 100%;
-    background-color: transparent;
-    margin-left: 5%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 #use-monthly-plan-container {
@@ -78,7 +82,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 70em;
     margin-top: 3%;
 }
 
@@ -86,7 +89,6 @@
     margin-top: 1em;
     border-bottom: 1px solid grey;
     height: 2px;
-    width: 70em;
 }
 
 .horizontal-line {

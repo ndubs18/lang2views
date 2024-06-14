@@ -1,14 +1,13 @@
-import ClientEntriesAndHeader from './ClientEntriesAndHeader';
-import ClientsViewSearch from './ClientsViewSearch';
-import AccountSettingsButton from '../Utilities/AccoutSettingsButton';
-import AddClientButton from './AddClientButton';
-import DropboxAuthButton from '../Utilities/DropboxAuthButton';
-import './clientsViewHeader.css';
-import './clientsViewSearchAndAddButton.css';
-import './otherClientsViewFunctionality.css';
-import '../Utilities/views.css';
-import CreateAccountPictureAndNameContainer from '../Utilities/CreateAccountPictureAndNameContainer';
-import { useEffect, useState } from 'react';
+import ClientEntriesAndHeader from "./ClientEntriesAndHeader";
+import Search from "../Utilities/Search";
+import AccountSettingsButton from "../Utilities/AccoutSettingsButton";
+import AddClientButton from "./AddClientButton";
+import DropboxAuthButton from "../Utilities/DropboxAuthButton"
+import "./clientsViewHeader.css";
+import "./clientsViewSearchAndAddButton.css";
+import "./otherClientsViewFunctionality.css";
+import { useEffect, useState } from "react";
+import { alertError } from "../Utilities/Alert";
 
 function ClientsView(props) {
   window.history.replaceState({}, 'clientsView', '/clientsView');
@@ -21,7 +20,7 @@ function ClientsView(props) {
     }).then((response) =>
       response
         .json()
-        .then((value) => setClientList(value))
+            .then((value) => { setClientList(value); alertError(value.message) })
         .catch((err) => {
           throw new Error(err);
         })
@@ -87,45 +86,28 @@ function ClientsView(props) {
   }, []);
 
   const headerData = [
-    '',
-    'NAME',
-    'LONG FORMAT',
-    'SHORTS',
-    'PERCENTAGE DONE',
-    '',
-    '',
-    '',
-    '',
+    "NAME",
+    "LONG FORMAT",
+    "SHORTS",
+    "PERCENTAGE DONE",
   ];
-
-  const accountPictureLink = 'src/Images/brown.png';
 
   if (props === null) throw new Error('props for component clientView is null');
 
   if (props.currentUser === null)
     throw new Error('property: current user is null for component ClientView');
 
-  const accountPictureAndNameSpanElement = CreateAccountPictureAndNameContainer(
-    {
-      accountNameText: props.currentUser,
-      accountPictureLink: accountPictureLink,
-    }
-  );
-
   return (
     <div id="clients-view">
-      <div
-        id="clients-view-header"
-        className="d-flex flex-row justify-content-between"
-      >
-        <h1 className="page-name text-secondary fw-bold">Client Account</h1>
-        <AccountSettingsButton
+      <div className="top-details">
+        <h1 className="client-name">Client Account</h1>
+        {/*<AccountSettingsButton
           accountPictureAndName={accountPictureAndNameSpanElement}
-        />
-      </div>
+        />*/}
+          </div>
       <div id="clients-view-functionality-container">
         <div id="client-search-and-add-client-button">
-          <ClientsViewSearch />
+          <Search />
           <DropboxAuthButton />
           <AddClientButton />
         </div>

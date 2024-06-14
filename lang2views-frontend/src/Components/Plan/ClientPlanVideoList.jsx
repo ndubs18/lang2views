@@ -8,6 +8,7 @@ import {
   sortViewsPerMinuteMostToLeast,
 } from "../Utilities/sortAscending";
 import storeSelectedVideos from "./Buttons/StoreSelectedVideos";
+import { alertError } from "../Utilities/Alert";
 
 const ACTIVE_BUTTON_CLASS = "filter-button-active";
 const INACTIVE_BUTTON_CLASS = "filter-button-inactive";
@@ -47,6 +48,7 @@ function ClientPlanVideoList({ channelId, format }) {
             .then((response) => {
                 response.json().then((value) => {
                     setGetVideosResult(value);
+                    alertError(value.message);
                 })
             }
         )
@@ -120,7 +122,7 @@ function ClientPlanVideoList({ channelId, format }) {
 
   return (
     <>
-      <div className="d-flex flex-row ms-5 mb-5 filter-buttons-container">
+      <div className="d-flex flex-row filter-buttons-container">
         <p className="align-middle fs-4 mt-2 me-4">Filters:</p>
         {(format == "long") ? (
             <button
@@ -148,6 +150,7 @@ function ClientPlanVideoList({ channelId, format }) {
             </button>
           ) : null}
       </div>
+          <hr style={{ margin: "0" }} />
           {(format == "long") ? (
               <div id="sorted-by-duration" style={{ display: "none" }} className="scrollable-video-list">{videosByDuration}</div>
               /*<div id="sorted-by-views-per-min" style={{ display: "none" }} className="scrollable-video-list">{videosByViewsPerMin}</div>*/
@@ -182,14 +185,16 @@ function ClientPlanVideoList({ channelId, format }) {
           Next
         </button>
       </div>
-      <div className="horizontal-line"></div>
+      <hr />
       <input
         id="current-number-to-process"
         hidden
         type="number"
         value={currentNumberToProcess ? currentNumberToProcess.value : 0}
-      />
+          />
+      <div className="client-popup-footer">
           <Save channelId={channelId} />
+      </div>
     </>
   );
 }

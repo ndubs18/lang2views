@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import ClientAndSampleCreationViews from "../../Pages/clientAndSampleCreationViews";
+import { alertError } from "../Utilities/Alert";
 
 function saveButtonClick() {
   const channelNameInput = document.querySelector("#channelName");
@@ -18,7 +19,7 @@ function saveButtonClick() {
     }).then((response) => {
         response
             .json()
-            .then((value) => console.log(value))
+            .then((value) => alertError(value.message))
             .catch((err) => {
                 throw new Error(err);
             })

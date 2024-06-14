@@ -12,6 +12,7 @@ import { DropboxConnection } from './dropboxConnection.js'
 import { GoogleDocs } from './googledoc.js'
 import dotenv from 'dotenv'
 import multer from 'multer';
+import { Readable } from 'stream'
 
 import { Request } from 'express';
 
@@ -43,7 +44,7 @@ const userFile = 'users.json';
 export const clientFile = 'clients.json';
 
 const dropbox = new DropboxConnection()
-
+const authenticatedYoutube = new YouTube();
 const trello = new Trello(process.env.TRELLO_API_KEY, process.env.TRELLO_TOKEN);
 
 // Middleware to parse JSON bodies
@@ -99,13 +100,13 @@ app.post('/client/add', async (req, res) => {
                     message: 'Client created: ' + JSON.stringify(result)
                 });
             } else {
-                res.send({ message: 'Channel not found.' })
+                res.send({ message: 'Error: Channel not found.' })
             }
         } else {
-            res.send({ message: 'Please authenticate Dropbox first.' });
+            res.send({ message: 'Error: Please authenticate Dropbox first.' });
         }
     } else {
-        res.send({ message: 'Invalid request body: Please send url.' })
+        res.send({ message: 'Error: Invalid request body: Please send url.' })
     }
 })
 
@@ -123,7 +124,7 @@ app.post('/client/remove', async (req, res) => {
         await clients.writeClientsToFile();
         res.send({ message: 'Client removed.' });
     } else {
-        res.send({ message: 'Invalid request body: Please send clientId.' })
+        res.send({ message: 'Error: Invalid request body: Please send clientId.' })
     }
 })
 
@@ -138,7 +139,7 @@ app.post('/client/get', async (req, res) => {
         let clients = new Clients(clientFile);
         res.send(JSON.stringify(clients.getClient(channelId)));
     } else {
-        res.send({ message: 'Invalid request body: Please send clientId.' })
+        res.send({ message: 'Error: Invalid request body: Please send clientId.' })
     }
 })
 
@@ -173,10 +174,10 @@ app.get("/client/getSettings", (req, res) => {
         if (settings) {
             res.json(settings);
         } else {
-            res.status(404).send("Client settings not found for the given channelId");
+            res.status(404).send("Error: Client settings not found for the given channelId");
         }
     } else {
-        res.status(400).send("Invalid request. Please provide a channelId");
+        res.status(400).send("Error: Invalid request. Please provide a channelId");
     }
 });
 
@@ -206,7 +207,7 @@ app.post('/client/updateSettings', async (req, res) => {
         res.send({ message: result })
         await clients.writeClientsToFile();
     } else {
-        res.send({ message: 'Invalid request body. Please send client settings and channelId' });
+        res.send({ message: 'Error: Invalid request body. Please send client settings and channelId' });
     }
 });
 
@@ -264,7 +265,7 @@ app.post('/client/addVideo', async (req, res) => {
                         const card = await trello.createCard(cardData/*, getCustomFields(video)*/);
 
                         video.number = videoNumber;
-                        video.trelloCard = card.id;
+                        video.trelloCard = card;
                         video.dropboxURL = dropboxUrl;
                         video.documentId = documentId
                         clients.updateClientVideo(channelId, video)
@@ -274,19 +275,19 @@ app.post('/client/addVideo', async (req, res) => {
                             message: "Video added."
                         });
                     } else {
-                        res.send({ message: 'Please authenticate Dropbox first.' });
+                        res.send({ message: 'Error: Please authenticate Dropbox first.' });
                     }
                 } else {
-                    res.send({ message: 'Invalid request body. Video format invalid.' });
+                    res.send({ message: 'Error: Invalid request body. Video format invalid.' });
                 }
             } else {
-                res.send({ message: 'No Trello list ID found for this client. Make sure to set a Trello list ID in this client\'s settings.' });
+                res.send({ message: 'Error: No Trello list ID found for this client. Make sure to set a Trello list ID in this client\'s settings.' });
             }
         } else {
-            res.send({ message: 'Video is already added.' })
+            res.send({ message: 'Error: Video is already added.' })
         }
     } else {
-        res.send({ message: 'Invalid request body.' });
+        res.send({ message: 'Error: Invalid request body.' });
     }
 })
 
@@ -305,7 +306,7 @@ app.post('/client/removeVideo', (req, res) => {
         clients.removeClientVideo(channelId,videoId);
         res.send({ message: 'Video removed.' });
     } else {
-        res.send({ message: 'Invalid request body. Please send channelId and videoId' });
+        res.send({ message: 'Error: Invalid request body. Please send channelId and videoId' });
     }
 });
 
@@ -319,7 +320,7 @@ app.post('/client/getAddedVideos', async (req, res) => {
         const result = new Clients(clientFile).getClientVideos(channelId);
         res.send(JSON.stringify(result));
     } else {
-        res.send({ message: 'Invalid request body: Please send channelId.' });
+        res.send({ message: 'Error: Invalid request body: Please send channelId.' });
     }
 
 })
@@ -342,7 +343,7 @@ app.post('/client/getVideoPage', async (req, res) => {
         res.send(JSON.stringify(result));
     } else {
         // res.send('Invalid request body: Please send apiKey and channelId.');
-        res.send({ message: 'Invalid request body: Please send channelId.' });
+        res.send({ message: 'Error: Invalid request body: Please send channelId.' });
     }
 
 })
@@ -356,23 +357,31 @@ app.post('/client/upload',upload.single('file'), async (req, res) => {
     logEndpointCalled(req.url);
     const channelId = req.body.channelId;
     const videoId = req.body.videoId;
-    let youtube = new YouTube();
     let clients = new Clients(clientFile);
+    let file = req.file;
 
-    if (youtube.checkAuth()) {
-        if(!req.file){
-            res.status(400).send('No file uploaded.');
+    if (channelId && videoId) {
+        if (file) {
+            if (authenticatedYoutube.checkAuth()) {
+                console.log("Starting upload.")
+                await authenticatedYoutube.upload(Readable.from(file.buffer), (err, response) => {
+                    if (err) {
+                        res.send({ message: "Error: Couldn't video", error: err });
+                    } else {
+                        console.log(`Video ${videoId} uploaded! Marking as complete.`)
+                        clients.markClientVideoComplete(channelId, videoId);
+                        authenticatedYoutube.clearAuthClient();
+                        res.send({ message: 'Video uploaded!', youtubeUrl: `https://www.youtube.com/watch?v=${response.data.id}` });
+                    }
+                })
+            } else {
+                res.send({ message: 'Error: Please authorize the youtube channel first.' });
+            }
+        } else {
+            res.status(400).send({ message: 'Error: No file uploaded.' });
         }
-            await youtube.upload(req.file.buffer, (err, response) => {
-                if (err) {
-                    res.send({ message: 'Error uploading video' });
-                } else {
-                    clients.markClientVideoComplete(channelId, videoId);
-                    res.send(response);
-                }
-            })
     } else {
-        res.send({ message: 'Please authorize the youtube channel first.' });
+        res.send({ message: 'Error: Invalid request body.' })
     }
 });
 
@@ -419,10 +428,10 @@ app.post('/client/postProcess', async (req,res) => {
 
             res.send({ dropboxUrl: response, message: 'davinciTimeline.fcpxml uploaded to Dropbox.' });
         } else {
-            res.send({ message: 'Please authenticate Dropbox first.' });
+            res.send({ message: 'Error: Please authenticate Dropbox first.' });
         }
     } else {
-        res.send({ message: 'Invalid request body. Please send channelId and videoId.' });
+        res.send({ message: 'Error: Invalid request body. Please send channelId and videoId.' });
     }
 })
 
@@ -494,10 +503,10 @@ app.post('/client/organizeVideo', async (req, res) => {
                 trelloUrl: video.trelloCard,
             }));
         } else {
-            res.send({ message: 'Please authenticate Dropbox first.' });
+            res.send({ message: 'Error: Please authenticate Dropbox first.' });
         }
     } else {
-        res.send({ message: 'Invalid request body. Please send channelId, videoId, and lang (desired translation language).' });
+        res.send({ message: 'Error: Invalid request body. Please send channelId, videoId, and lang (desired translation language).' });
     }
 })
 
@@ -533,7 +542,7 @@ app.post('/dropbox/createClientFolders', async (req, res) => {
 
         res.send({ url: result });
     } else {
-        res.send({ message: 'Invalid request body.' })
+        res.send({ message: 'Error: Invalid request body.' })
     }
 });
 
@@ -572,13 +581,12 @@ app.put('/trello/update', async (req, res) => {
 */
 app.get('/youtube/auth', (req, res) => {
     logEndpointCalled(req.url);
-    let youtube = new YouTube();
-    const oauth = youtube.loadAuthClient();
+    const oauth = authenticatedYoutube.loadAuthClient();
     const authUrl = oauth.generateAuthUrl({
         access_type: 'offline',
         scope: ['https://www.googleapis.com/auth/youtube.upload'],
     });
-    res.redirect(authUrl);
+    res.send({ authUrl: authUrl });
 });
 
 /*
@@ -587,9 +595,9 @@ app.get('/youtube/auth', (req, res) => {
 * NOT USED BY US
 */
 app.get('/youtube/oauth2callback', (req, res) => {
+    logEndpointCalled(req.url);
     const code = req.query.code;
-    let youtube = new YouTube();
-    const oauth = youtube.loadAuthClient();
+    const oauth = authenticatedYoutube.loadAuthClient();
     oauth.getToken(code, (err, token) => {
         if (err) return res.status(400).send('Error retrieving access token');
         oauth.setCredentials(token);
@@ -612,7 +620,7 @@ app.post('/user/login', (req, res) => {
         let result = users.authenticate({username:email,password:password});
         res.send(result);
     } else {
-        res.send({ message: 'Invalid request body: Please send email and password' });
+        res.send({ message: 'Error: Invalid request body: Please send email and password' });
     }
 })
 
@@ -631,7 +639,7 @@ app.post('/user/createUser', (req,res) => {
         users.writeUsersToFile();
         res.send(result);
     } else {
-        res.send({ message: 'Invalid request body: Please send email and password' });
+        res.send({ message: 'Error: Invalid request body: Please send email and password' });
     }
 })
 
@@ -653,7 +661,7 @@ app.post('/user/updateUser', (req, res) => {
         users.writeUsersToFile();
         res.send(result);
     } else {
-        res.send({ message: 'Invalid request body: Please send email and password' });
+        res.send({ message: 'Error: Invalid request body: Please send email and password' });
     }
 })
 
@@ -673,10 +681,10 @@ app.post('/user/removeUser', (req, res) => {
             res.send({ message: 'User removed.' })
             users.writeUsersToFile();
         } else {
-            res.send({ message: 'User not found.' })
+            res.send({ message: 'Error: User not found.' })
         }
     } else {
-        res.send({ message: 'Invalid request body: Please send email and password' });
+        res.send({ message: 'Error: Invalid request body: Please send email and password' });
     }
 })
 

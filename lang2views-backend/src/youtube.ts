@@ -7,6 +7,7 @@ import { Clients } from './clients.js';
 import { Videos } from './video.js';
 import { TranslationServiceClient } from '@google-cloud/translate';
 import { GoogleAuth } from 'google-auth-library';
+import { Readable } from 'stream'
 
 // If ffmpeg is installed locally this will give you issues. Just comment out line below
 ffmpeg.setFfmpegPath(ffmpegPath.path);
@@ -45,14 +46,14 @@ export class YouTube {
 
     }
     checkAuth(){
-        if(this.oAuth2Client.credentials){
+        if(this.oAuth2Client && this.oAuth2Client.credentials){
             return true
         }
         return false;
     }
-    upload(file:Buffer, callback:Function){
+    async upload(file:Readable, callback:Function){
         const youtube = google.youtube({ version: 'v3', auth: this.oAuth2Client });
-        youtube.videos.insert(
+        const result = await youtube.videos.insert(
             {
             part: ['snippet,status'],
             requestBody: {
@@ -71,7 +72,7 @@ export class YouTube {
             },
             },
             {
-            onUploadProgress: (evt) => {
+                onUploadProgress: (evt) => {
                 console.log(evt);
             },
             },
@@ -88,6 +89,11 @@ export class YouTube {
         this.oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
         return this.oAuth2Client;
     }
+
+    clearAuthClient() {
+        this.oAuth2Client.credentials = null;
+    }
+
     async getVideoList(apiKey:string, channelId: string, pageToken:string|null){
         const youtube = google.youtube({
             version: 'v3',

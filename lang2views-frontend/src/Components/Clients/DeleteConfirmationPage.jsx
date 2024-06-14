@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Button from "../Utilities/Button";
+import { alertError } from "../Utilities/Alert";
 
 function DeleteConfirmationPage() {
     const [client, setClient] = useState(null);
@@ -18,7 +19,7 @@ function DeleteConfirmationPage() {
         }).then((response) => {
             response
                 .json()
-                .then((value) => { setClient(value) })
+                .then((value) => { setClient(value); alertError(value.message) })
                 .catch((err) => {
                     throw new Error(err);
                 })

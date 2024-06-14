@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import "../../Utilities/popup.css";
 import Transcription from "./Transcription";
 
 function SampleSettingsTranscriptionButtonClickProcessor() {

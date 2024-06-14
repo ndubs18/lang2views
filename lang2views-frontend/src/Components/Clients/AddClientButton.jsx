@@ -1,17 +1,12 @@
 import React from "react";
-import {createRoot} from "react-dom/client";
-import AddClient from "./AddClient";
-
-function addClientButtonClick() {
-    const root = document.querySelector("#root");
-    const addClientHook = createRoot(root);
-
-    window.history.replaceState({}, "add", "/add");
-    addClientHook.render(<AddClient />);
-}
+import { createRoot } from "react-dom/client";
 
 function AddClientButton() {
-    return <button className="btn btn-primary" id="add-client-button" value="+ Add new" onClick={addClientButtonClick}>+ Add new</button>
+    return (
+        <a href="/add" className="btn btn-primary" id="add-client-button">
+            + Add new
+        </a>
+    );
 }
 
 export default AddClientButton;

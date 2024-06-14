@@ -1,3 +1,4 @@
+import { alertError } from "../../Utilities/Alert";
 import "../save.css";
 import storeSelectedVideos from "./StoreSelectedVideos";
 
@@ -24,6 +25,7 @@ function StepSave({ channelId }) {
             }).then((response) => {
                 return response
                     .json()
+                    .then(value => alertError(value.message))
                     .catch((error) => console.error(error))
             });
         }

@@ -4,7 +4,6 @@ import AccountSettingsButton from '../Utilities/AccoutSettingsButton';
 import AddSampleButton from './AddSampleButton';
 import CreateAccountPictureAndNameContainer from '../Utilities/CreateAccountPictureAndNameContainer';
 import "./sampleCreationHeader.css";
-import "../Utilities/views.css";
 import "./sampleCreationSearchAndAddButton.css";
 import "./otherSampleCreationViewFunctionality.css";
 import { useEffect, useState } from 'react';
