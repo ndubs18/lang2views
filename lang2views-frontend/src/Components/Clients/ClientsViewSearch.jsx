@@ -1,14 +1,16 @@
-import clientSearchExpressionContext from "../../Context/ClientSearchExpressionContext";
+import { createRoot } from "react-dom/client";
+import ClientsView from "./ClientsView";
 
 function handleKeyPress(event) {
   if (event.key === "Enter") {
     const clientSearchInput = document.querySelector("#client-search-input");
-    clientSearchExpressionContext.Provider = clientSearchInput.value;
+
+    const viewContainer = document.querySelector("#view-container");
+    const clientsViewRoot = createRoot(viewContainer);
+
+    clientsViewRoot.render(<ClientsView searchExpression={clientSearchInput.value}/>)
   }
-
-  //setClientList(clientList.filter((client) => client.channelName === clientSearchExpressionContext.Provider));
 }
-
 
 function ClientsViewSearch() {
   const searchLogo = (
