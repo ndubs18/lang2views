@@ -370,6 +370,7 @@ app.post('/client/upload',upload.single('file'), async (req, res) => {
                     } else {
                         console.log(`Video ${videoId} uploaded! Marking as complete.`)
                         clients.markClientVideoComplete(channelId, videoId);
+                        authenticatedYoutube.clearAuthClient();
                         res.send({ message: 'Video uploaded!', youtubeUrl: `https://www.youtube.com/watch?v=${response.data.id}` });
                     }
                 })
