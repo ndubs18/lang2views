@@ -89,6 +89,11 @@ export class YouTube {
         this.oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
         return this.oAuth2Client;
     }
+
+    clearAuthClient() {
+        this.oAuth2Client.credentials = null;
+    }
+
     async getVideoList(apiKey:string, channelId: string, pageToken:string|null){
         const youtube = google.youtube({
             version: 'v3',

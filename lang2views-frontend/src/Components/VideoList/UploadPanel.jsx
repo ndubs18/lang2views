@@ -2,6 +2,7 @@ import "./Panel.css";
 import Panel from "./Panel"
 import { useState } from "react";
 import { useGlobalContext } from "../../Context/globalContext";
+import { alertError } from "../Utilities/Alert";
 
 function UploadPanel({ channelId, channelName, video }) {
     const [videoFile, setVideoFile] = useState();
@@ -30,7 +31,7 @@ function UploadPanel({ channelId, channelName, video }) {
         }).then((response) => {
             response
                 .json()
-                .then((value) => setUploadData(value))
+                .then((value) => { setUploadData(value); alertError(value.message) })
                 .catch((err) => {
                     throw new Error(err);
                 })
