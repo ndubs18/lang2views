@@ -2,6 +2,7 @@ import "./Panel.css";
 import Panel from "./Panel"
 import { useState } from "react";
 import { useGlobalContext } from "../../Context/globalContext";
+import { alertError } from "../Utilities/Alert";
 
 function PostProductionPanel({ channelId, channelName, video }) {
     const [postProductionData, setPostProductionData] = useState("");
@@ -22,7 +23,7 @@ function PostProductionPanel({ channelId, channelName, video }) {
         }).then((response) => {
             response
                 .json()
-                .then((value) => setPostProductionData(value))
+                .then((value) => { setPostProductionData(value); alertError(value.message) })
                 .catch((err) => {
                     throw new Error(err);
                 })

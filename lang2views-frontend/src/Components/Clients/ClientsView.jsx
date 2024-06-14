@@ -7,6 +7,7 @@ import "./clientsViewHeader.css";
 import "./clientsViewSearchAndAddButton.css";
 import "./otherClientsViewFunctionality.css";
 import { useEffect, useState } from "react";
+import { alertError } from "../Utilities/Alert";
 
 function ClientsView(props) {
   window.history.replaceState({}, "clientsView", "/clientsView");
@@ -19,7 +20,7 @@ function ClientsView(props) {
     }).then((response) =>
       response
         .json()
-        .then((value) => setClientList(value))
+            .then((value) => { setClientList(value); alertError(value.message) })
         .catch((err) => {
           throw new Error(err);
         })

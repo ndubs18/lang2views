@@ -1,6 +1,7 @@
 import "./Panel.css";
 import Panel from "./Panel"
 import { useGlobalContext } from "../../Context/globalContext";
+import { alertError } from "../Utilities/Alert";
 
 function DeletePanel({ channelId, channelName, video }) {
     const { isDeleteVisible, setIsDeleteVisible } = useGlobalContext();
@@ -19,7 +20,7 @@ function DeletePanel({ channelId, channelName, video }) {
         }).then((response) => {
             response
                 .json()
-                .then((value) => console.log(value))
+                .then((value) => alertError(value.message))
                 .catch((err) => {
                     throw new Error(err);
                 })

@@ -2,6 +2,7 @@ import "./Panel.css";
 import Panel from "./Panel"
 import { useState } from "react";
 import { useGlobalContext } from "../../Context/globalContext";
+import { alertError } from "../Utilities/Alert";
 
 function OrganizePanel({ channelId, channelName, video }) {
     const [organizeData, setOrganizeData] = useState("");
@@ -25,7 +26,7 @@ function OrganizePanel({ channelId, channelName, video }) {
         }).then((response) => {
             response
                 .json()
-                .then((value) => { setOrganizeData(value); console.log(organizeData) })
+                .then((value) => { setOrganizeData(value); alertError(value.message)})
                 .catch((err) => {
                     throw new Error(err);
                 })

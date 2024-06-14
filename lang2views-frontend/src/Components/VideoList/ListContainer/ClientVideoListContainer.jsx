@@ -13,6 +13,7 @@ import DeletePanel from "../DeletePanel"
 import { GlobalContextProvider } from "../../../Context/globalContext";
 import DropboxAuthButton from "../../Utilities/DropboxAuthButton";
 import Sidebar from "../../Sidebar/Sidebar";
+import { alertError } from "../../Utilities/Alert";
 
 function ClientVideoListContainer({initialFormat}) {
     const [checkbox, setCheckbox] = useState(false);
@@ -35,7 +36,7 @@ function ClientVideoListContainer({initialFormat}) {
         }).then((response) => {
             response
                 .json()
-                .then((value) => setVideoList(value))
+                .then((value) => { setVideoList(value); alertError(value.message) })
                 .catch((err) => {
                     throw new Error(err);
                 })
@@ -51,7 +52,7 @@ function ClientVideoListContainer({initialFormat}) {
         }).then((response) => {
             response
                 .json()
-                .then((value) => {setClient(value)})
+                .then((value) => { setClient(value); alertError(value.message) })
                 .catch((err) => {
                     throw new Error(err);
                 })
@@ -150,7 +151,6 @@ function ClientVideoListContainer({initialFormat}) {
                     >
                         Short
                     </button>
-                    <DropboxAuthButton />
                 </div>
                 <hr />
                 <div className="icon-with-channel-name-content">
@@ -165,6 +165,7 @@ function ClientVideoListContainer({initialFormat}) {
                 <hr />
                 <div className="search-and-modify">
                     <Search />
+                    <DropboxAuthButton />
                     <button className="btn btn-primary modify-plan-button">Modify plan</button>
                 </div>
                 <OrganizePanel channelId={channelId} channelName={channelName} video={getVideoFromId(currentVideoId)} />

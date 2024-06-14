@@ -8,6 +8,7 @@ import {
   sortViewsPerMinuteMostToLeast,
 } from "../Utilities/sortAscending";
 import storeSelectedVideos from "./Buttons/StoreSelectedVideos";
+import { alertError } from "../Utilities/Alert";
 
 const ACTIVE_BUTTON_CLASS = "filter-button-active";
 const INACTIVE_BUTTON_CLASS = "filter-button-inactive";
@@ -47,6 +48,7 @@ function ClientPlanVideoList({ channelId, format }) {
             .then((response) => {
                 response.json().then((value) => {
                     setGetVideosResult(value);
+                    alertError(value.message);
                 })
             }
         )
