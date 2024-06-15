@@ -1,3 +1,17 @@
+import { createRoot } from "react-dom/client";
+import ClientsView from "./ClientsView";
+
+function handleKeyPress(event) {
+  if (event.key === "Enter") {
+    const clientSearchInput = document.querySelector("#client-search-input");
+
+    const viewContainer = document.querySelector("#view-container");
+    const clientsViewRoot = createRoot(viewContainer);
+
+    clientsViewRoot.render(<ClientsView searchExpression={clientSearchInput.value}/>)
+  }
+}
+
 function ClientsViewSearch() {
   const searchLogo = (
     <svg
@@ -13,7 +27,7 @@ function ClientsViewSearch() {
   );
 
   const searchInput = (
-    <input id="client-search-input"></input>
+    <input id="client-search-input" onKeyDown={(event) => {handleKeyPress(event)}}></input>
   );
 
   const searchContainer = (
