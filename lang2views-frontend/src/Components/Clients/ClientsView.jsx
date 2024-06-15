@@ -1,5 +1,4 @@
 import ClientEntriesAndHeader from "./ClientEntriesAndHeader";
-import Search from "../Utilities/Search";
 import AccountSettingsButton from "../Utilities/AccoutSettingsButton";
 import AddClientButton from "./AddClientButton";
 import DropboxAuthButton from "../Utilities/DropboxAuthButton"
@@ -8,6 +7,7 @@ import "./clientsViewSearchAndAddButton.css";
 import "./otherClientsViewFunctionality.css";
 import { useEffect, useState } from "react";
 import { alertError } from "../Utilities/Alert";
+import ClientsViewSearch from "./ClientsViewSearch";
 
 function ClientsView(props) {
   window.history.replaceState({}, 'clientsView', '/clientsView');
@@ -107,7 +107,7 @@ function ClientsView(props) {
           </div>
       <div id="clients-view-functionality-container">
         <div id="client-search-and-add-client-button">
-          <Search />
+          <ClientsViewSearch />
           <DropboxAuthButton />
           <AddClientButton />
         </div>

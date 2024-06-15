@@ -5,8 +5,9 @@ function ClientsViewSearch() {
 
     return (
         <div className="search-content">
-            <img className="search-icon" src={SearchIcon} alt="Search icon" />
-            <input className="search-bar" />
+            Search not implemented
+            {/* <img className="search-icon" src={SearchIcon} alt="Search icon" />
+            <input className="search-bar" /> */}
         </div>
     );
 }

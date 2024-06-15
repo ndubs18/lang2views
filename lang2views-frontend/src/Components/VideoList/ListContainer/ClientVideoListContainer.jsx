@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import IndividualVideo from "../IndividualVideo/IndividualVideo";
 import DefaultChannelIcon from "../../../Icons/profile.svg";
-import Search from "../../Utilities/Search";
+import VideoListSearch from "../../Utilities/VideoListSearch";
 import BlankCheckbox from "../../../Icons/blank_check_box.svg";
 import BlackCheckbox from "../../../Icons/check_box.svg";
 import OrganizePanel from "../OrganizePanel";
@@ -164,7 +164,7 @@ function ClientVideoListContainer({initialFormat}) {
                 </div>
                 <hr />
                 <div className="search-and-modify">
-                    <Search />
+                    <VideoListSearch />
                     <DropboxAuthButton />
                     <button className="btn btn-primary modify-plan-button">Modify plan</button>
                 </div>
