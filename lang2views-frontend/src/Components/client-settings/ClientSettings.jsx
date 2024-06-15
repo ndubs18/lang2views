@@ -40,7 +40,7 @@ function ClientSettings({ channelId, channelName }) {
           >
             Plan
           </button>
-          <button
+          {/* <button
             id="client-settings-transcription-button"
             className={
               transcriptionButtonActive +
@@ -71,7 +71,7 @@ function ClientSettings({ channelId, channelName }) {
             }}
           >
             Translation
-          </button>
+          </button> */}
           <button
             id="client-settings-upload-button"
             className={

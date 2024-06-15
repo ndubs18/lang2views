@@ -9,7 +9,7 @@ import "../Components/Utilities/main.css";
 const children = (defaultValue) => {
     return (<>
         <ClientsViewButton default={defaultValue} />
-        <SampleCreationViewButton default={defaultValue} />
+        {/* <SampleCreationViewButton default={defaultValue} /> */}
     </>)
 }
 
