@@ -29,7 +29,7 @@ function ClientsView(props) {
     if (props === null)
       throw new Error('props for component clientView is null');
 
-    if (!props.hasOwnProperty('searchExpression')) {
+    if (props.hasOwnProperty('searchExpression')) {
       if (props.searchExpression !== '') {
         setClientList(
           clientList.filter(
