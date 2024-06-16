@@ -1,0 +1,41 @@
+.long-seperation {
+    margin-left: 5em;
+}
+
+.short-seperation {
+    margin-left: 2em;
+}
+
+.short-container {
+    width: 20em;
+    height: 30em;
+}
+
+.long-container {
+    width: 20em;
+}
+
+.thumbnail {
+    align-self: center;
+}
+
+.long-select-button {
+    width: 10%;
+    height: 10%;
+    margin-left: 90%;
+    margin-bottom: 95%;
+    background-color: white;
+}
+
+.short-select-button {
+    width: 14%;
+    height: 14%;
+    margin-left: 85%;
+    margin-bottom: 85%;
+    margin-top: 3%;
+    background-color: white;
+}
+
+#previous-next-videos-buttons-container {
+    margin-top: 3%;
+}

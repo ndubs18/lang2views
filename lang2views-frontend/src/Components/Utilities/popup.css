@@ -1,0 +1,6 @@
+.popup-menus-step-area {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5em;
+    width: 73em;
+}
